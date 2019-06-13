@@ -1,0 +1,45 @@
+include header
+
+if user && accountType == 'Admin'
+    div(class='container2')
+        div(class='title')
+            p Add Tournament
+        form(action='/addtournament' method='POST')
+            label(for='TournamentName') Tournament Name:
+            br
+            input(type='text' name='TournamentName' style='width:100%' maxlength='45' required)
+            br
+            label(for='TournamentGame') Game:
+            br
+            input(type='radio' name='TournamentGame' value='LoL' required) 
+            | LoL
+            br
+            input(type='radio' name='TournamentGame' value='DotA 2') 
+            | DotA 2
+            br
+            input(type='radio' name='TournamentGame' value='CS:GO')
+            | CS:GO
+            br
+            label(for='tDate') Date:
+            br
+            input(type='date' name='tDate' style='width:100%' value=tomorrow min=tomorrow required)
+            br
+            label(for='tTime') Time:
+            br
+            input(type='time' name='tTime' style='width:100%' required)
+            br
+            label(for='TournamentVenue') Venue:
+            br
+            input(type='text' name='TournamentVenue' style='width:100%' maxlength='45' required)
+            br
+            label(for='MaxParticipants') Max No. of Teams: 
+            input(type='number' name='MaxParticipants' style='width:10%' value='1' min='1' required)
+            br
+            label(for='TournamentPicture') Picture (JPEG/PNG): 
+            input(type='file' name='TournamentPicture' accept='image/png,image/jpeg' value='Upload')
+            p
+            div(class='button')
+                input(type='submit' value='Add' class='button')
+        form(action='/tournaments' method='GET')
+            div(class='button')
+                input(type='submit' value='Back' class='button')

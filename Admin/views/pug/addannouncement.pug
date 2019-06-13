@@ -1,0 +1,22 @@
+include header
+
+if user && accountType == 'Admin'
+    div(class='container2')
+        div(class='title')
+            p Add Announcement
+        form(action='/addannouncement' method='POST')
+            label(for='announcementTitle') Title:
+            br
+            input(type='text' name='announcementTitle' style='width:100%' maxlength='45' required)
+            label(for='announcementMessage') Message:
+            br
+            textarea(name='announcementMessage' rows='10' maxlength='280' style='resize:none; width:100%' required)
+            br
+            label(for='announcementPic') Picture (JPEG/PNG): 
+            input(type='file' name='announcementPic' accept='image/png,image/jpeg' value='Upload')
+            p
+            div(class='button')
+                input(type='submit' value='Post' class='button')
+        form(action='/announcements' method='GET')
+            div(class='button')
+                input(type='submit' value='Back' class='button')

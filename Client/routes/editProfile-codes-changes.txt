@@ -1,0 +1,467 @@
+// ADD These in user.js 
+
+
+
+//==========================| Edit profile |=============================
+
+exports.editProfile = function(req, res) {
+	var user = req.session.user,
+		userId = req.session.userId;
+	var message = "";
+  	var message1 = '';
+  	var message2 = '';
+
+	if (user == null) {
+		res.redirect("/login");
+		return;
+	} else {
+		var query = "SELECT * FROM accounts WHERE username = ?";
+		db.query(query, user, function(err, rows, fields) {
+			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      		db.query(sql, user, function(err, row, fields){ 
+			if (rows.length > 0) {
+				if ((req.body.newPwd && req.body.conPwd) !== "") {
+					console.log("pasok");
+					
+					if (req.body.newPwd != req.body.conPwd) {
+						var message = "Passwords do not match.";
+						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+					} else {
+						let sql = 'UPDATE accounts SET Password = ? WHERE Username = ?';
+						let hash = bcrypt.hashSync(req.body.conPwd, 10);
+						let data = [hash, user];
+						db.query(sql, data, function(err, result){
+							console.log(result);
+							var message = "Successfully Changed"
+							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						});
+					}
+				}else{
+					console.log("NUll siya");
+					if ((req.body.newPwd && req.body.conPwd) == "") {
+						if ((req.body.newPwd == "") && (req.body.conPwd !== "")) {
+						var message = "New Passwords is empty.";
+						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}else if ((req.body.newPwd !== "") && (req.body.conPwd == "")){
+							var message = "Confirm Passwords is empty.";
+							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}else{
+							var message = "";
+							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}
+					}
+				}
+			} 
+			});
+		});
+		
+	}
+};
+
+//==========================| Change In Game Name lol |=============================
+exports.changeInGameNameLol = function(req, res) {
+	var user = req.session.user,
+		userId = req.session.userId;
+	var message = '';
+  	var message1 = '';
+  	var message2 = '';
+
+	if (user == null) {
+		res.redirect("/login");
+		return;
+	} else {
+		var query = "SELECT * FROM accounts WHERE username = ?";
+		db.query(query, user, function(err, rows, fields) {
+			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      		db.query(sql, user, function(err, row, fields){ 
+			if (rows.length > 0) {
+				if (req.body.lol !== "") {
+					console.log("pasok");
+					var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ? AND Game = 'LoL'";
+					db.query(sql1, user, function(err, result1, fields){
+						if (result1 == 0) {
+							var query = "SELECT * FROM teampalak.gameAccounts WHERE inGameName = ?";
+						db.query(query, [req.body.lol], function(err, rows, fields) {
+							console.log(rows[0]);
+							if (rows.length > 0) {
+								var message1 = "League of Legends game account is already taken.";
+									res.render('editProfile',
+							          {
+							            user: user, 
+							            message: message,
+							            message1: message1,
+							            message2: message2, 
+							            data: rows
+							          });
+							} else {
+								var apikey = "select mapi.api_key from teampalak.api_key mapi where apiId = (SELECT max(m.apiId) FROM teampalak.api_key m)";
+								db.query(apikey, function(err, maxapi){
+									console.log(err);
+									console.log(maxapi);
+									console.log("max api = "+maxapi[0].api_key);
+									var key = maxapi[0].api_key;
+									console.log("api key = "+key);
+									var RiotRequest = require('riot-lol-api');
+									var riotRequest = new RiotRequest(key);
+									var sName = req.body.lol; //ingame name of summoner
+									var version = "4";
+									//var matchID = "3007889758";
+									riotRequest.request('na1', 'summoner', '/lol/summoner/v'+version+'/summoners/by-name/'+sName,
+										function(err, data) {
+											if(err=== null){
+												var sID = data.id;
+												var aID = data.accountId;
+												riotRequest.request('na1', 'league','/lol/league/v'+version+'/entries/by-summoner/'+sID,
+												function(err, data) {
+													var rank = data[0].tier +" "+ data[0].rank;
+													var rankTier = data[0].tier;
+													var rankDiv = data[0].rank;
+													var rankLP = data[0].leaguePoints;
+													var mmr = convertRank(rankTier,rankDiv,rankLP);
+													
+														var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
+														db.query(sql, function (err, result) {
+														if (err) throw err;
+															console.log(sName+","+sID+","+aID+","+rank+","+mmr+" has been logged");
+															var sql2 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+															db.query(sql2, user, function(err, row, fields){ 
+							      								var message1 = "Successfully added account";
+																res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+															});
+														});
+												});
+							
+											}else if (err){
+												console.log(err.status);
+												var message1 = "Please contact the admin.";
+												res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+											}
+									})
+									
+									function convertRank(rankTier,rankDiv,rankLP){
+										var tierNum=0,divNum=0;
+									
+										switch(rankDiv){
+											case 'I':
+												divNum = 4;
+												break;
+											case 'II':
+												divNum = 3;
+												break;
+											case 'III':
+												divNum = 2;
+												break;
+											case 'IV':
+												divNum = 1;
+												break;
+										}
+	
+										switch(rankTier){
+											case "IRON":
+												tierNum = 1;
+												break;
+											case "BRONZE":
+												tierNum = 2;
+												break;
+											case "SILVER":
+												tierNum = 3;
+												break;
+											case "GOLD":
+												tierNum = 4;
+												break;
+											case "PLATINUM":
+												tierNum = 5;
+												break;
+											case "DIAMOND":
+												tierNum = 6;
+												break;
+											case "MASTER":
+												tierNum = 7;
+												break;
+											case "GRANDMASTER":
+												tierNum = 8;
+												divNum = '';
+												break;
+											case "CHALLENGER":
+												if(rankLP>999){
+													tierNum = 1;
+													divNum = '';
+												}else{
+													tierNum = 9;
+													divNum = '';
+												}
+												break;
+											default:
+												tierNum = 0;
+												break;
+										}
+	
+										if(rankLP<10){
+											rankLP = "0"+rankLP;
+										}
+	
+										var matchmakingRank = tierNum+''+divNum+''+rankLP;
+										return matchmakingRank;
+									}
+								})
+							}
+						});	
+						}else{
+							var update = "UPDATE gameaccounts SET InGameName = ? WHERE Username = ?";
+							db.query(update,[req.body.lol,user],function(err,update,fields){
+								var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      							db.query(sql, user, function(err, row, fields){ 
+      								var message1 = "Successfully Updated In Game Name";
+									res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+								});
+							});
+						}
+					});
+				}else{
+					console.log("NUll siya");
+					if (req.body.lol == "") {
+						if (req.body.lol == "") {
+						var message1 = "League of Legend In Game Name is empty.";
+						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}else{
+							var message1 = "";
+							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}
+					}
+				}
+			} 
+			});
+		});
+		
+	}
+};
+
+//==========================| Change In Game Name dota 2 |=============================
+exports.changeInGameNameDota2 = function(req, res) {
+	var user = req.session.user,
+		userId = req.session.userId;
+	var message = '';
+  	var message1 = '';
+  	var message2 = '';
+
+	if (user == null) {
+		res.redirect("/login");
+		return;
+	} else {
+		var query = "SELECT * FROM accounts WHERE username = ?";
+		db.query(query, user, function(err, rows, fields) {
+			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      		db.query(sql, user, function(err, row, fields){ 
+			if (rows.length > 0) {
+				if (req.body.dota2 !== "") {
+					console.log("pasok");
+					var message2 = "pasok";
+					var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ? AND Game = 'Dota 2'";
+					db.query(sql1, user, function(err, result1, fields){
+						if (result1 == 0) {
+							console.log(result1);
+							console.log("result1");
+							var query = "SELECT * FROM teampalak.gameAccounts WHERE summonerOrDotaID = ?";
+							db.query(query, [req.body.dota2], function(err, rowse, fields) {
+								if (rowse.length > 0) {
+									var message2 = "Dota 2 account is already taken.";
+									res.render('editProfile',
+							          {
+							            user: user, 
+							            message: message,
+							            message1: message1,
+							            message2: message2, 
+							            data: rows
+							          });
+								} else {
+									const request = require('request');
+									const dota2APi = require('dota2-api');
+									
+									var dotaID = req.body.dota2;
+									var api_key = "425f6993-d600-4f13-8fd3-5647f095dbc0";
+									var rank;
+									
+									var mysql = require('mysql');
+									var con = mysql.createConnection({
+									  host: "localhost",
+									  user: "root",
+									  password: "",
+									  database: "teampalak"
+									});
+									
+									request('https://api.opendota.com/api/players/'+dotaID+'?api_key='+api_key, { json: true }, (err, ress, body) => {
+										if (err) { return console.log(err); }
+										var mmr_estimate = body.mmr_estimate.estimate;
+										if(mmr_estimate===undefined){
+											var message2 = "Please enter a different account as the mmr of this account is undefined";
+											res.render('editProfile',
+									          {
+									            user: user, 
+									            message: message,
+									            message1: message1,
+									            message2: message2, 
+									            data: rows
+									          });
+										}else{
+											rank = body.rank_tier;
+									
+											var steamID = body.profile.steamid;
+											var ign = body.profile.personaname;
+										
+											var ranks = convertRank();
+											con.connect(function(err) {
+											if (err) throw err;
+												var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
+												con.query(sql, function (err, result) {
+												if (err) throw err;
+													console.log(ign+","+dotaID+","+steamID+","+ranks+","+mmr_estimate+" has been logged");
+												var message2 = "Successfully added account"
+												var sql2 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+													db.query(sql2, user, function(err, row, fields){ 
+					      								var message2 = "Successfully added account";
+														res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+													});
+												});
+											});
+										}
+									});
+									
+									function convertRank(){
+										var rankTier = Math.trunc(rank/10);
+										var rankDiv = rank%10;
+									
+										switch(rankTier) {
+											case 1:
+												rankTier = "Herald";
+											break;
+											case 2:
+												rankTier = "Guardian";
+											break;
+											case 3:
+												rankTier = "Crusader";
+											break;
+											case 4:
+												rankTier = "Archon";
+											break;
+											case 5:
+												rankTier = "Legend";
+											break;
+											case 6:
+												rankTier = "Ancient";
+											break;
+											case 7:
+												rankTier = "Divine";
+											break;
+											case 8:
+												rankTier = "Immortal";
+											break;
+											default:
+												rankTier = "Uncalibrated";
+												break;
+									}
+									
+										var rankTD = rankTier +" "+ rankDiv.toString()+" ";
+										return rankTD;
+									
+									}
+								}
+							});	//end of code ni rey
+						}else{
+							var update = "UPDATE gameaccounts SET InGameName = ? WHERE Username = ?";
+							db.query(update,[req.body.dota2,user],function(err,update,fields){
+								var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      							db.query(sql, user, function(err, row, fields){ 
+      								var message2 = "Successfully Updated In Game Name";
+									res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+								});
+							});
+						}
+					});
+		
+				}else{
+					console.log("NUll siya");
+					if (req.body.dota2 == "") {
+						if (req.body.dota2 == "") {
+						var message2 = "Dota 2 In Game Name is empty.";
+						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}else{
+							var message2 = "";
+							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2, data: row});
+						}
+					}
+				}
+			} 
+			});
+		});
+		
+	}
+};
+
+
+//*********************************************************************************//
+//*********************************************************************************//
+//*********************************************************************************//
+//**************Add This in index.js located beside user.js************************//
+//*********************************************************************************//
+//*********************************************************************************//
+//*********************************************************************************//
+
+
+exports.editProfile = function(req, res){
+  let user = req.session.user;
+  var message = '';
+  var message1 = '';
+  var message2 = '';
+
+  if (user == null) {
+    res.redirect("/login");
+    return;
+  } else {
+    if(req.method == "POST"){
+      var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      db.query(sql, user, function(err, rows, fields){ 
+        res.render('editProfile',
+          {
+            user: user, 
+            message: message,
+            message1: message1,
+            message2: message2, 
+            data: rows
+          });
+      });
+    }else{
+      var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      db.query(sql, user, function(err, rows, fields){ 
+        console.log(rows);
+        res.render('editProfile',
+          {
+            user: user, 
+            message: message,
+            message1: message1,
+            message2: message2, 
+            data: rows
+          });
+      });
+    }
+  }
+};
+
+
+
+//*********************************************************************************//
+//*********************************************************************************//
+//*********************************************************************************//
+//**********************Change in the App. js file*********************************//
+//*********************************************************************************//
+//*********************************************************************************//
+//*********************************************************************************//
+
+//Change user to routes
+app.get('/editProfile', routes.editProfile); //DISPLAY SIGNUP PAGE
+
+app.post('/editProfile', user.editProfile);
+
+
+//ADD
+app.post('/changeInGameNameLol',user.changeInGameNameLol);
+app.post('/changeInGameNameDota2',user.changeInGameNameDota2);

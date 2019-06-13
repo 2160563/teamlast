@@ -1,0 +1,37 @@
+include header
+
+div(class='container3')
+    div(class='title')
+        p Tournaments
+        if user && accountType == 'Admin'
+            form(action='/addtournament' style='display:inline-block; vertical-align:middle;')
+                input(type="submit" value='Add Tournament' class='button' style='width:100%')
+                br
+            if data.length
+                table
+                    thead
+                        tr
+                            th Tournament Name
+                            th Game
+                            th Date
+                            th Time
+                            th Venue
+                            th 
+                    tbody
+                        - var index = 0;
+                        each row in data
+                            tr
+                                td #{row.TournamentName}
+                                td #{row.TournamentGame}
+                                td #{row.tDate}
+                                td #{row.tTime}
+                                td #{row.TVenue}
+                                td
+                                    form(action='/viewtdetails' method='POST')
+                                        input(type='hidden' name='index' value=index)
+                                        input(type='hidden' name='TournamentID' value=row.TournamentID)
+                                        input(type='submit' value='Details' class='button3')
+                            - index++;
+            else
+                br
+                p No data found

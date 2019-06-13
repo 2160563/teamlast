@@ -1,0 +1,926 @@
+var array;
+========================== LOGIN =============================
+exports.login = function(req, res) {
+    var message = '';
+    req.session.message = ;
+    if(req.method == POST){
+        if (req.body.user) {
+            db.query('SELECT  FROM teampalak.accounts WHERE username = ', [req.body.user], function(err, rows, fields) {
+				console.log(rows);
+                if (rows.length  0) {
+                    db.query('SELECT  FROM teampalak.accounts WHERE username = ', [req.body.user], function(err, rows, fields) {
+                        if (bcrypt.compareSync(req.body.password, rows[0].Password)) {
+                            req.session.user = req.body.user;
+                            req.session.userID = rows[0].AccID;
+                            console.log(req.session.userID);
+                            res.redirect('client');
+                        } else {
+                            var message = 'Incorrect usernamepassword.';
+                            console.log(message);
+                            res.render('login.ejs', {message message});
+                        }
+                    });
+                } else {
+                    var message = 'No account registered.';
+                    res.render('login.ejs', {message message});
+                }
+            });
+        }
+    }
+};
+
+========================== HOME =============================
+exports.home = function(req, res, next) {
+
+	var user = req.session.user,
+		userId = req.session.userID;
+		req.session.message = ;
+	var payload = {
+		from 'TEAMPALAK',
+		to '+639175749214',
+		number '+639176780038',
+		message 'SAMPLE',
+		user'jdmallari@weavetech.com.ph',
+		account_id 4756,
+		account 'Weavetech Networks Inc'
+	};
+	sms.sendsms(payload, function(error, result) {
+	if (!error) {
+		console.log(result+result);
+	} else
+		console.log(error+error);
+	}); 
+	    var sql = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID order by TSched desc;
+	    db.query(sql, function(err, result){
+	        console.log(result);
+		    var sql1 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where teampalak.TournamentGame like 'lol%' order by TSched desc;
+		    db.query(sql1, function(err, result1){
+		        console.log(HOME result);
+		        var sql2 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where teampalak.TournamentGame like 'dota%' order by TSched desc;
+			    db.query(sql2, function(err, result2){
+			        console.log(HOME result1);
+					var sql3 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where teampalak.TournamentGame like 'cs%' order by TSched desc;
+				    db.query(sql3, function(err, result3){
+				        console.log(HOME result2);
+						var sql4 = SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'lol%';
+					    db.query(sql4, function(err, result4){
+					        console.log(HOME result3);
+							var sql5 = SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'dota%';
+						    db.query(sql5, function(err, result5){
+						        console.log(HOME result4);
+								var sql6 = SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'cs%';
+							    db.query(sql6, function(err, result6){
+							        console.log(HOME result5);
+									var sql7 = SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID;
+								    db.query(sql7, function(err, result7){
+								        console.log(HOME result6);
+								        var sql8 = SELECT  FROM teampalak.announcements;
+									    db.query(sql8, function(err, result8){
+									        console.log(HOME result7);
+									            res.render('home.ejs', {dataresult,data1result1,data2result2,data3result3, user userId, messagereq.session.message, lolresult4, dotaresult5, csresult5, allresult7, announcementsresult8});
+									            req.session.message = ;
+									    })
+								    })
+							    })
+						    })
+					    })
+				    })
+			    })
+		        })
+	    });
+};
+========================== Clinet home =============================
+exports.client = function(req, res, next) {
+
+	var user = req.session.user,
+		userId = req.session.userID;
+		req.session.message = ;
+	var payload = {
+		from 'TEAMPALAK',
+		to '+639175749214',
+		number '+639176780038',
+		message 'SAMPLE',
+		user'jdmallari@weavetech.com.ph',
+		account_id 4756,
+		account 'Weavetech Networks Inc'
+	};
+	sms.sendsms(payload, function(error, result) {
+	if (!error) {
+		console.log(result+result);
+	} else
+		console.log(error+error);
+	}); 
+	    var sql = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID order by TSched desc;
+	    db.query(sql, function(err, result){
+	        console.log(result);
+		    var sql1 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'lol%' order by TSched desc;
+		    db.query(sql1, function(err, result1){
+		        console.log(Clinet home result 0);
+		        var sql2 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'dota%' order by TSched desc;
+			    db.query(sql2, function(err, result2){
+			        console.log(Clinet home result 1);
+					var sql3 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'cs%' order by TSched desc;
+				    db.query(sql3, function(err, result3){
+				        console.log(Clinet home result 2);
+						var sql4 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'lol%';
+					    db.query(sql4, function(err, result4){
+					        console.log(Clinet home result 3);
+							var sql5 = Clinet home SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'dota%';
+						    db.query(sql5, function(err, result5){
+						        console.log(Clinet home result 4);
+								var sql6 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'cs%';
+							    db.query(sql6, function(err, result6){
+							        console.log(Clinet home result 5);
+									var sql7 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID;
+								    db.query(sql7, function(err, result7){
+								        console.log(Clinet home result 6);
+								        var sql8 = SELECT  FROM teampalak.announcements;
+									    db.query(sql8, function(err, result8){
+									        console.log(Clinet home result 7);
+									            res.render('client.ejs', {dataresult,data1result1,data2result2,data3result3, user userId, messagereq.session.message, lolresult4, dotaresult5, csresult5, allresult7, announcementsresult8});
+									            req.session.message = ;
+									    })
+								    })
+							    })
+						    })
+					    })
+				    })
+			    })
+		        })
+	    });
+};
+
+========================== Register Team =============================
+exports.tournaments = function(req, res, next) {
+console.log(a);
+	var user = req.session.user,
+		userId = req.session.userId;
+    console.log(b);
+    var dasa = req.body.dasa;
+    if(req.session.message === undefined)
+    	req.session.message = ;
+	    var sql = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID order by TSched desc;
+	    db.query(sql, function(err, result){
+			console.log(result);
+			console.log(Register Team result 0);
+		    var sql1 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'lol%' order by TSched desc;
+		    db.query(sql1, function(err, result1){
+		        console.log(Register Team result 1);
+		        var sql2 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'dota%' order by TSched desc;
+			    db.query(sql2, function(err, result2){
+			        console.log(Register Team result result 2);
+					var sql3 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'cs%' order by TSched desc;
+				    db.query(sql3, function(err, result3){
+				        console.log(Register Team result result 3);
+						var sql4 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'lol%';
+					    db.query(sql4, function(err, result4){
+					        console.log(Register Team result result 4);
+							var sql5 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'dota%';
+						    db.query(sql5, function(err, result5){
+						        console.log(Register Team result result 5);
+								var sql6 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'cs%';
+							    db.query(sql6, function(err, result6){
+							        console.log(Register Team result result 6);
+									var sql7 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID;
+								    db.query(sql7, function(err, result7){
+								        console.log(Register Team result result 7);
+								            res.render('tournaments.ejs',{dataresult,data1result1,data2result2,data3result3, user userId, messagereq.session.message, lolresult4, dotaresult5, csresult5, allresult7});
+								            req.session.message = ;
+								    })
+							    })
+						    })
+					    })
+				    })
+			    })
+		        })
+	    });
+};
+========================== Login Tournaments Team =============================
+exports.login_tournaments = function(req, res, next) {
+console.log(a);
+	var user = req.session.user,
+		userId = req.session.userId;
+    console.log(b);
+    var dasa = req.body.dasa;
+    if(req.session.message === undefined)
+    	req.session.message = ;
+	    var sql = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID order by TSched desc;
+	    db.query(sql, function(err, result){
+			console.log(Login Tournaments Team result 0);
+	        console.log(result);
+		    var sql1 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'lol%' order by TSched desc;
+		    db.query(sql1, function(err, result1){
+				console.log(Login Tournaments Team result 1);
+		        var sql2 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'dota%' order by TSched desc;
+			    db.query(sql2, function(err, result2){
+					console.log(Login Tournaments Team result 2);
+					var sql3 = SELECT  FROM teampalak.tournaments inner join teampalak.tournament_details on tournaments.TournamentID = tournament_details.TournamentID where TournamentGame like 'cs%' order by TSched desc;
+				    db.query(sql3, function(err, result3){
+						console.log(Login Tournaments Team result 3);
+						var sql4 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'lol%';
+					    db.query(sql4, function(err, result4){
+							console.log(Login Tournaments Team result 4);
+							var sql5 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'dota%';
+						    db.query(sql5, function(err, result5){
+								console.log(Login Tournaments Team result 5);
+								var sql6 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like 'cs%';
+							    db.query(sql6, function(err, result6){
+									console.log(Login Tournaments Team result 6);
+									var sql7 = SELECT tournaments.TournamentID as tournaID, TournamentGame, count() as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID;
+								    db.query(sql7, function(err, result7){
+										console.log(Login Tournaments Team result 7);
+								            res.render('login_tournaments.ejs',{dataresult,data1result1,data2result2,data3result3, user userId, messagereq.session.message, lolresult4, dotaresult5, csresult5, allresult7});
+								            req.session.message = ;
+								    })
+							    })
+						    })
+					    })
+				    })
+			    })
+		        })
+	    });
+};
+========================== Register Team =============================
+exports.userProfile = function(req, res, next) {
+	var user = req.session.user,
+		userId = req.session.userId;
+	var name = ;
+	var team = ;
+	var imageProfile = ;
+	var imageHistory = ;
+
+	if (user == null) {
+		res.redirect(login);
+		return;
+	} else {
+		Change database personal_info ID to auto incremtent
+		var que = `SELECT  FROM teampalak.members mem inner join teampalak.teams tea ON tea.TeamID = mem.TeamID Inner join teampalak.accounts acc ON acc.AccID = mem.MemID where username = `;
+
+		db.query(que, user, function(err, rows1, fields) {
+			if (rows1.length  0) {	
+				name = rows1[0].Firstname + + rows1[0].Lastname;
+				let sql = 
+				`SELECT  FROM teampalak.registered_teams reg
+				INNER JOIN teampalak.tournaments t ON reg.TournamentID = t.TournamentID 
+				INNER JOIN teampalak.tournament_details tour ON  tour.TournamentID = t.TournamentID 
+				INNER JOIN teampalak.accounts acc INNER JOIN teampalak.teams tea ON tea.TeamID = acc.AccID where username =  AND t.Status = closed `;
+				let data = [user];
+					db.query(sql, data, function(err, rows, fields){
+						
+						res.render('userProfile.ejs', {
+											user user,
+											name name,
+											data rows1,
+											imageHistory imageHistory,
+											ctr rows
+					});
+				});
+			} else {
+				res.send(script type='textjavascript'alert('No account registered.'); window.location.replace(login);script)
+			}
+		});
+		
+	}
+
+};
+========================== Registration =============================
+exports.editProfile = function(req, res, next) {
+	var user = req.session.user,
+		userId = req.session.userId;
+	var message = ;
+	if (user == null) {
+		res.redirect(login);
+		return;
+	} else {
+		db.query('SELECT  FROM accounts WHERE username = ', user, function(err, rows, fields) {
+			if (rows.length == 1) {
+				if(bcrypt.compareSync(req.body.password, rows[0].Password)){
+					if (req.body.newPwd == req.body.conPwd) {
+						let sql = 'UPDATE accounts SET Password =  WHERE Username = ';
+						let hash = bcrypt.hashSync(req.body.conPwd, 10);
+						let data = [hash, user];
+						db.query(sql, data, function(err, result){
+							console.log(result);
+						});
+					}else{
+						res.send(script type='textjavascript'alert('New Password and Confirm Password do not match.'); window.location.replace(editProfile);script)
+					}
+
+				}else{
+						res.send(script type='textjavascript'alert('Old Password do not match.'); window.location.replace(editProfile);script)
+
+				}
+			}
+
+		});
+	}
+		res.render('editProfile.ejs', {user user});
+};
+
+========================== Registration 1 =============================
+exports.registration = function(req, res) {
+	var user = req.session.user,
+		userId = req.session.userId;
+
+			if (user == null) {
+		res.redirect(login);
+		return;
+	}
+    if(req.method == POST){
+        console.log(fdsfsfsdfds);
+        var post = req.body;
+        var tourna = post.tourna;
+        var tname = post.tname;
+        var memb1 = post.memb1;
+        var memb2 = post.memb2;
+        var memb3 = post.memb3;
+        var memb4 = post.memb4;
+        sql = INSERT INTO `teampalak`.`teams` (`CaptainID`, `TeamName`) VALUES ('+userId+', '+tname+');
+        db.query(sql, function(err, result){ 
+            console.log(err);
+        });
+        var sql = SELECT  FROM teampalak.tournament_details inner join teampalak.tournaments;
+        db.query(sql, function(err, result){
+			console.log(Registration 1 result 1);
+			message = Team registered;
+			var sql = select distinct teampalak.members.TeamID,TeamName from teampalak.members inner join teampalak.teams inner join teampalak.accounts where teams.teamid = members.teamid and accounts.accid = members.memid and captainID =+userId+;
+			db.query(sql2, function(err, result2){
+				console.log(Registration 1 result 2);
+				console.log(userId);
+				var sql3 = select  from teampalak.members inner join teampalak.teams inner join teampalak.accounts where teams.teamid = members.teamid and accounts.accid = members.memid and captainID =+userId+;
+				db.query(sql3, function(err, result3){
+					console.log(Registration 1 result 3);
+					console.log(result2);
+					res.render('registerTeam.ejs',{dataresult, user userId, messagemessage, teams result2, membersresult3});
+				});
+			});
+        });
+
+    } else {
+    var sql = SELECT  FROM teampalak.tournament_details inner join teampalak.tournaments;
+    db.query(sql, function(err, result){
+        console.log(Registration 1 results);
+        message = ;
+        message = Team registered;
+                    var sql2 = select distinct teampalak.members.TeamID,TeamName from teampalak.members inner join teampalak.teams inner join teampalak.accounts where teams.teamid = members.teamid and accounts.accid = members.memid and captainID =+userId+;
+        db.query(sql2, function(err, result2){
+			console.log(Registration 1 results 2);	
+            console.log(userId);
+            var sql3 = select  from teampalak.members inner join teampalak.teams inner join teampalak.accounts where teams.teamid = members.teamid and accounts.accid = members.memid and captainID =+userId+;
+            db.query(sql3, function(err, result3){
+				console.log(Registration 1 results 2);
+                console.log(result2);
+                res.render('registerTeam.ejs',{dataresult, user userId, messagemessage, teams result2, membersresult3});
+            });
+        });
+    });
+    }
+};
+
+exports.registrations = async function(req, res) {
+	var user = req.session.user,
+		userId = req.session.userID;
+        console.log(fdsfsfsdfds);
+        var get = req.query;
+        var tname = get.tname;
+		var tID = req.tID
+        var capname = get.capname;
+        var memb1 = get.memb1;
+        var memb2 = get.memb2;
+        var memb3 = get.memb3;
+        var memb4 = get.memb4;
+		var rewardPoints = 0;
+
+        var sql1 = SELECT  FROM teampalak.accounts where Username ='+memb1+';
+	    db.query(sql1, function(err, result){
+	        message = ;
+	        message = Team registered;
+	        console.log(PAT TABA taba+result.length==0);
+	        if(result.length==0){
+	        	message = User not found;
+	        	req.session.message = message;
+	        	res.redirect(tournaments);
+	        	console.log(PAT TABA+result);
+	        	console.log(1);
+	        	return;
+	        }
+		    var sql111 = SELECT  FROM teampalak.accounts where Username ='+memb2+';
+		    db.query(sql111, function(err, result1){
+		        message = ;
+		        message = Team registered;
+		        if(result1.length==0){
+		        	message = User not found;
+		        	req.session.message = message;
+		        	res.redirect(tournaments);
+		        	console.log(2);
+		        	return;
+		        }
+		        var sql2 = SELECT  FROM teampalak.accounts where Username ='+memb3+';
+			    db.query(sql2, function(err, result2){
+			        message = ;
+			        message = Team registered;
+			        if(result2.length==0){
+			        	message = User not found;
+			        	req.session.message = message;
+			        	res.redirect(tournaments);
+			        	console.log(3);
+			        	return;
+			        }
+					var sql3 = SELECT  FROM teampalak.accounts where Username ='+memb4+';
+				    db.query(sql3, function(err, result3){
+				        message = ;
+				        message = Team registered;
+				        if(result3.length==0){
+				        	message = User not found;
+				        	req.session.message = message;
+				        	res.redirect(tournaments);
+				        	console.log(4);
+				        	return;
+				        }
+				        if(result[0].AccID==result1[0].AccIDresult[0].AccID==result2[0].AccIDresult[0].AccID==result3[0].AccIDresult1[0].AccID==result[0].AccIDresult1[0].AccID==result2[0].AccIDresult1[0].AccID==result3[0].AccIDresult2[0].AccID==result[0].AccIDresult2[0].AccID==result1[0].AccIDresult2[0].AccID==result3[0].AccIDresult3[0].AccID==result[0].AccIDresult3[0].AccID==result1[0].AccIDresult3[0].AccID==result2[0].AccID){
+				        	message = Member username should be unique;
+				        	req.session.message = message;
+				        	res.redirect(tournaments);
+				        	console.log(4);
+				        	return;
+				        }
+				        sql = INSERT INTO `teampalak`.`teams` (`CaptainID`, `TeamName`) VALUES ('+userId+', '+tname+');
+				        db.query(sql, function(err, result56){ 
+				        	console.log(result56);
+				            console.log(err);
+				        var sql4 = SELECT max(TeamID) as teamID FROM teampalak.teams where CaptainID = +userId;
+				        db.query(sql4, function(err, result4){
+					        console.log(cj tabat taba+result4[0].AccID);
+					        message = ;
+					        message = Team registered;
+					        console.log(result[0].AccID);
+					        var sql5 = INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES ('+result4[0].teamID+', '+result[0].AccID+');
+					        db.query(sql5, function(err, result5){
+						        console.log(err);
+						        message = ;
+						        message = Team registered;
+						        var sql6 = INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES ('+result4[0].teamID+', '+result1[0].AccID+');
+						        db.query(sql6, function(err, result6){
+							        console.log(result6);
+							        message = ;
+							        message = Team registered;
+							        var sql7 = INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES ('+result4[0].teamID+', '+result2[0].AccID+');
+							        db.query(sql7, function(err, result7){
+								        console.log(result7);
+								        message = ;
+								        message = Team registered;
+								        var sql8 = INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES ('+result4[0].teamID+', '+result3[0].AccID+');
+								        db.query(sql8, function(err, result8){
+									        console.log(result8);
+									        message = ;
+									        message = Team registered;
+									        var sql9 = INSERT INTO `teampalak`.`registered_teams` (`registeredteamID`, `TournamentID`) VALUES ('+result4[0].teamID+', '+tID+');
+									        db.query(sql9, function(err, result9){
+										        console.log(err);
+										        message = ;
+										        message = Team registered;
+										        
+										        db.query(sql10, function(err, result10){
+											        console.log(err);+5
+											        message = ;
+											        message = Team registered;
+											       
+											        db.query(sql11, function(err, result11){
+												        console.log(err);
+												        message = ;
+												        message = Team registered;
+
+												        db.query(sql12, function(err, result12){
+													        console.log(err);
+													        message = ;
+													        message = Team registered;
+
+													        db.query(sql13, function(err, result13){
+														        console.log(err);
+														        message = ;
+														        message = Team registered;
+
+														        db.query(sql14, function(err, result14){
+															        console.log(err);
+															        message = ;
+															        message = Team registered;
+
+															        db.query(sql15, function(err, result15){
+																        console.log(err);
+																        message = ;
+																        message = Team registered;
+																        res.redirect(tournaments);
+															    	})
+														    	})	
+													    	})										    	
+													    })
+											    	})										    	
+											    })	
+									    		})	
+									    	})								    	
+								    	})
+							    	})
+						    	})
+					    	})
+				    	})
+				    })
+			    })
+		        })
+	    });
+
+};
+
+========================== LOGOUT =============================
+exports.logout = function(req, res) {
+	req.session.destroy(function(err) {
+		res.redirect(home);
+	})
+};
+
+========================== REGISTER =============================
+exports.register = function(req, res) {
+	if (req.body.user) {
+		var query = SELECT  FROM teampalak.accounts WHERE username = ;
+		db.query(query, [req.body.user], function(err, rows, fields) {
+			if (rows.length  0) {
+				console.log(reg 1 +rows.length);
+				res.send(script type='textjavascript'alert('Username is already taken.'); window.location.replace(register);script);
+			} else {
+				if (req.body.password != req.body.repassword) {
+					res.send(script type='textjavascript'alert('Passwords do not match.'); window.location.replace(register);script);
+				} else {
+					var mysql = require('mysql');
+								
+					var con = mysql.createConnection({
+					  host localhost,
+					  user root,
+					  password ,
+					  database teampalak
+					});
+					if(req.body.lol){
+						var query = SELECT  FROM teampalak.gameAccounts WHERE inGameName = ;
+						db.query(query, [req.body.lol], function(err, rows, fields) {
+							console.log(rows[0]);
+							if (rows.length  0) {
+								res.send(script type='textjavascript'alert('League of Legends game account is already taken.'); window.location.replace(register);script);
+							} else {
+								var apikey = SELECT api_key FROM teampalak.api_key having max(apiId);
+								db.query(apikey, function(err, maxapi){
+									console.log(err);
+									console.log(maxapi);
+									console.log(max api = +maxapi[0].api_key);
+									var key = maxapi[0].api_key;
+									console.log(api key = +key);
+									var RiotRequest = require('riot-lol-api');
+									var riotRequest = new RiotRequest(key);
+									var sName = req.body.lol; ingame name of summoner
+									var version = 4;
+									var matchID = 3007889758;
+									riotRequest.request('na1', 'summoner', 'lolsummonerv'+version+'summonersby-name'+sName,
+										function(err, data) {
+											if(err=== null){
+												var sID = data.id;
+												var aID = data.accountId;
+												riotRequest.request('na1', 'league','lolleaguev'+version+'entriesby-summoner'+sID,
+												function(err, data) {
+													var rank = data[0].tier + + data[0].rank;
+													var rankTier = data[0].tier;
+													var rankDiv = data[0].rank;
+													var rankLP = data[0].leaguePoints;
+													var mmr = convertRank(rankTier,rankDiv,rankLP);
+													var insert = INSERT INTO teampalak.accounts (username, password, firstname, lastname, email) VALUES ;
+													let hash = bcrypt.hashSync(req.body.password, 10);
+													var values = [
+														[req.body.user, hash, req.body.firstName, req.body.lastName, req.body.email]
+													];
+													db.query(insert, [values], function(err, rows, fields) {
+														res.send(script type='textjavascript'alert('Account successfully registered.'); window.location.replace(register);script);
+													});
+													con.connect(function(err) {
+													if (err) throw err;
+														var sql = INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('+req.body.user+','lol','+sName+','+sID+','+aID+','+rank+','+mmr+');
+														con.query(sql, function (err, result) {
+														if (err) throw err;
+															console.log(sName+,+sID+,+aID+,+rank+,+mmr+ has been logged);
+														});
+													});
+												});
+							
+											}else if (err){
+												console.log(err.status);
+												res.send(script type='textjavascript'alert('+err+ Please contact the admin.'); window.location.replace(register);script);
+											}
+									})
+									
+									function convertRank(rankTier,rankDiv,rankLP){
+										var tierNum=0,divNum=0;
+									
+										switch(rankDiv){
+											case 'I'
+												divNum = 4;
+												break;
+											case 'II'
+												divNum = 3;
+												break;
+											case 'III'
+												divNum = 2;
+												break;
+											case 'IV'
+												divNum = 1;
+												break;
+										}
+	
+										switch(rankTier){
+											case IRON
+												tierNum = 1;
+												break;
+											case BRONZE
+												tierNum = 2;
+												break;
+											case SILVER
+												tierNum = 3;
+												break;
+											case GOLD
+												tierNum = 4;
+												break;
+											case PLATINUM
+												tierNum = 5;
+												break;
+											case DIAMOND
+												tierNum = 6;
+												break;
+											case MASTER
+												tierNum = 7;
+												break;
+											case GRANDMASTER
+												tierNum = 8;
+												break;
+											case CHALLENGER
+												tierNum = 9;
+												divNum = '';
+												break;
+											default
+												tierNum = 0;
+												break;
+										}
+	
+										if(rankLP10){
+											rankLP = 0+rankLP;
+										}
+	
+										var matchmakingRank = tierNum+''+divNum+''+rankLP;
+										return matchmakingRank;
+									}
+								})
+							}
+						});						
+					}else if (req.body.dota2){
+						if(isNaN(req.body.dota2)){
+							res.send(script type='textjavascript'alert('Please input your Dota 2 ID.'); window.location.replace(register);script);
+						}else{
+							var query = SELECT  FROM teampalak.gameAccounts WHERE summonerOrDotaID = ;
+							db.query(query, [req.body.dota2], function(err, rowse, fields) {
+								if (rowse.length  0) {
+									res.send(script type='textjavascript'alert('Dota 2 account is already taken.'); window.location.replace(register);script);
+								} else {
+									const request = require('request');
+									const dota2APi = require('dota2-api');
+									
+									var dotaID = req.body.dota2;
+									var api_key = 425f6993-d600-4f13-8fd3-5647f095dbc0;
+									var rank;
+									
+									var mysql = require('mysql');
+									var con = mysql.createConnection({
+									  host localhost,
+									  user root,
+									  password ,
+									  database teampalak
+									});
+									
+									request('httpsapi.opendota.comapiplayers'+dotaID+'api_key='+api_key, { json true }, (err, ress, body) = {
+										if (err) { return console.log(err); }
+										var mmr_estimate = body.mmr_estimate.estimate;
+										if(mmr_estimate===undefined){
+											res.send(script type='textjavascript'alert('Please enter a different account as the mmr of this account is undefined'); window.location.replace(register);script);
+										}else{
+											rank = body.rank_tier;
+									
+											var steamID = body.profile.steamid;
+											var ign = body.profile.personaname;
+										
+											var ranks = convertRank();
+											var insert = INSERT INTO teampalak.accounts (username, password, firstname, lastname, email) VALUES ;
+											let hash = bcrypt.hashSync(req.body.password, 10);
+											var values = [
+												[req.body.user, hash, req.body.firstName, req.body.lastName, req.body.email]
+											];
+											db.query(insert, [values], function(err, rows, fields) {
+												res.send(script type='textjavascript'alert('Account successfully registered.'); window.location.replace(register);script);
+											})
+											con.connect(function(err) {
+											if (err) throw err;
+												var sql = INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('+req.body.user+','dota 2','+ign+','+dotaID+','+steamID+','+ranks+','+mmr_estimate+');
+												con.query(sql, function (err, result) {
+												if (err) throw err;
+													console.log(ign+,+dotaID+,+steamID+,+ranks+,+mmr_estimate+ has been logged);
+												});
+											});
+										}
+									});
+									
+									function convertRank(){
+										var rankTier = Math.trunc(rank10);
+										var rankDiv = rank%10;
+									
+										switch(rankTier) {
+											case 1
+												rankTier = Herald;
+											break;
+											case 2
+												rankTier = Guardian;
+											break;
+											case 3
+												rankTier = Crusader;
+											break;
+											case 4
+												rankTier = Archon;
+											break;
+											case 5
+												rankTier = Legend;
+											break;
+											case 6
+												rankTier = Ancient;
+											break;
+											case 7
+												rankTier = Divine;
+											break;
+											case 8
+												rankTier = Immortal;
+											break;
+											default
+												rankTier = Uncalibrated;
+												break;
+									}
+									
+										var rankTD = rankTier + + rankDiv.toString()+ ;
+										return rankTD;
+									
+									}
+								}
+							});	
+						}
+					}else if (req.body.csgo){}
+				}
+			}
+		});
+	}
+
+};
+
+========================== Results Page =============================
+exports.resultsPage = function(req, res) {
+	console.log(results page a);
+		var user = req.session.user,
+			userId = req.session.userId;
+		console.log(results page b);
+
+		if(req.session.message === undefined)
+			req.session.message = ;
+			 var sql1 =
+			 	`SELECT 
+			 	lol.pName,acc.Rank,
+			 	lol.GSID,lol.MemID,lol.gameID,lol.pID,lol.pName,lol.teamId,lol.win,lol.championId,
+			 	lol.lane,lol.spell1id,lol.spell2id,lol.KDA,lol.Damage,lol.WardScore,lol.CreepScore,
+			 	lol.goldearned,
+			 	lol.item0,lol.item1,lol.item2,lol.item3,lol.item4,lol.item5,lol.item6,
+			 	q.itemIcon as itemIconQ,w.itemIcon as itemIconW,e.itemIcon as itemIconE,r.itemIcon as itemIconR,t.itemIcon as itemIconT,y.itemIcon as itemIconY,u.itemIcon as itemIconU,
+			 	lc.champIconId,lc.champIcon,lc.champName,
+			 	a.spellid as spell1IdA,a.spellIcon as spellIconA,a.spellName as spellNameA,
+			 	b.spellid as spell1IdB,b.spellIcon as spellIconB,b.spellName as spellNameB
+			 	FROM teampalak.league_of_legends lol 
+			 	inner join teampalak.gameaccounts acc on lol.pName = acc.ingamename
+			 	inner join teampalak.league_champs lc on lol.championId = lc.ChampIconID 
+			 	inner JOIN teampalak.league_spells a ON lol.spell1id = a.spellID 
+			 	inner join teampalak.league_spells b on lol.spell2id = b.spellID
+			 	inner join teampalak.league_items q on lol.item0 = q.itemId
+			 	inner join teampalak.league_items w on lol.item1 = w.itemId
+			 	inner join teampalak.league_items e on lol.item2 = e.itemId
+			 	inner join teampalak.league_items r on lol.item3 = r.itemId
+			 	inner join teampalak.league_items t on lol.item4 = t.itemId
+			 	inner join teampalak.league_items y on lol.item5 = y.itemId
+			 	inner join teampalak.league_items u on lol.item6 = u.itemId
+			 	where gsid = 1`;
+
+				var sql =
+				`SELECT 
+				lol.GSID,lol.MemID,lol.gameID,lol.pID,lol.pName,lol.teamId,lol.win,lol.championId,
+				lol.lane,lol.spell1id,lol.spell2id,lol.KDA,lol.Damage,lol.WardScore,lol.CreepScore,
+				lol.goldearned,
+				lol.item0,lol.item1,lol.item2,lol.item3,lol.item4,lol.item5,lol.item6,
+				q.itemIcon as itemIconQ,w.itemIcon as itemIconW,e.itemIcon as itemIconE,r.itemIcon as itemIconR,t.itemIcon as itemIconT,y.itemIcon as itemIconY,u.itemIcon as itemIconU,
+				lc.champIconId,lc.champIcon,lc.champName,
+				a.spellid as spell1IdA,a.spellIcon as spellIconA,a.spellName as spellNameA,
+				b.spellid as spell1IdB,b.spellIcon as spellIconB,b.spellName as spellNameB
+				FROM teampalak.league_of_legends lol
+				inner join teampalak.league_champs lc on lol.championId = lc.ChampIconID 
+				inner JOIN teampalak.league_spells a ON lol.spell1id = a.spellID 
+				inner join teampalak.league_spells b on lol.spell2id = b.spellID
+				inner join teampalak.league_items q on lol.item0 = q.itemId
+				inner join teampalak.league_items w on lol.item1 = w.itemId
+				inner join teampalak.league_items e on lol.item2 = e.itemId
+				inner join teampalak.league_items r on lol.item3 = r.itemId
+				inner join teampalak.league_items t on lol.item4 = t.itemId
+				inner join teampalak.league_items y on lol.item5 = y.itemId
+				inner join teampalak.league_items u on lol.item6 = u.itemId
+				where lol.gameID in (select league.gameID from teampalak.league_of_legends league where league.pName = 
+					(SELECT gameacc.InGameName from teampalak.gameaccounts gameacc 
+					inner join teampalak.accounts acc on gameacc.username = acc.username where acc.username =`+req.session.user+`)) limit 10`;
+			db.query(sql, function(err, result){
+				console.log(result[0]);
+				console.log(result[1]);
+				console.log(result[2]);
+				console.log(result[3]);
+				console.log(result[4]);
+				console.log(result[5]);
+				console.log(result[6]);
+				console.log(result[7]);
+				console.log(result[8]);
+				console.log(result[9]);
+				res.render('results.ejs',{dataresult});
+				req.session.message = ;
+		
+			});
+	};
+
+ ========================== Display Brackets =============================
+exports.bracket = async function(req, res, next) {
+	var sql1 = SELECT max(Rounds) as max from teampalak.game;
+	var sql2 = SELECT max(GameID) as max from teampalak.game;
+	var sql3 = ;
+	var arrayko = [];
+	var roundsMax = 0;
+	var gameIDMax = 0;
+	await db.query(sql1, function(err, result) {
+		console.log(log 1 + result[0]);
+		roundsMax = getMax(result);
+		db.query(sql2, async function(err, result) {
+			gameIDMax = await getMax(result);
+			console.log(1+roundsMax, gameIDMax)
+			arrayko = await una(gameIDMax, roundsMax);
+			console.log(send +JSON.stringify(arrayko));
+			await render();
+			await console.log(7 +ds);
+		});
+	});
+	async function una(gameIDMax, roundsMax){
+		for (var i = 1; i = roundsMax; i++) {
+			var x = []
+			x.push( falalala(i, gameIDMax, roundsMax));
+		};
+		await console.log(dsdsdadsadasdsadasdsadgfdsg +JSON.stringify(x));
+		return x;
+	};
+	function getMax(result){
+		console.log(log 2 +result[0].max);
+		return result[0].max;
+	};
+	async function falalala(i, gameIDMax, roundsMax){
+		console.log(2 +i);
+		console.log(3 +gameIDMax);
+		await forLoop(i, gameIDMax, roundsMax);
+	};
+	async function forLoop(i, gameIDMax, roundsMax){
+		var arraymo = [];
+		for (var j = 1; j = gameIDMax; j++) {
+			console.log(4 +j);
+			await (function(j, gameIDMax, roundsMax) {
+				sql3 = SELECT  FROM teampalak.tournaments INNER JOIN teampalak.game ON teampalak.tournaments.TournamentID = teampalak.game.TournaID INNER JOIN teampalak.teams ON teampalak.game.Team1ID =teampalak.teams.TeamID where Round =  + j +  and GameID =  + i +  UNION SELECT  FROM teampalak.tournaments INNER JOIN teampalak.game ON teampalak.tournaments.TournamentID = teampalak.game.TournaID INNER JOIN teampalak.teams ON teampalak.game.Team2ID =teampalak.teams.TeamID where Round =  + j +  and GameID =  + i +  Order by GameID, Round;
+				sql3 = 
+				`SELECT  FROM teampalak.tournaments 
+				INNER JOIN teampalak.game ON teampalak.tournaments.TournamentID = teampalak.game.TournaID 
+				INNER JOIN teampalak.game_stats on teampalak.game.GameID = teampalak.game_stats.GameID 
+				inner join teampalak.teams ON teampalak.game_stats.Team1ID = teampalak.teams.TeamID where teampalak.game.Rounds = `+j+` and teampalak.game.GameID = `+i+` 
+				UNION 
+				SELECT  FROM teampalak.tournaments 
+				INNER JOIN teampalak.game ON teampalak.tournaments.TournamentID = teampalak.game.TournaID 
+				INNER JOIN teampalak.game_stats on teampalak.game.GameID = teampalak.game_stats.GameID 
+				inner join teampalak.teams ON teampalak.game_stats.Team2ID = teampalak.teams.TeamID where teampalak.game.Rounds = `+j+` and teampalak.game.GameID = `+i+` 
+				order by teampalak.game.gameID,teampalak.game.rounds`;
+
+				db.query(sql3, async function(err, result) {
+					if (j  gameIDMax){
+						await arraymo.push(result);
+						console.log(forloop result +result);}
+					else{
+						await arraymo.push(result);
+						console.log(5 +JSON.stringify(arraymo));
+						return await arraymo;
+					}
+				});
+			})(j, gameIDMax, roundsMax);
+		}
+	};
+	function render(){res.render('bracket.ejs', {});};
+};
+

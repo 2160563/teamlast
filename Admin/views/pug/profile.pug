@@ -1,0 +1,26 @@
+include header
+
+if user && accountType == 'Admin'
+    div(class='container2')
+        div(class='title')
+            p Profile
+        label(for='name' style='font-weight:bold') Name: 
+        | #{data[edit].Firstname} #{data[edit].Lastname}
+        br
+        label(for='Username' style='font-weight:bold') Username: 
+        | #{data[edit].Username}
+        br
+        label(for='Email' style='font-weight:bold') Email: 
+        | #{data[edit].Email}
+        br
+        label(for='AccountType' style='font-weight:bold') Account Type: 
+        | #{data[edit].AccountType}
+        br
+        br
+        form(action='' method='POST')
+            div(class='button')
+                input(type='submit' value='Edit' class='button')
+        form(action='/' method='GET')
+            div(class='button')
+                input(type='submit' value='Close' class='button')
+

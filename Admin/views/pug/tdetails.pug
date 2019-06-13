@@ -1,0 +1,39 @@
+include header
+
+div(class='container2')
+    div(class='title')
+        p Tournament Details
+    input(type='hidden' name='index' value=TournamentID)
+    label(for='TournamentName' style='font-weight:bold') Tournament Name: 
+    | #{data[edit].TournamentName}
+    br
+    label(for='TournamentGame' style='font-weight:bold') Game: 
+    | #{data[edit].TournamentGame}
+    br
+    label(for='tDate' style='font-weight:bold') Date: 
+    | #{data[edit].tDate}
+    br
+    label(for='tTime' style='font-weight:bold') Time: 
+    | #{data[edit].tTime}
+    br
+    label(for='TournamentVenue' style='font-weight:bold') Venue: 
+    | #{data[edit].TVenue}
+    br
+    label(for='MaxParticipants' style='font-weight:bold') Max No. of Teams:  
+    | #{data[edit].Max_participants}
+    br
+    label(for='Participants' style='font-weight:bold') No. of Registered Teams:  
+    | #{data2[edit].teams}
+    br
+    br
+    form(action='/edittdetails' method='POST')
+        div(class='button')
+            input(type='hidden' name='TournamentID' value=TournamentID)
+            input(type='submit' value='Edit' class='button')
+    form(action='/removetournament' method='POST')
+        div(class='button')
+            input(type='hidden' name='TournamentID' value=TournamentID)
+            input(type='submit' value='Remove' class='button')
+    form(action='/tournaments' method='GET')
+        div(class='button')
+            input(type='submit' value='Close' class='button')

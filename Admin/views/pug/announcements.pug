@@ -1,0 +1,33 @@
+include header
+
+div(class='container3')
+    div(class='title')
+        p Announcements
+        if user && accountType == 'Admin'
+            form(action='/addannouncement' style='display:inline-block; vertical-align:middle;')
+                input(type="submit" value='Post Announcement' class='button' style='width:100%')
+                br
+            if data.length
+                table
+                    thead
+                        tr
+                            th Title
+                            th Date Posted
+                            th Time Posted
+                            th 
+                    tbody
+                        - var index = 0;
+                        each row in data
+                            tr
+                                td #{row.announcementTitle}
+                                td #{row.aDate}
+                                td #{row.aTime}
+                                td
+                                    form(action='/viewadetails' method='POST')
+                                        input(type='hidden' name='index' value=index)
+                                        input(type='hidden' name='announcementID' value=row.announcementID)
+                                        input(type='submit' value='Details' class='button3')
+                            - index++;
+            else
+                br
+                p No data found

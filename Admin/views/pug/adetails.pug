@@ -1,0 +1,29 @@
+include header
+
+div(class='container2')
+    div(class='title')
+        p Announcement Details
+    input(type='hidden' name='index' value=announcementID)
+    label(for='announcementTitle' style='font-weight:bold') Title: 
+    | #{data[edit].announcementTitle}
+    br
+    label(for='announcementMessage' style='font-weight:bold') Message: 
+    | #{data[edit].announcementMessage}
+    br
+    label(for='tDate' style='font-weight:bold') Date Posted: 
+    | #{data[edit].aDate}
+    br
+    label(for='tTime' style='font-weight:bold') Time Posted: 
+    | #{data[edit].aTime}
+    br
+    br
+    form(action='' method='POST')
+        div(class='button')
+            input(type='submit' value='Edit' class='button')
+    form(action='/removeannouncement' method='POST')
+        div(class='button')
+            input(type='hidden' name='announcementID' value=announcementID)
+            input(type='submit' value='Remove' class='button')
+    form(action='/announcements' method='GET')
+        div(class='button')
+            input(type='submit' value='Close' class='button')

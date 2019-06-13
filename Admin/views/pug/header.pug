@@ -1,0 +1,18 @@
+doctype
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title TeamPalak
+        link(rel='stylesheet' href='css/style.css')
+    body
+        nav
+            div(class='nav-fostrap')
+                ul
+                    if user && accountType == 'Admin'
+                        li: a(href='/') Home
+                        li: a(href='/tournaments') Tournaments
+                        li: a(href='/announcements') Announcements
+                        li: a(href='/profile') Profile
+                        li: a(href='/logout') Log Out
+                    else

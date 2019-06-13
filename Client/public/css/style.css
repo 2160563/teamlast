@@ -1,0 +1,92 @@
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  font-family: sans-serif;
+  background: #f2f2f2;
+  width: 100%;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #317DAF;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  
+}
+
+/* Add a hover effect for buttons */
+
+
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align:Center;
+}
+
+.imgcontainer1 {
+  text-align: Center;
+  margin-bottom: 0;
+}
+.games{
+	text-align: center;
+}
+.gamesimg{
+	padding: 0 15px; 
+}
+
+.login-page {
+  width: auto;
+  padding: 5% 0 0;
+  margin: auto;
+  opacity: 0.8;
+}
+
+.registration{
+	width: 100%;
+	padding: 5% 0 0;
+	margin: auto;
+	opacity: 0.8;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 25px;
+  text-align: right;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form1 {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 50%;
+  margin: 0 auto 100px;
+  padding: 25px;
+  text-align: right;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.message {
+  margin: 15px 0 0;
+  color: #819099;
+  font-size: 15px;
+}
+
+#reg,#game{
+	text-align: left;
+}

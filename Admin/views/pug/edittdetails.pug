@@ -1,0 +1,68 @@
+include header
+
+div(class='container2')
+    div(class='title')
+        p Tournament Details
+    input(type='hidden' name='index' value=TournamentID)
+    label(for='TournamentName' style='font-weight:bold') Tournament Name:
+    br
+    input(type='text' name='TournamentName' style='width:100%' maxlength='45' value=data[edit].TournamentName required)
+    br
+    label(for='TournamentGame' style='font-weight:bold') Game: 
+    br
+    if data[edit].TournamentGame == 'LoL'
+        input(type='radio' name='TournamentGame' value='LoL' checked='checked' required) 
+        | LoL
+        br
+        input(type='radio' name='TournamentGame' value='DotA 2') 
+        | DotA 2
+        br
+        input(type='radio' name='TournamentGame' value='CS:GO')
+        | CS:GO
+        br
+    else if data[edit].TournamentGame == 'DotA 2'
+        input(type='radio' name='TournamentGame' value='LoL' required) 
+        | LoL
+        br
+        input(type='radio' name='TournamentGame' value='DotA 2' checked='checked') 
+        | DotA 2
+        br
+        input(type='radio' name='TournamentGame' value='CS:GO')
+        | CS:GO
+        br
+    else if data[edit].TournamentGame == 'CS:GO'
+        input(type='radio' name='TournamentGame' value='LoL' required) 
+        | LoL
+        br
+        input(type='radio' name='TournamentGame' value='DotA 2' checked='checked') 
+        | DotA 2
+        br
+        input(type='radio' name='TournamentGame' value='CS:GO')
+        | CS:GO
+        br
+    label(for='tDate' style='font-weight:bold') Date:
+    br
+    input(type='date' name='tDate' style='width:100%' value=data[edit].tDate min=tomorrow required)
+    br
+    label(for='tTime' style='font-weight:bold') Time: 
+    br
+    input(type='time' name='tTime' style='width:100%' value=data[edit].tTime required)
+    br
+    label(for='TournamentVenue' style='font-weight:bold') Venue: 
+    br
+    input(type='text' name='TournamentVenue' style='width:100%' maxlength='45' value=data[edit].TVenue required)
+    br
+    label(for='MaxParticipants' style='font-weight:bold') Max No. of Teams:  
+    input(type='number' name='MaxParticipants' style='width:7%' value=data[edit].Max_participants min='1' required)
+    br
+    label(for='Participants' style='font-weight:bold') No. of Registered Teams:  
+    | #{data2[edit].teams}
+    br
+    br
+    form(action='' method='POST')
+        div(class='button')
+            input(type='submit' value='Save' class='button')
+    form(action='/viewtdetails' method='POST')
+        div(class='button')
+            input(type='hidden' name='TournamentID' value=TournamentID)
+            input(type='submit' value='Cancel' class='button')
