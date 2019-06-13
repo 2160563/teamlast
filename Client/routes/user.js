@@ -602,10 +602,11 @@ exports.history2 = function(req, res, next) {
 			//console.log("b");
 			var dasa = req.body.dasa;
 			var message = req.session.message;
-			req.session.message = "";
+
 				if (user == null) {
 		res.redirect("/tournaments");
 		return;}
+					req.session.message = "";
 		if(req.query.sort=="lowtohigh"){
 
 			if(req.session.message === undefined)
@@ -1886,6 +1887,7 @@ exports.bracket = async function (req, res, next) {
 	var bracketArray = [];
 	var roundsMax = 0; //4
 	var gamesMax = 0; //15
+	var message = "";
 
 	//Get Total Rounds
 	getRounds(function(result){
@@ -1944,7 +1946,7 @@ exports.bracket = async function (req, res, next) {
 				console.log("TEST DATA: " + JSON.stringify(bracketArray));
 				
 				//Render Result to Bracket.ejs
-				res.render('bracket.ejs', {
+				res.render('bracket.ejs', {message:message,
 					bracketing : JSON.stringify(bracketArray)
 				});
 			});
@@ -1982,7 +1984,7 @@ exports.bracket = async function (req, res, next) {
 					db.query(sql3, function (err, results) {
 						if (results.length > 0) {
 							return bracket1(results);
-						}
+						}else{req.session.message="No bracketing available";res.redirect("login_tournaments");}
 					});
 	}
 

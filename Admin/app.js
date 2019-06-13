@@ -14,8 +14,8 @@ var mysql = require('mysql');
 var app = express();
 var db_config = {
   host     : 'localhost',
-  user     : 'root',
-  password : '',
+  user     : 'teampalak',
+  password : 'teampalak',
   database : 'teampalak'
 };
 var con;
