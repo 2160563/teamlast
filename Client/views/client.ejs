@@ -130,7 +130,7 @@
 
   <!-- end tagline -->
 
-  <section id="maincontent">
+ <section id="maincontent">
     <div class="container">
 
       <div class="row">
@@ -141,15 +141,18 @@
         <div class="span3">
    
 
-             <div class="span8">
+         <div class="span8">
           <div class="well well-success box">
          
-            <pre>
-             No announcements....
-		
+          
+              <% announcements.forEach(function(element) { %>  
+              <h2><%= element.announcementTitle %></h2> <br>
+              <p><%= element.announcementMessage %> <hr></p>
+              <% }); %>
 
-            </pre>
-			
+
+            
+      
     
         </div>
        
@@ -164,7 +167,6 @@
       <!-- divider -->
 
       <!-- end divider -->
-
 
   </section>
 
