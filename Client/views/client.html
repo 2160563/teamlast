@@ -4,18 +4,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>TeamPalak</title>
-      <title>TeamPalak</title>
-    <script>
-    if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-        .then((reg) => {
-          console.log('Service worker registered.', reg);
-        });
-  });
-}
-        </script>
-<meta name="description" content="Teampalak">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -37,13 +25,15 @@
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
   <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-
-  <!-- ======================================================= 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <!-- =======================================================
     Theme Name: Scaffold
     Theme URL: https://bootstrapmade.com/scaffold-bootstrap-metro-style-template/
     Author: BootstrapMade.com
     Author URL: https://bootstrapmade.com
   ======================================================= -->
+  
+  
 </head>
 
 <body>
@@ -55,7 +45,7 @@
       <div class="navbar-inner">
         <div class="container">
           <!-- logo -->
-          <a class="brand logo" href="/">
+          <a class="brand logo" href="client.html">
 						<img src="assets/img/logo.png" alt="" />
 				  </a>
           <!-- end logo -->
@@ -65,44 +55,43 @@
             <nav>
               <ul class="nav topnav">
                 <li class="dropdown success active">
-                  <a href="/client"><i class="icon-home icon-white"></i> Home</a>
+                  <a href="client.html"><i class="icon-home icon-white"></i> Home</a>
                 </li>
-				
+         
 				<li class="dropdown warning">
-                  <a href="/login_tournaments"><i class="icon-bullhorn icon-white"></i> Tournaments</a>
+                  <a href="Tournaments.html"><i class="icon-bullhorn icon-white"></i> Tournaments</a>
                 </li>
 				
-					 <li class="dropdown success">
-                  <a href="/results"><i class="icon-leaf icon-white"></i> Result</a>
-
-           </li>
-                                  <li class="dropdown warning">
-                  <a href="/history"><i class="icon-bullhorn icon-white"></i> History</a>
+					 <li class="dropdown danger">
+                  <a href="#"><i class="icon-leaf icon-white"></i> Registration</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="RegisterTeam.html">Registered Team</a></li>
+					<li><a href="RegisteredTournaments.html">Registered Tournaments</a></li>
+                  </ul>
                 </li>
 				
 				    <li class="dropdown info">
                   <a href="#"><i class="icon-list icon-white"></i>My Account</a>
                   <ul class="dropdown-menu">
-                    <li><a href="/userProfile">View Account</a></li>
-                    <li><a href="/editProfile">Edit Profile</a></li>
-                    <li><a href="/logout">Sign Out</a></li>
+                    <li><a href="ViewAccount.html">View Account</a></li>
+                    <li><a href="index.html">Sign Out</a></li>
                   </ul>
                 </li>
-                  <li class="dropdown primary">
+				
+				 <li class="dropdown primary">
                 
 					<a href="#" id="notificationLink"><i class="icon-star icon-white"></i> Notifications</a>
 					<span id="notification_count">3</span>
 
 					<div id="notificationContainer">
 						<div id="notificationTitle">Notifications</div>
-						<div id="notificationsBody" class="notifications">sample sasasa</div>
+						<div id="notificationsBody" class="notifications"></div>
 						<div id="notificationFooter"><a href="#">See All</a></div>
 					</div>
 
                  </li>
+					
                   </ul>
-                
-               
               </ul>
             </nav>
           </div>
@@ -120,14 +109,9 @@
           <div class="span12">
 
             <div id="slider" class="nivoSlider">
-              <img src="assets/img/slides/nivo/1.png" data-thumb="assets/img/slides/nivo/1.png" alt="" title="#htmlcaption1" />
-              <img src="assets/img/slides/nivo/2.png" data-thumb="assets/img/slides/nivo/2.png" alt="" data-transition="slideInLeft" />
-              <img src="assets/img/slides/nivo/3.png" data-thumb="assets/img/slides/nivo/3.png" alt="" title="#htmlcaption2" />              
-              <img src="assets/img/slides/nivo/4.png" data-thumb="assets/img/slides/nivo/4.png" alt="" title="#htmlcaption1" />
-              <img src="assets/img/slides/nivo/5.png" data-thumb="assets/img/slides/nivo/5.png" alt="" data-transition="slideInLeft" />
-              <img src="assets/img/slides/nivo/6.png" data-thumb="assets/img/slides/nivo/6.png" alt="" title="#htmlcaption2" />
-              <img src="assets/img/slides/nivo/7.png" data-thumb="assets/img/slides/nivo/7.png" alt="" title="#htmlcaption2" />
-
+              <img src="assets/img/slides/nivo/img2.jpg" data-thumb="assets/img/slides/nivo/img2.jpg" alt="" title="#htmlcaption1" />
+              <img src="assets/img/slides/nivo/img3.jpg" data-thumb="assets/img/slides/nivo/img3.jpg" alt="" data-transition="slideInLeft" />
+              <img src="assets/img/slides/nivo/img4.jpg" data-thumb="assets/img/slides/nivo/img4.jpg" alt="" title="#htmlcaption2" />
             </div>
          
 
@@ -141,7 +125,7 @@
 
   <!-- end tagline -->
 
- <section id="maincontent">
+  <section id="maincontent">
     <div class="container">
 
       <div class="row">
@@ -152,18 +136,15 @@
         <div class="span3">
    
 
-         <div class="span8">
+             <div class="span8">
           <div class="well well-success box">
          
-          
-              <% announcements.forEach(function(element) { %>  
-              <h2><%= element.announcementTitle %></h2> <br>
-              <p><%= element.announcementMessage %> <hr></p>
-              <% }); %>
+            <pre>
+             No announcements....
+		
 
-
-            
-      
+            </pre>
+			
     
         </div>
        
@@ -178,6 +159,7 @@
       <!-- divider -->
 
       <!-- end divider -->
+
 
   </section>
 
@@ -200,33 +182,122 @@
 
           <div id="latest-work" class="carousel btleft">
             <div class="row-fluid">
-            <ul class="portfolio-area da-thumbs">		
-                                <% var jkl = 0;%>   
-                                  <% data.forEach(function(element) { %>  
+            <ul class="portfolio-area da-thumbs">		  
               <li>
 			  <div class="col">
                 <div class="thumbnail">
 				   <div class="tooltip-demo image-wrapp">
-                    <%if (element.Tpic!= undefined){%>
-                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="">
-                    <%}else{%>
-                    <img src="images/logo.png" alt="">
-               <%}%>
+                  <img src="http://placehold.it/300x200" alt="">
                   <div class="caption">
-
-                    <h3><%= element.TournamentName.substring(0,11) %></h3>
-                        <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
-            <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+                    <h3>Tournament title</h3>
+					<p>No. of participants :  
+						<br> Game:
+						<br> Registration price:
   
 					</p><br> 
-                    <p><a data-toggle="modal" href="#myModal<%= jkl %>" class="btn btn-success">More Info</a>
+                    <p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
 				  </div>
-                </div><% jkl++ %>
+                </div>
 			  </div>
-
               </li>
-                              <% }); %>
+			 
+				  
+			 <li>
+				  <div class="col">
+					<div class="thumbnail">
+					   <div class="tooltip-demo image-wrapp">
+					  <img src="http://placehold.it/300x200" alt="">
+					  <div class="caption">
+						<h3>Tournament title</h3>
+						<p>No. of participants :  
+							<br> Game:
+							<br> Registration price:
+	  
+						</p><br> 
+						<p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
+					  </div>
+					</div>
+				  </div>
+				  </div>
+				  </li>
+				  
+			   <li>
+				  <div class="col">
+					<div class="thumbnail">
+					   <div class="tooltip-demo image-wrapp">
+					  <img src="http://placehold.it/300x200" alt="">
+					  <div class="caption">
+						<h3>Tournament title</h3>
+						<p>No. of participants :  
+							<br> Game:
+							<br> Registration price:
+	  
+						</p><br> 
+						<p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
+					  </div>
+					</div>
+				  </div></div>
+				  </li>
+				  
+				<li>
+				  <div class="col">
+					<div class="thumbnail">
+					   <div class="tooltip-demo image-wrapp">
+					  <img src="http://placehold.it/300x200" alt="">
+					  <div class="caption">
+						<h3>Tournament title</h3>
+						<p>No. of participants :  
+							<br> Game:
+							<br> Registration price:
+	  
+						</p><br> 
+						<p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
+					  </div>
+					</div>
+				  </div>
+				  </div>
+				  </li>
+				  
+				  <li>
+				  <div class="col">
+					<div class="thumbnail">
+					   <div class="tooltip-demo image-wrapp">
+					  <img src="http://placehold.it/300x200" alt="">
+					  <div class="caption">
+						<h3>Tournament title</h3>
+						<p>No. of participants :  
+							<br> Game:
+							<br> Registration price:
+	  
+						</p><br> 
+						<p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
+					  </div>
+					</div>
+				  </div>
+				  </div>
+				  </li>
+				  
+				  <li>
+				  <div class="col">
+					<div class="thumbnail">
+					   <div class="tooltip-demo image-wrapp">
+					  <img src="http://placehold.it/300x200" alt="">
+					  <div class="caption">
+						<h3>Tournament title</h3>
+						<p>No. of participants :  
+							<br> Game:
+							<br> Registration price:
+	  
+						</p><br> 
+						<p><a data-toggle="modal" href="#myModal" class="btn btn-success">More Info</a>
+					  </div>
+					</div>
+				  </div>
+				  </div>
+				  </li>
+				  
+				  
+			   </div>
 			 </ul>
             </div>
             </div>
@@ -253,7 +324,11 @@
 						</p>
 			  <hr>
               <h4>Bracketing</h4>
-				  <a href="bracket/bracket" class="btn btn-success" role="button">Show bracketing </a>
+				  <!-- <p>This <a href="#" role="button" class="btn popover-test" title="A Title" 
+				  data-content="And here's some amazing content. It's very engaging. right?">button</a> 
+				  should trigger a popover on click.</p>
+						<p><a href="#" class="tooltip-test" title="Tooltip">This link</a> 
+						and <a href="#" class="tooltip-test" title="Tooltip">that link</a> should have tooltips on hover.</p>-->
 			  <hr>
               <h4>Registration</h4>
 				
@@ -455,4 +530,5 @@
 		font-size: 11px;
 		}
 </style>
+
 </html>

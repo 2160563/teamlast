@@ -125,8 +125,8 @@
         <li class="dropdown">
           <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Sort By <b class="caret"></b></a>
           <ul id="menu1" class="dropdown-menu" aria-labelledby="drop4">
-            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Price low to high</a></li>
-            <li><a tabindex="-1" href="/history2?sort=hightolow">Price high to low</a></li>
+            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Date Latest to Earliest</a></li>
+            <li><a tabindex="-1" href="/history2?sort=hightolow">Date Earliest to Latest</a></li>
           </ul>
         </li>
       </ul>
@@ -147,7 +147,7 @@
                   <%}%>
                   <div class="caption">
                     <h3 name = <%= element.TournamentID %></h3><%= element.TournamentName.substring(0,11) %></h3>
-              <p> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -178,8 +178,8 @@
         <li class="dropdown">
           <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Sort By <b class="caret"></b></a>
           <ul id="menu1" class="dropdown-menu" aria-labelledby="drop4">
-            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Price low to high</a></li>
-            <li><a tabindex="-1" href="/history2?sort=hightolow">Price high to low</a></li>
+            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Date Latest to Earliest</a></li>
+            <li><a tabindex="-1" href="/history2?sort=hightolow">Date Earliest to Latest</a></li>
           </ul>
         </li>
       </ul>
@@ -198,7 +198,7 @@
                <%}%>
                   <div class="caption">
                     <h3><%= element.TournamentName%></h3>
-              <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -227,8 +227,8 @@
         <li class="dropdown">
           <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Sort By <b class="caret"></b></a>
           <ul id="menu1" class="dropdown-menu" aria-labelledby="drop4">
-            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Price low to high</a></li>
-            <li><a tabindex="-1" href="/history2?sort=hightolow">Price high to low</a></li>
+            <li><a tabindex="-1" href="/history2?sort=lowtohigh">Date Latest to Earliest</a></li>
+            <li><a tabindex="-1" href="/history2?sort=hightolow">Date Earliest to Latest</a></li>
           </ul>
         </li>
       </ul>
@@ -246,8 +246,7 @@
                     <img src="images/logo.png" alt="" style="width:318; height:420;">
                <%}%>
                   <div class="caption">
-                    <h3><%= element.TournamentName%></h3>
-              <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+                    <h3><%= element.TournamentName%></h3>>
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -277,9 +276,10 @@
   
 <!-- modal content -->
     
-           
+                            
+
             <% var jk = 0;%>     
-              <% if(data1!= undefined){ data2.forEach(function(element) { %>
+              <% if(data2!= undefined){ data2.forEach(function(element) { %>
           <div id="myModaldota<%= jk %>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
               <% jk++ %>
@@ -288,7 +288,6 @@
             </div>
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
@@ -296,12 +295,17 @@
                                  <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
               <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
             </p>
-        <hr>           
-              
+        <hr>
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
             </div>
             <div class="modal-footer">
               <button class="btn" data-dismiss="modal">Close</button>
-              
+
             </div>
           </div>
           <% });} %>
@@ -316,7 +320,6 @@
             </div>
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
@@ -325,6 +328,12 @@
               <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
             </p>
         <hr>
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
           <h4>Bracketing</h4>
           <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show bracketing </a>
             </div>
@@ -346,7 +355,6 @@
             </div>
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
@@ -354,7 +362,13 @@
                               <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
               <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
             </p>
-        <hr>
+        <hr>                                                 
+              <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
             <h4>Bracketing</h4>
           <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show bracketing </a>
             </div>
