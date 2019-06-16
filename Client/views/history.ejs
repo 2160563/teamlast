@@ -330,6 +330,34 @@
               <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
             </p>
         <hr>
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
+               <hr> 
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
+               <hr> 
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
+               <hr> 
+                            <%var array = []%>
+                          <% data4.forEach(function(element1) {if(element1.tournamentID==element.TournamentID && (element1.Rounds == 4||element1.Rounds == 3)){ %>
+                              <% if(element1.Team1ID == element1.Winner) { array.unshift(element1.Team1Name) } else { array.unshift(element1.Team2Name) } %>
+                          <% }});%>
+              <br> Winner:  <%=array[0]%>
+              <br> 2nd place:  <%if(array[0]==array[1]){%><%=array[2]%><%}else{%><%=array[1]%><%}%>
+               <hr> 
           <h4>Bracketing</h4>
           <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show bracketing </a>
             </div>

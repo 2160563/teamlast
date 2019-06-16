@@ -76,7 +76,7 @@ exports.home = function(req, res, next) {
 									var sql7 = "SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 								    db.query(sql7, function(err, result7){
 								        //console.log("HOME result6");
-								        var sql8 = "SELECT * FROM teampalak.announcements";
+								        var sql8 = "SELECT * FROM teampalak.announcements order by announcementDate desc";
 									    db.query(sql8, function(err, result8){
 									        //console.log("HOME result7");
 									            res.render('home.ejs', {data:result,data1:result1,data2:result2,data3:result3, user: userId, message:req.session.message, lol:result4, dota:result5, cs:result5, all:result7, announcements:result8});
@@ -143,7 +143,7 @@ exports.client = function(req, res, next) {
 										var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 										db.query(sql7, function(err, result7){
 											//console.log("Clinet home result 6");
-											var sql8 = "SELECT * FROM teampalak.announcements";
+											var sql8 = "SELECT * FROM teampalak.announcements order by announcementDate desc";
 											db.query(sql8, function(err, result8){
 												//console.log("Clinet home result 7");
 													res.render('client.ejs', {data:result,data1:result1,data2:result2,data3:result3, user: userId, message:req.session.message, lol:result4, dota:result5, cs:result5, all:result7, announcements:result8});
@@ -341,8 +341,11 @@ exports.history = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
-													res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+                                                var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
+                                                db.query(sql8, function(err, result8){
+                                                    //console.log("Login Tournaments Team result 7");
+                                                        res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
+                                                })
 											})
 										
 									})
@@ -374,8 +377,11 @@ exports.history = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
-													res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+                                                var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
+                                                db.query(sql8, function(err, result8){
+                                                    //console.log("Login Tournaments Team result 7");
+                                                        res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
+                                                })
 											})
 										
 									})
@@ -406,8 +412,11 @@ exports.history = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
-													res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+                                                var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
+                                                db.query(sql8, function(err, result8){
+                                                    //console.log("Login Tournaments Team result 7");
+                                                        res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
+                                                })
 											})
 										
 									})
@@ -438,8 +447,11 @@ exports.history = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
-													res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+                                                var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
+                                                db.query(sql8, function(err, result8){
+                                                    //console.log("Login Tournaments Team result 7");
+                                                        res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7 ,data4:result8});
+                                                })
 											})
 										
 									})
