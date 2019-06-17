@@ -94,26 +94,20 @@
 
         <div class="containerr">
           <h1 id="reg">Registration</h1>
-          <label style="text-align: left;"><h5>First Name</h5></label>
-          <input type="text" placeholder="First Name" name="firstName" maxlength="45" required>
-          <label style="text-align: left;"><h5>Last Name</h5></label>
-          <input type="text" placeholder="Last Name" name="lastName" maxlength="45" required>
-          <label style="text-align: left;"><h5>User Name</h5></label>
-          <input type="text" placeholder="User Name" name="user" maxlength="15" required>
-          <label style="text-align: left;"><h5>Password</h5></label>
+          <input type="text" autocomplete="off" placeholder="First Name" name="firstName" maxlength="45" required>
+          <input type="text" autocomplete="off" placeholder="Last Name" name="lastName" maxlength="45" required>
+          <input type="text" autocomplete="off" placeholder="User Name" name="user" maxlength="15" required>
           <input type="password" placeholder="Password" name="password" maxlength="128" required>
-          <label style="text-align: left;"><h5>Confirm Password</h5></label>
           <input type="password" placeholder="Confirm Password" name="repassword" maxlength="128" required>
-          <label style="text-align: left;"><h5>E-mail Address</h5></label>
-          <input type="text"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="E-mail Address" name="email" maxlength="100" required>
+          <input type="email" autocomplete="off" placeholder="E-mail Address" name="email" maxlength="100" required>
         </div>
 
         <div class="games">
           <h1 id="game">Game ID's</h1>
           <img src="assets/img/lol.png" alt="Logo" class="lol" width="280" height="90">
-          <input type="text" placeholder="League of Legends" name="lol">
+          <input type="text" autocomplete="off" placeholder="League of Legends" name="lol">
           <img src="assets/img/dota-2.png" alt="Logo" class="dota2" width="120" height="120">
-          <input type="text" placeholder="DotA 2" name="dota2">
+          <input type="text" autocomplete="off" placeholder="DotA 2" name="dota2">
 
           <button type="submit">Register</button>
         </div>

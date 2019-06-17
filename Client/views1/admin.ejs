@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title>TeamPalak</title>
+	<link rel="icon" href="images/logo.png">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	
+	<body> 
+	
+	<header id="header">
+			<div id="header_logo">
+				<img src="images/logo.png" width="200" height="200" alt="Logo">
+			</div>
+			<div id="header_title">
+				<div class="title">Team Palak</div> <br>
+				<div class="subtitle"> E-Sports Tournaments near you</div>
+			</div>
+		</header>
+		
+		<form>
+		<div class="tab">
+	<button class="tablinks" onclick="openCity(event, 'Announcements')">Announcements</button>
+            <%for(var i = 0; i<result.length; i++){
+                result.announcement[i];
+                <br>
+            }%>
+	<button class="tablinks" onclick="openCity(event, 'Tournaments')">Tournaments</button>
+		</div>
+    <form id="addAnnouncement" class="form-horizontal" role="form" method="post" action="/addAnnouncement">
+	<div id="Announcements" class="tabcontent" align = "left">
+		<h1>Announcements</h1>
+		<textarea rows="4" cols="50" placeholder="announcement" name="announcement">
+			
+		</textarea><br><br>
+	
+		<button type="submit">Post Announcement</button>
+        
+	</div>
+    </form>
+	<div id="Tournaments" class="tabcontent">
+	<div class="container" align = "justify">
+	<h2>Tournaments Page</h2>
+
+	<div class="row">
+	<div class="column" style="background-color:#aaa;">
+    <form>
+					<h1 align ="left">Create Tournament</h1>
+					Tournament Name:
+					<input type="text" placeholder="Name" name="tname" required> <br><br>
+					Game:
+					<select>
+					<option value=""></option>
+					<option value="LOL">League Of Legends</option>
+					<option value="csgo">Counter-Strike Global Offensive</option>
+					<option value="dota2">Defense of the Ancients 2</option>
+				
+					</select><br><br>
+					Venue:
+					<input type="text" placeholder="Venue" name="venue" required> <br><br>
+					Date:
+					<input type="text" placeholder="Date" name="lname" required> <br><br>
+					Time:
+					<input type="text" placeholder="Time:" name="uname" required> <br><br>
+					Prizes
+					<input type="password" placeholder="1st place" name="prize1" required><br><br>
+					<input type="password" placeholder="2nd place" name="prize2" required><br><br>
+					<input type="text" placeholder=" 3rd place" name="prize3" required><br><br>
+					Maximum Number of  Teams
+					<input type="text" placeholder=" No of Teams" name="teams" required><br><br>
+					
+					Tournament Photo <br><br>
+					<form action="/action_page.php">
+						<input type="file" name="pic" accept="image/*">
+						<input type="submit"><br><br><br>
+						<button type="submit">Create Tournament</button><br><br>
+					</form>
+					</div>
+	<div class="column" style="background-color:#bbb;">
+    <h2>Tournaments</h2>
+    <table>
+  <tr>
+    <th>Tournament</th>
+    <th>Game</th>
+    <th>Date</th>
+	<th>Action</th>
+  </tr>
+  <tr>
+    <td>Mineski</td>
+	<td>League of Legends</td>
+	<td>December 25 ,2019</td>
+	<td><button type="submit">Edit</button></td>
+	<td><button type="submit">Delete</button></td>
+  </tr>
+  <tr>
+    <td>TNC</td>
+    <td>DOTA2</td>
+	<td>April 3,2019</td>
+	<td><button type="submit">Edit</button></td>
+	<td><button type="submit">Delete</button></td>
+  </tr>
+  <tr>
+    <td>Teemo Cup</td>
+    <td>CSGO</td>
+	<td>August 2,2019</td>
+   <td><button type="submit">Edit</button></td>
+	<td><button type="submit">Delete</button></td>
+  </tr>
+ 
+</table>
+	</div>
+	</div>
+
+	
+
+				</div>
+	
+	
+	</div>
+	
+
+
+	
+	
+	</body>
+	<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+	
+</html>

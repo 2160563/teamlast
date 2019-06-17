@@ -67,6 +67,11 @@
                 <li class="dropdown success active">
                   <a href="/client"><i class="icon-home icon-white"></i> Home</a>
                 </li>
+                <li class="dropdown primary">
+                
+                    <a href="/registered_tournaments"><i class="icon-bullhorn icon-white"></i> Registered Tournaments</a>
+  
+                  </li>
 				
 				<li class="dropdown warning">
                   <a href="/login_tournaments"><i class="icon-bullhorn icon-white"></i> Tournaments</a>
@@ -79,7 +84,39 @@
                                   <li class="dropdown warning">
                   <a href="/history"><i class="icon-bullhorn icon-white"></i> History</a>
                 </li>
-				
+                <li class="dropdown primary">
+                
+                  <a href="#" id="notificationLink" "><i class="icon-star icon-white"></i> Notifications</a>
+                  <% if(num.length > 0) { %> 
+                    <span id="notification_count"><%= num.length %></span>	
+                  <%}%>
+                  <div id="notificationContainer"  style="overflow: scroll; width: 400px;
+                  height: 500px;">
+                    <br>
+                    <br>
+                    <br>
+                    <div id="notificationTitle">Notifications </div>
+                    <div id="notificationsBody" class="notifications">
+                      <br>
+                      
+                      <% if(notif.length > 0) { %> 
+                        <% for(var i = 0; i < notif.length; i++){%>
+                          <% if(notif[i].status == "Checked"){%>
+                          <div class="alert">
+                               <%= notif[i].message%>
+                          </div>
+                          <%}else{%>
+                            <div class="alert">
+                                <%= notif[i].message%>
+                           </div>
+                          <%}%>
+                        <%}%>
+                      <%}%>
+                    </div>
+                  </div>
+                         </li>
+        
+                         
 				    <li class="dropdown info">
                   <a href="#"><i class="icon-list icon-white"></i>My Account</a>
                   <ul class="dropdown-menu">
@@ -88,18 +125,7 @@
                     <li><a href="/logout">Sign Out</a></li>
                   </ul>
                 </li>
-                  <li class="dropdown primary">
-                
-					<a href="#" id="notificationLink"><i class="icon-star icon-white"></i> Notifications</a>
-					<span id="notification_count">3</span>
-
-					<div id="notificationContainer">
-						<div id="notificationTitle">Notifications</div>
-						<div id="notificationsBody" class="notifications">sample sasasa</div>
-						<div id="notificationFooter"><a href="#">See All</a></div>
-					</div>
-
-                 </li>
+				
                   </ul>
                 
                
@@ -141,7 +167,7 @@
 
   <!-- end tagline -->
 
- <section id="maincontent">
+  <section id="maincontent">
     <div class="container">
 
       <div class="row">
@@ -152,19 +178,14 @@
         <div class="span3">
    
 
-         <div class="span8">
+             <div class="span8">
           <div class="well well-success box">
          
-          
               <% announcements.forEach(function(element) { %>  
-              <h2><%= element.announcementTitle %></h2> <br>
-              <p><%= element.announcementMessage %> <hr></p>
-              <% }); %>
-
-
-            
-      
-    
+                <h2><%= element.announcementTitle %></h2> <br>
+                <p><%= element.announcementMessage %> <hr></p>
+                <% }); %>
+		
         </div>
        
         </div>
@@ -178,6 +199,7 @@
       <!-- divider -->
 
       <!-- end divider -->
+
 
   </section>
 
@@ -234,7 +256,7 @@
         </div>
  
   </section>
-  
+
   
 <!-- modal content -->
           <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -399,7 +421,6 @@
 			z-index: -1;
 			display: none; // Enable this after jquery implementation 
 			}
-			// Popup Arrow
 			#notificationContainer:before {
 			content: '';
 			display: block;
@@ -455,4 +476,5 @@
 		font-size: 11px;
 		}
 </style>
+
 </html>

@@ -159,9 +159,9 @@
                 <div class="thumbnail">
 				   <div class="tooltip-demo image-wrapp">
                     <%if (element.Tpic!= undefined){%>
-                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="" style="width:318; height:420;">
+                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="">
                     <%}else{%>
-                    <img src="images/logo.png" alt="" style="width:318; height:420;">
+                    <img src="images/logo.png" alt="">
                <%}%>
                   <div class="caption">
                     <h3 name = <%= element.TournamentID %></h3><%= element.TournamentName.substring(0,11) %></h3>
@@ -212,9 +212,9 @@
                 <div class="thumbnail">
            <div class="tooltip-demo image-wrapp">
                     <%if (element.Tpic!= undefined){%>
-                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="" style="width:318; height:420;">
+                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="">
                     <%}else{%>
-                    <img src="images/logo.png" alt="" style="width:318; height:420;">
+                    <img src="images/logo.png" alt="">
                <%}%>
                   <div class="caption">
                     <h3><%= element.TournamentName%></h3>
@@ -260,9 +260,9 @@
                 <div class="thumbnail">
            <div class="tooltip-demo image-wrapp">
                     <%if (element.Tpic!= undefined){%>
-                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="" style="width:318; height:420;">
+                  <img src="data:img/png; base64, <%=new Buffer(element.Tpic,'binary').toString('base64')%>" alt="">
                     <%}else{%>
-                    <img src="images/logo.png" alt="" style="width:318; height:420;">
+                    <img src="images/logo.png" alt="">
                <%}%>
                   <div class="caption">
                     <h3><%= element.TournamentName%></h3>
@@ -341,7 +341,7 @@
             </p>
         <hr>
               <h4>Bracketing</h4>
-                    <a href="bracket?tid=<%= (element.TournamentID) %>" class="btn btn-success" role="button">Show bracketing </a>
+          
         <hr>            
         <form action="/registrations" method="get">
               <h4>Team Registration</h4>
@@ -477,7 +477,6 @@
             </p>
         <hr>
               <h4>Bracketing</h4>
-                          <a href="bracket?tid=<%= (element.TournamentID) %>" class="btn btn-success" role="button">Show bracketing </a>
           <!-- <p>This <a href="#" role="button" class="btn popover-test" title="A Title" 
           data-content="And here's some amazing content. It's very engaging. right?">button</a> 
           should trigger a popover on click.</p>
@@ -617,7 +616,7 @@
 						</p>
 			  <hr>
               <h4>Bracketing</h4>
-          <a href="bracket?tid=<%= (element.TournamentID) %>" class="btn btn-success" role="button">Show bracketing </a>
+          <a href="bracket" class="btn btn-success" role="button">Show bracketing </a>
         <hr><form action="/registrations" method="get">
               <h4>Team Registration</h4>
           <section id="maincontent">

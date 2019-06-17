@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>jQuery Gracket.js: Single Elimation Tournament Bracket Generator Example</title>
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<!-- basic styles -->
+	<style type="text/css">
+	body { font-family: 'Roboto'; background-color: #fafafa; }
+	h1 { margin: 150px auto 30px auto; text-align: center; }
+		.g_gracket { width: 9999px; background-color: #6c9dc6; padding: 55px 15px 5px; line-height: 100%; position: relative; overflow: hidden;}
+		.g_round { float: left; margin-right: 70px; }
+		.g_game { position: relative; margin-bottom: 15px; }
+		.g_gracket h3 { margin: 0; padding: 10px 8px 8px; font-size: 18px; font-weight: normal; color: #fff}
+		.g_team { background: #3597AE; }
+		.g_team:last-child {  background: #FCB821; }
+		.g_round:last-child { margin-right: 20px; }
+		.g_winner { background: #444; }
+		.g_winner .g_team { background: none; }
+		.g_current { cursor: pointer; background: #A0B43C!important; }
+		.g_round_label { top: -12px;margin-left:15px; font-weight: normal; color: 	#FFFAFA; text-align: center; font-size: 23px;  }
+		.button { background-color: #4CAF50; border: none;color: white; padding: 16px 31px;text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; }
+	</style>
+
+	<!-- dependencies -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+
+	<!-- main lib -->
+	<script type="text/javascript" src="jquery.gracket.js"></script>
+	<script type="text/javascript" src="test.js"></script>
+
+</head>
+<body>
+	<!-- empty gracket element -->
+	<a href="../Tournaments.html" class="button" role="button">Tournaments </a>
+	<div class="my_gracket"></div>
+    <h2 style="display:none;" id="uid"><%= fouB%></h2>
+	<p id = "da"></p>
+    <script type="text/javascript">
+        console.log($("#uid").html());
+    </script>
+<script type="text/javascript">
+(function(win, doc, $){
+
+	win.TestData = document.getElementById("testdata");
+
+	// console.log(JSON.stringify("%= fouB%"));
+	// document.getElementById("da").innerHTML = win.TestData;
+	//document.getElementById("testdata").value;
+	// Fake Data
+// 	[[[{"name":"team1","id":"1","seed":1,"gameID":1},{"name":"team2","id":"2","seed":2,"gameID":1}],
+// [{"name":"team3","id":"3","seed":3,"gameID":2},{"name":"team4","id":"4","seed":4,"gameID":2}],
+// [{"name":"team5","id":"5","seed":5,"gameID":3},{"name":"team6","id":"6","seed":6,"gameID":3}],
+// [{"name":"team7","id":"7","seed":7,"gameID":4},{"name":"team8","id":"8","seed":8,"gameID":4}],
+// [{"name":"sdfsdfadsfsa","id":"9","seed":9,"gameID":5},{"name":"dv","id":"10","seed":10,"gameID":5}],
+// [{"name":"vcx","id":"11","seed":11,"gameID":6},{"name":"cvxbn","id":"12","seed":12,"gameID":6}],
+// [{"name":"jaspy","id":"13","seed":13,"gameID":7},{"name":"nkjbnb","id":"14","seed":14,"gameID":7}],
+// [{"name":"hdsaf","id":"15","seed":15,"gameID":8},{"name":"1231","id":"16","seed":16,"gameID":8}]],
+// [[{"name":"team1","id":"1","seed":1,"gameID":9},{"name":"team3","id":"3","seed":3,"gameID":9}],
+// [{"name":"team6","id":"6","seed":6,"gameID":10},{"name":"team7","id":"7","seed":7,"gameID":10}],
+// [{"name":"dv","id":"10","seed":10,"gameID":11},{"name":"vcx","id":"11","seed":11,"gameID":11}],
+// [{"name":"jaspy","id":"13","seed":13,"gameID":12},{"name":"1231","id":"16","seed":16,"gameID":12}]]];
+
+/*[
+		[
+		[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "Andrew Miller", "id" : "andrew-miller", "seed" : 2, "displaySeed": "D2", "score" : 3 } ],
+		[ {"name" : "James Coutry", "id" : "james-coutry", "seed" : 3, "displaySeed": "D3", "score" : 3 }, {"name" : "Sam Merrill", "id" : "sam-merrill", "seed" : 4, "displaySeed": "D4", "score" : 3 } ],
+		[ {"name" : "Anothy Hopkins", "id" : "anthony-hopkins", "seed" : 5, "displaySeed": "D5", "score" : 3 }, {"name" : "Everett Zettersten", "id" : "everett-zettersten", "seed" : 6, "displaySeed": "D6", "score" : 3 } ],
+		[ {"name" : "John Scott", "id" : "john-scott", "seed" : 7, "displaySeed": "D7", "score" : 3 }, {"name" : "Teddy Koufus", "id" : "teddy-koufus", "seed" : 8, "displaySeed": "D8", "score" : 3 } ],
+		[ {"name" : "Arnold Palmer", "id" : "arnold-palmer", "seed" : 9, "displaySeed": "D9", "score" : 3 }, {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ],
+		[ {"name" : "Jesse James", "id" : "jesse-james", "seed" : 11, "displaySeed": "D11", "score" : 3 }, {"name" : "Scott Anderson", "id" : "scott-anderson", "seed" : 12, "displaySeed": "D12", "score" : 3 } ],
+		[ {"name" : "Josh Groben", "id" : "josh-groben", "seed" : 13, "displaySeed": "D13", "score" : 3 }, {"name" : "Sammy Zettersten", "id" : "Sammy Zettersten", "seed" : 14, "displaySeed": "D14", "score" : 3 } ],
+		[ {"name" : "Jake Coutry", "id" : "jake-coutry", "seed" : 15, "displaySeed": "D15", "score" : 3 }, {"name" : "Spencer Zettersten", "id" : "Spencer Zettersten", "seed" : 16, "displaySeed": "D16", "score" : 3 } ],
+		[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "Andrew Miller", "id" : "andrew-miller", "seed" : 2, "displaySeed": "D2", "score" : 3 } ],
+		[ {"name" : "James Coutry", "id" : "james-coutry", "seed" : 3, "displaySeed": "D3", "score" : 3 }, {"name" : "Sam Merrill", "id" : "sam-merrill", "seed" : 4, "displaySeed": "D4", "score" : 3 } ],
+		[ {"name" : "Anothy Hopkins", "id" : "anthony-hopkins", "seed" : 5, "displaySeed": "D5", "score" : 3 }, {"name" : "Everett Zettersten", "id" : "everett-zettersten", "seed" : 6, "displaySeed": "D6", "score" : 3 } ],
+		[ {"name" : "John Scott", "id" : "john-scott", "seed" : 7, "displaySeed": "D7", "score" : 3 }, {"name" : "Teddy Koufus", "id" : "teddy-koufus", "seed" : 8, "displaySeed": "D8", "score" : 3 } ],
+		[ {"name" : "Arnold Palmer", "id" : "arnold-palmer", "seed" : 9, "displaySeed": "D9", "score" : 3 }, {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ],
+		[ {"name" : "Jesse James", "id" : "jesse-james", "seed" : 11, "displaySeed": "D11", "score" : 3 }, {"name" : "Scott Anderson", "id" : "scott-anderson", "seed" : 12, "displaySeed": "D12", "score" : 3 } ],
+		[ {"name" : "Josh Groben", "id" : "josh-groben", "seed" : 13, "displaySeed": "D13", "score" : 3 }, {"name" : "Sammy Zettersten", "id" : "Sammy Zettersten", "seed" : 14, "displaySeed": "D14", "score" : 3 } ],
+		[ {"name" : "Jake Coutry", "id" : "jake-coutry", "seed" : 15, "displaySeed": "D15", "score" : 3 }, {"name" : "Spencer Zettersten", "id" : "Spencer Zettersten", "seed" : 16, "displaySeed": "D16", "score" : 3 } ],
+
+	],
+	[
+		[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "James Coutry", "id" : "james-coutry", "seed" : 3, "displaySeed": "D3", "score" : 3 } ],
+		[ {"name" : "Anothy Hopkins", "id" : "anthony-hopkins", "seed" : 5, "displaySeed": "D5", "score" : 3 }, {"name" : "John Scott", "id" : "john-scott", "seed" : 7, "displaySeed": "D7", "score" : 3 } ],
+		[ {"name" : "Arnold Palmer", "id" : "arnold-palmer", "seed" : 9, "displaySeed": "D9", "score" : 3 }, {"name" : "Jesse James", "id" : "jesse-james", "seed" : 11, "displaySeed": "D11", "score" : 3 } ],
+		[ {"name" : "Josh Groben", "id" : "josh-groben", "seed" : 13, "displaySeed": "D13", "score" : 3 }, {"name" : "Jake Coutry", "id" : "jake-coutry", "seed" : 15, "displaySeed": "D15", "score" : 3 } ],
+		[ {"name" : "Sam Merrill", "id" : "sam-merrill", "seed" : 4, "displaySeed": "D4", "score" : 3 }, {"name" : "Andrew Miller", "id" : "andrew-miller", "seed" : 2, "displaySeed": "D2", "score" : 3 } ],
+		[ {"name" : "Teddy Koufus", "id" : "teddy-koufus", "seed" : 8, "displaySeed": "D8", "score" : 3 }, {"name" : "Everett Zettersten", "id" : "everett-zettersten", "seed" : 6, "displaySeed": "D6", "score" : 3 } ],
+		[ {"name" : "Scott Anderson", "id" : "scott-anderson", "seed" : 12, "displaySeed": "D12", "score" : 3 }, {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ],
+		[ {"name" : "Spencer Zettersten", "id" : "Spencer Zettersten", "seed" : 16, "displaySeed": "D16", "score" : 3 }, {"name" : "Sammy Zettersten", "id" : "Sammy Zettersten", "seed" : 14, "displaySeed": "D14", "score" : 3 } ]
+	],
+	[
+	[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "Anothy Hopkins", "id" : "anthony-hopkins", "seed" : 5, "displaySeed": "D5", "score" : 3 } ],
+	[ {"name" : "Arnold Palmer", "id" : "arnold-palmer", "seed" : 9, "displaySeed": "D9", "score" : 3 }, {"name" : "Josh Groben", "id" : "josh-groben", "seed" : 13, "displaySeed": "D13", "score" : 3 } ],
+	[ {"name" : "Everett Zettersten", "id" : "everett-zettersten", "seed" : 6, "displaySeed": "D6", "score" : 3 }, {"name" : "Andrew Miller", "id" : "andrew-miller", "seed" : 2, "displaySeed": "D2", "score" : 3 } ],
+	[ {"name" : "Sammy Zettersten", "id" : "Sammy Zettersten", "seed" : 14, "displaySeed": "D14", "score" : 3 }, {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ]
+	],
+	[
+	[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "Arnold Palmer", "id" : "arnold-palmer", "seed" : 9, "displaySeed": "D9", "score" : 3 } ],
+	[ {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 }, {"name" : "Andrew Miller", "id" : "andrew-miller", "seed" : 2, "displaySeed": "D2", "score" : 3 } ]
+	],
+	[
+		[ {"name" : "Erik Zettersten", "id" : "erik-zettersten", "seed" : 1, "displaySeed": "D1", "score" : 3 }, {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ]
+	],
+	[
+		[ {"name" : "Ryan Anderson", "id" : "ryan-anderson", "seed" : 10, "displaySeed": "D10", "score" : 3 } ]
+	]
+	];
+
+			// initializer
+			$(".my_gracket").gracket({ src : win.TestData });
+
+		})(window, document, jQuery);*/
+	</script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

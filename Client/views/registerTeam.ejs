@@ -138,7 +138,7 @@
                 </select>
 				<br>
 				<h5>Team Name:</h5>
-				<input type="text" placeholder="Name" name="tname" id ="tname" list="tnames" required>
+				<input type="text" autocomplete="off" placeholder="Name" name="tname" id ="tname" list="tnames" required>
                 <datalist id="tnames">
                   <% teams.forEach(function(element) { %>
                       <option value="<%= element.TeamName %>"><%= element.TeamName %></option>
@@ -162,44 +162,44 @@
                 }
                 </script>
 				<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col" style="background-color:#fff5ad">#</th>
-        <th scope="col" style="background-color:#fff5ad">Name of Members</th>
-        <th scope="col" style="background-color:#fff5ad">Game ID</th>
-      </tr>
-    </thead>
-	
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td style="background-color:white">
-							<input type="text" placeholder="Enter here.." name="memb1" required>
-						</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td style="background-color:white">
-							<input type="text" placeholder="Enter here.." name="memb2" required>
-						</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td style="background-color:white">
-							<input type="text" placeholder="Enter here.." name="memb3" required>
-						</td>
-      </tr>
-	   <tr>
-        <th scope="row">4</th>
-        <td style="background-color:white">
-							<input type="text" placeholder="Enter here.." name="memb4" required>
-						</td>
-      </tr>
-    </tbody>
-  </table>
-                   
-</div>
+				  <table class="table">
+					<thead>
+					  <tr>
+						<th scope="col" style="background-color:#fff5ad">#</th>
+						<th scope="col" style="background-color:#fff5ad">Name of Members</th>
+						<th scope="col" style="background-color:#fff5ad">Game ID</th>
+					  </tr>
+					</thead>
+					
+					<tbody>
+					  <tr>
+						<th scope="row">1</th>
+						<td style="background-color:white">
+											<input type="text" autocomplete="off" placeholder="Enter here.." name="memb1" required>
+										</td>
+					  </tr>
+					  <tr>
+						<th scope="row">2</th>
+						<td style="background-color:white">
+											<input type="text" autocomplete="off" placeholder="Enter here.." name="memb2" required>
+										</td>
+					  </tr>
+					  <tr>
+						<th scope="row">3</th>
+						<td style="background-color:white">
+											<input type="text" autocomplete="off" placeholder="Enter here.." name="memb3" required>
+										</td>
+					  </tr>
+					   <tr>
+						<th scope="row">4</th>
+						<td style="background-color:white">
+											<input type="text" autocomplete="off" placeholder="Enter here.." name="memb4" required>
+										</td>
+					  </tr>
+					</tbody>
+				  </table>
+								   
+				</div>
 				
 				
 				
