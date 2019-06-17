@@ -77,14 +77,12 @@
           <i class="fas fa-fw fa-bullhorn"></i>
           <span>Announcements</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/changeKey">
-          <i class="fas fa-fw fa-key"></i>
-          <span>Change API Key</span></a>
-      </li>
     </ul>
 
     <div id="content-wrapper">
+      <div class="example-print">
+        <br>
+      </div>
       <div class="container-fluid">
         <div class="card mb-3">
           <div class="card-header">
@@ -129,7 +127,7 @@
                   <p></p>
                   <form action="/creatematches" method="POST">
                     <input type="hidden" name="TournamentID" value="<%= data2[0].TournamentID %>">
-                    <button type="submit">Create Matches</button>
+                    <button type="submit" class="btn btn-success">Create Matches</button>
                   </form>
                 <% } %>
               </div>
@@ -137,30 +135,30 @@
                 <div class="col-md-6">
                   <% if(results){ %>
                     <i class="fas fa-poll"></i> <b>Tournament Results</b>
-                    <div class="table-responsive">
-                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                          <tr bgcolor="#cccccc">
-                            <th>Round</th>
-                            <th colspan="2"><center>Match</center></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <% for(var index = 0; index < data4.length; index++){ %>
-                            <tr bgcolor="#efefef">
-                              <td><b><%= data4[index].Rounds %></b></td>
-                              <% if(data4[index].Team1Name == data4[index].WinnerName) { %>
-                                <td bgcolor="#28a745" style="color:#fff"><%= data4[index].Team1Name %> <i class="fas fa-trophy" style="color:#fff"></i></td>
-                                <td bgcolor="#bd2130" style="color:#fff"><%= data4[index].Team2Name %></td>
-                              <% } else { %>
-                                <td bgcolor="#bd2130" style="color:#fff"><%= data4[index].Team1Name %></td>
-                                <td bgcolor="#28a745" style="color:#fff"><%= data4[index].Team2Name %> <i class="fas fa-trophy" style="color:#fff"></i></td>
-                              <% } %>
+                      <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr bgcolor="#cccccc">
+                              <th>Round</th>
+                              <th colspan="2"><center>Match</center></th>
                             </tr>
-                          <% } %>
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody>
+                            <% for(var index = 0; index < data4.length; index++){ %>
+                              <tr bgcolor="#efefef">
+                                <td><b><%= data4[index].Rounds %></b></td>
+                                <% if(data4[index].Team1Name == data4[index].WinnerName) { %>
+                                  <td bgcolor="#28a745" style="color:#fff"><%= data4[index].Team1Name %> <i class="fas fa-trophy" style="color:#fff"></i></td>
+                                  <td bgcolor="#bd2130" style="color:#fff"><%= data4[index].Team2Name %></td>
+                                <% } else { %>
+                                  <td bgcolor="#bd2130" style="color:#fff"><%= data4[index].Team1Name %></td>
+                                  <td bgcolor="#28a745" style="color:#fff"><%= data4[index].Team2Name %> <i class="fas fa-trophy" style="color:#fff"></i></td>
+                                <% } %>
+                              </tr>
+                            <% } %>
+                          </tbody>
+                        </table>
+                      </div>
                   <% } else { %>
                     <b>Round <%= data4[0].Rounds %></b><br>
                     <form action="/viewtregister" method="POST">
@@ -248,9 +246,14 @@
               <% } %>
             </div>   
           </div>
-          <div class="modal-footer">
-            <a href="/tournaments" class="btn btn-primary">Back</a>
-          </form>
+          <div class="no-print">
+            <div class="modal-footer">
+              <% if(results){ %>
+                <button onclick="printContent('content-wrapper')" class="btn btn-success">Print</button>
+              <% } %>
+              <a href="/tournaments" class="btn btn-primary">Back</a>
+            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -319,6 +322,13 @@
     function setTwoNumberDecimal(el) {
       el.value = parseFloat(el.value).toFixed(2);
     };
+    function printContent(el) {
+      var restorepage = document.body.innerHTML;
+      var printcontent = document.getElementById(el).innerHTML;
+      document.body.innerHTML = printcontent;
+      window.print();
+      document.body.innerHTML = restorepage;
+    }
   </script>
 
 </body>
