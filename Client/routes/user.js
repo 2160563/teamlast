@@ -1662,7 +1662,6 @@ exports.registered_tournaments = function(req, res, next) {
 exports.registrations = async function(req, res) {
 	var user = req.session.user,
 		userId = req.session.userID;
-        //console.log("fdsfsfsdfds");
         var get = req.query;
         var tname = get.tname;
 		var tID = get.tid;
@@ -1671,28 +1670,22 @@ exports.registrations = async function(req, res) {
         var memb2 = get.memb2;
         var memb3 = get.memb3;
 		var memb4 = get.memb4;
-		var getcapt = `SELECT ga.ingamename,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga join teampalak.tournaments t inner join teampalak.tournament_details td on t.tournamentID = td.tournamentID 
+		var messaageArray = [];
+		var message = "";	
+		var getcapt = `SELECT ga.ingamename,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga 
+		join teampalak.tournaments t inner join teampalak.tournament_details td on t.tournamentID = td.tournamentID 
 		where (ga.username ="`+user+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 		var avgmmr = 0;
 		db.query(getcapt, function(err, resultc){
-			message = "";
-			message = "Team registered";
-			console.log("PAT TABA taba"+resultc.length==0);
 			if(resultc.length==0){
 				message = "Team Captain doesn't have a registered account for the game of the tournament.";
-				req.session.message = message;
-				res.redirect("/login_tournaments");
-				return;
+				messaageArray.push(message);
 			}else if (resultc[0].mmr < resultc[0].tournalb){
 				message = "Team Captain's rank("+resultc[0].rank+") is lower than the minimum rank required for the tournament ("+resultc[0].tournarange+").";
-				req.session.message = message;
-				res.redirect("/login_tournaments");
-				return;
+				messaageArray.push(message);
 			}else if (resultc[0].mmr > resultc[0].tournaub){
-				message = "Team Captain's rank("+resultc[0].rank+") is higher than the minimum rank required for the tournament ("+resultc[0].tournarange+").";
-				req.session.message = message;
-				res.redirect("/login_tournaments");
-				return;
+				message = "Team Captain's rank("+resultc[0].rank+") is higher than the maximum rank required for the tournament ("+resultc[0].tournarange+").";
+				messaageArray.push(message);
 			}
 			var sql1 = `SELECT acc.AccID,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga 
 			join teampalak.tournaments t 
@@ -1702,19 +1695,13 @@ exports.registrations = async function(req, res) {
 			db.query(sql1, function(err, result){
 				if(result.length==0){
 					message = "Member 1 is either unregistered or doesn't have a registered account for the game of the tournament.";
-					req.session.message = message;
-					res.redirect("/login_tournaments");
-					return;
+					messaageArray.push(message);
 				}else if (result[0].mmr < result[0].tournalb){
 					message = "Member 1's rank("+result[0].rank+") is lower than the minimum rank required for the tournament ("+result[0].tournarange+").";
-					req.session.message = message;
-					res.redirect("/login_tournaments");
-					return;
+					messaageArray.push(message);
 				}else if (result[0].mmr > result[0].tournaub){
-					message = "Member 1's rank("+result[0].rank+") is higher than the minimum rank required for the tournament ("+result[0].tournarange+").";
-					req.session.message = message;
-					res.redirect("/login_tournaments");
-					return;
+					message = "Member 1's rank("+result[0].rank+") is higher than the maximum rank required for the tournament ("+result[0].tournarange+").";
+					messaageArray.push(message);
 				}
 				var sql111 = `SELECT acc.AccID,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga 
 				join teampalak.tournaments t 
@@ -1724,19 +1711,13 @@ exports.registrations = async function(req, res) {
 				db.query(sql111, function(err, result1){
 					if(result1.length==0){
 						message = "Member 2 is either unregistered or doesn't have a registered account for the game of the tournament.";
-						req.session.message = message;
-						res.redirect("/login_tournaments");
-						return;
+						messaageArray.push(message);
 					}else if (result1[0].mmr < result1[0].tournalb){
 						message = "Member 2's rank("+result1[0].rank+") is lower than the minimum rank required for the tournament ("+result1[0].tournarange+").";
-						req.session.message = message;
-						res.redirect("/login_tournaments");
-						return;
+						messaageArray.push(message);
 					}else if (result1[0].mmr > result1[0].tournaub){
-						message = "Member 2's rank("+result1[0].rank+") is higher than the minimum rank required for the tournament ("+result1[0].tournarange+").";
-						req.session.message = message;
-						res.redirect("/login_tournaments");
-						return;
+						message = "Member 2's rank("+result1[0].rank+") is higher than the maximum rank required for the tournament ("+result1[0].tournarange+").";
+						messaageArray.push(message);
 					}
 					var sql2 = `SELECT acc.AccID,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga 
 					join teampalak.tournaments t 
@@ -1746,19 +1727,13 @@ exports.registrations = async function(req, res) {
 					db.query(sql2, function(err, result2){
 						if(result2.length==0){
 							message = "Member 3 is either unregistered or doesn't have a registered account for the game of the tournament.";
-							req.session.message = message;
-							res.redirect("/login_tournaments");
-							return;
+							messaageArray.push(message);
 						}else if (result2[0].mmr < result2[0].tournalb){
 							message = "Member 3's rank("+result2[0].rank+") is lower than the minimum rank required for the tournament ("+result2[0].tournarange+").";
-							req.session.message = message;
-							res.redirect("/login_tournaments");
-							return;
+							messaageArray.push(message);
 						}else if (result2[0].mmr > result2[0].tournaub){
-							message = "Member 3's rank("+result2[0].rank+") is higher than the minimum rank required for the tournament ("+result2[0].tournarange+").";
-							req.session.message = message;
-							res.redirect("/login_tournaments");
-							return;
+							message = "Member 3's rank("+result2[0].rank+") is higher than the maximum rank required for the tournament ("+result2[0].tournarange+").";
+							messaageArray.push(message);
 						}
 						var sql3 = `SELECT acc.AccID,ga.rank,ga.mmr,t.tournalb,t.tournaub,td.tournarange FROM teampalak.gameaccounts ga 
 						join teampalak.tournaments t 
@@ -1768,28 +1743,20 @@ exports.registrations = async function(req, res) {
 						db.query(sql3, function(err, result3){
 							if(result3.length==0){
 								message = "Member 4 is either unregistered or doesn't have a registered account for the game of the tournament.";
-								req.session.message = message;
-								res.redirect("/login_tournaments");
-								return;
+								messaageArray.push(message);
 							}else if (result3[0].mmr < result3[0].tournalb){
 								message = "Member 4's rank("+result3[0].rank+") is lower than the minimum rank required for the tournament ("+result3[0].tournarange+").";
-								req.session.message = message;
-								res.redirect("/login_tournaments");
-								return;
+								messaageArray.push(message);
 							}else if (result3[0].mmr > result3[0].tournaub){
-								message = "Member 4's rank("+result3[0].rank+") is higher than the minimum rank required for the tournament ("+result3[0].tournarange+").";
-								req.session.message = message;
-								res.redirect("/login_tournaments");
-								return;
+								message = "Member 4's rank("+result3[0].rank+") is higher than the maximum rank required for the tournament ("+result3[0].tournarange+").";
+								messaageArray.push(message);
 							}
-							if(result[0].ingamename == memb1 || result[0].ingamename == memb2 || result[0].ingamename == memb3 || result[0].ingamename == memb4
+							if(resultc[0].ingamename == memb1 || resultc[0].ingamename == memb2 || resultc[0].ingamename == memb3 || resultc[0].ingamename == memb4
 								|| memb1 == memb2 || memb1 == memb2 || memb1 == memb3 || memb1 == memb4
 								|| memb2 == memb3 || memb2 == memb4
 								|| memb3 == memb4 ){
 								message = "Member In Game Name/Dota 2 ID should be unique";
-								req.session.message = message;
-								res.redirect("/login_tournaments");
-								return;
+								messaageArray.push(message);
 							}
 
 							
@@ -1807,9 +1774,21 @@ exports.registrations = async function(req, res) {
 							and r.tournamentid = `+tID+`
 							`;
 							db.query(sqlchecker, function(err, result20){
+								var teamname = `select t.teamid from teampalak.teams t inner join teampalak.registered_teams rt on rt.registeredteamid where t.teamname = "`+tname+`" and rt.tournamentid = `+tID;
+								db.query(teamname,function(err,namecheck){
+									if(namecheck.length>0){
+										message = "The team name is already taken in this tournament. please choose another.";
+									messaageArray.push(message);
+									}
 								if(result20.length>0){
 									message = "A member of this team is already registered in another team for this tournament.";
-									req.session.message = message;
+									messaageArray.push(message);
+								}else if (messaageArray.length>0){
+									var messages = "";
+									for(var me = 0; me<messaageArray.length;me++){
+										messages += messaageArray[me] + "\n";
+									}
+									req.session.message = messages;
 									res.redirect("/login_tournaments");
 									return;
 								}
@@ -1833,7 +1812,7 @@ exports.registrations = async function(req, res) {
 												db.query(sql9, function(err, result9){
 													console.log(err);
 													message = "";
-													message = "Team successfully registered! Please contact the admin regarding payment and approval of your registration.";
+													message = `Team successfully registered! Please contact the admin via Phone: (074) 620-3935 or email us at TeamPalak.ph@gmail.com. For more information please see the bottom of the page.`;
 													req.session.message = message;
 													res.redirect("/login_tournaments");
 													})	
@@ -1845,6 +1824,7 @@ exports.registrations = async function(req, res) {
 								})
 							})
 						})
+					})
 					});
 						})
 					})
@@ -1852,7 +1832,6 @@ exports.registrations = async function(req, res) {
 			});
 	})
 };
-
 //==========================| LOGOUT |=============================
 exports.logout = function(req, res) {
 	req.session.destroy(function(err) {
