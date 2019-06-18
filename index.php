@@ -76,7 +76,7 @@
 				    fclose($handle);
 				}else{
 					echo "<script type='text/javascript'>alert('Wrong file uploaded');
-                window.location.replace(\"http://localhost/csv/\");
+                window.location.replace(\"/csv/\");
               </script>";
 				}
 			}
@@ -103,11 +103,11 @@
 			    	}
 			    	fclose($handle);
 			    	echo "<script type='text/javascript'>alert('Successfully Imported');
-			            window.location.replace(\"http://localhost/csv/\");
+			            window.location.replace(\"/csv/\");
 			          </script>";
 				}else{
 					echo "<script type='text/javascript'>alert('Wrong file uploaded');
-                window.location.replace(\"http://localhost/csv/\");
+                window.location.replace(\"/csv/\");
               </script>";
 				}
 			}
@@ -134,11 +134,11 @@
 			    	}
 			    	fclose($handle);
 			    	echo "<script type='text/javascript'>alert('Successfully Imported');
-			            window.location.replace(\"http://localhost/csv/\");
+			            window.location.replace(\"/csv/\");
 			          </script>";
 				}else{
 					echo "<script type='text/javascript'>alert('Wrong file uploaded');
-                window.location.replace(\"http://localhost/csv/\");
+                window.location.replace(\"/csv/\");
               </script>";
 				}
 			}
