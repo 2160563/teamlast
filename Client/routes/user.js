@@ -152,8 +152,7 @@ exports.client = function(req, res, next) {
 													var sql10 = "select message, status from teampalak.notifications where accID = ?";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
-														db.query(sql11,userId, function(err, result10){
-														console.log("Clinet home result 7");
+														db.query(sql11,userId, function(err, result11){
 															res.render('client.ejs', {
 																data:result,
 																data1:result1,
@@ -679,7 +678,7 @@ exports.login_tournaments = function(req, res, next) {
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
 												//console.log("Login Tournaments Team result 7");
-													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+													res.render('login_tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
 										
@@ -713,7 +712,7 @@ exports.login_tournaments = function(req, res, next) {
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
 												//console.log("Login Tournaments Team result 7");
-													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+													res.render('login_tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
 										
@@ -746,7 +745,7 @@ exports.login_tournaments = function(req, res, next) {
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
 												//console.log("Login Tournaments Team result 7");
-													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+													res.render('login_tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
 										
@@ -779,7 +778,7 @@ exports.login_tournaments = function(req, res, next) {
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
 												//console.log("Login Tournaments Team result 7");
-													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
+													res.render('login_tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
 										
@@ -790,7 +789,7 @@ exports.login_tournaments = function(req, res, next) {
 						})
 				});
 		}
-		};
+};
 //==========================| User Profile |=============================
 exports.userProfile = function(req, res, next) {
 	var user = req.session.user,
