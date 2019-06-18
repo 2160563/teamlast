@@ -1631,12 +1631,12 @@ exports.register = function(req, res) {
 								
 					var con = mysql.createConnection({
 					  host: "localhost",
-					  user: "root",
-					  password: "",
+					  user: "teampalak",
+					  password: "teampalak",
 					  database: "teampalak"
 					});
 					if(req.body.lol){
-						var query = "SELECT * FROM teampalak.gameAccounts acc WHERE acc.inGameName = ?";
+						var query = "SELECT * FROM teampalak.gameaccounts acc WHERE acc.inGameName = ?";
 						db.query(query, [req.body.lol], function(err, rows, fields) {
 							console.log(rows[0]);
 							if (rows.length > 0) {
@@ -1759,7 +1759,7 @@ exports.register = function(req, res) {
 						if(isNaN(req.body.dota2)){
 							res.send("<script type='text/javascript'>alert('Please input your Dota 2 ID.'); window.location.replace(\"/register\");</script>");
 						}else{
-							var query = "SELECT * FROM teampalak.gameAccounts WHERE summonerOrDotaID = ?";
+							var query = "SELECT * FROM teampalak.gameaccounts WHERE summonerOrDotaID = ?";
 							db.query(query, [req.body.dota2], function(err, rowse, fields) {
 								if (rowse.length > 0) {
 									res.send("<script type='text/javascript'>alert('Dota 2 account is already taken.'); window.location.replace(\"/register\");</script>");
