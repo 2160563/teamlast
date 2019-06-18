@@ -927,7 +927,8 @@ exports.login_tournaments = function(req, res, next) {
 				});
 		}
 		};
-//==========================| User peofile |=============================
+
+
 exports.userProfile = function(req, res, next) {
 	var user = req.session.user,
 		userId = req.session.userId;
@@ -945,7 +946,6 @@ exports.userProfile = function(req, res, next) {
 			inner join teampalak.teams t ON t.TeamID = m.TeamID 
 			Inner join teampalak.accounts a ON a.AccID = m.MemID where a.username = ?`;
 			db.query(s, user, function(err, rows1, fields) {
-			// if (rows1.length == 1) {	
 				name = result[0].Firstname +" "+ result[0].Lastname;
 				let sql = `SELECT * FROM teampalak.registered_teams r
 				INNER JOIN teampalak.tournaments t ON r.TournamentID = t.TournamentID 
@@ -953,15 +953,58 @@ exports.userProfile = function(req, res, next) {
 				INNER JOIN teampalak.accounts a INNER JOIN teampalak.teams te ON te.TeamID = a.AccID where a.username = ? AND t.Status = "closed" `;
 				let data = [user];
 					db.query(sql, data, function(err, rows, fields){
-						
-						res.render('userProfile.ejs', {
-											user: user,
-											name: name,
-											data: result,
-											data1: rows1,
-											ctr: rows
+						var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
+      					db.query(sql1, user, function(err, row2, fields){ 
+      						var regTour = `SELECT * FROM teampalak.registered_teams r
+						INNER JOIN teampalak.tournaments t ON r.TournamentID = t.TournamentID 
+						INNER JOIN teampalak.tournament_details tou ON  tou.TournamentID = t.TournamentID 
+						INNER JOIN teampalak.accounts a INNER JOIN teampalak.members me ON me.MemID = a.AccID where a.username = ? AND t.Status = "Open" limit 1 `;
+						db.query(regTour,user, function(err, rows2, fields){
+							var sql2=`select DISTINCT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, 
+							td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, 
+							td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, 
+							t.tournaUB, rt.registeredteams, t.Status from teampalak.registered_teams r 
+							inner join teampalak.members m on r.registeredteamid = m.teamid 
+							inner join teampalak.teams te on r.registeredteamid = te.teamid 
+							inner join teampalak.accounts acc on m.memid = acc.accid 
+							left join teampalak.gameaccounts gacc on gacc.username = acc.username  
+							left join teampalak.tournaments t on r.tournamentID = t.tournamentID 
+							inner join teampalak.tournament_details td on r.tournamentID = td.tournamentID 
+							left join (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, 
+							tournament_details.TournamentID FROM tournament_details 
+							left JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID 
+							WHERE Status = 'Approved' GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID  
+							where td.TournamentID  in (SELECT rts.tournamentID FROM teampalak.registered_teams rts 
+							inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="102") 
+							And t.Status = 'Open' order by TSched desc`;
+							db.query(sql2,user, function(err, rows3, fields){
+								var sql3 = `SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, 
+								t.TournamentGame AS TournamentGame, td.TournaRange AS TournaRange, t.Status AS Status, 
+								DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, 
+								td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") 
+								AS registration_fee, LENGTH(td.Tpic) AS Tpiclength, rt.registeredteams AS registeredteamID FROM tournament_details 
+								td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  
+								ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, 
+								tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON 
+								tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) 
+								rt ON td.TournamentID = rt.TournamentID`;
+								db.query(sql3,user, function(err, rows4, fields){
+									res.render('userProfile.ejs', {
+													user: user,
+													name: name,
+													data: result,
+													data1: rows1,
+													ctr: rows,
+													data2: row2,
+													ctr1: rows2,
+													ctr2: rows3,
+													ctr3: rows4
+										});
+									});
+								});
+							});
+						});
 					});
-				});
 			});
 		});
 	}
@@ -1024,103 +1067,6 @@ exports.editProfile = function(req, res) {
 	}
 };
 
-//==========================| User peofile |=============================
-exports.userProfile = function(req, res, next) {
-	var user = req.session.user,
-		userId = req.session.userId;
-	var name = "";
-	var team = "";
-	var imageProfile = "";
-
-	if (user == null) {
-		res.redirect("/login");
-		return;
-	} else {
-		//Change database personal_info ID to auto incremtent
-		db.query('SELECT * FROM teampalak.accounts acc where acc.username = ?', user, function(err, result, fields) {
-			var s = `SELECT * FROM teampalak.members m 
-			inner join teampalak.teams t ON t.TeamID = m.TeamID 
-			Inner join teampalak.accounts a ON a.AccID = m.MemID where a.username = ?`;
-			db.query(s, user, function(err, rows1, fields) {
-			// if (rows1.length == 1) {	
-				console.log(err);
-				name = result[0].Firstname +" "+ result[0].Lastname;
-				let sql = `SELECT * FROM teampalak.registered_teams r
-				INNER JOIN teampalak.tournaments t ON r.TournamentID = t.TournamentID 
-				INNER JOIN teampalak.tournament_details tou ON  tou.TournamentID = t.TournamentID 
-				INNER JOIN teampalak.accounts a INNER JOIN teampalak.teams te ON te.TeamID = a.AccID where a.username = ? AND t.Status = "closed" `;
-				let data = [user];
-					db.query(sql, data, function(err, rows, fields){
-						
-						res.render('userProfile.ejs', {
-											user: user,
-											name: name,
-											data: result,
-											data1: rows1,
-											ctr: rows
-					});
-				});
-			});
-		});
-	}
-};
-
-//==========================| Edit profile |=============================
-
-exports.editProfile = function(req, res) {
-	var user = req.session.user,
-		userId = req.session.userId;
-	var message = "";
-  	var message1 = '';
-  	var message2 = '';
-	var message3 = '';
-	
-	if (user == null) {
-		res.redirect("/login");
-		return;
-	} else {
-		var query = "SELECT * FROM accounts WHERE username = ?";
-		db.query(query, user, function(err, rows, fields) {
-			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
-      		db.query(sql, user, function(err, row, fields){ 
-			if (rows.length > 0) {
-				if ((req.body.newPwd && req.body.conPwd) !== "") {
-					//console.log("pasok");
-					
-					if (req.body.newPwd != req.body.conPwd) {
-						var message = "Passwords do not match.";
-						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
-					} else {
-						let sql = 'UPDATE accounts SET Password = ? WHERE Username = ?';
-						let hash = bcrypt.hashSync(req.body.conPwd, 10);
-						let data = [hash, user];
-						db.query(sql, data, function(err, result){
-							//console.log(result);
-							var message = "Successfully Changed"
-							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
-						});
-					}
-				}else{
-					//console.log("NUll siya");
-					if ((req.body.newPwd && req.body.conPwd) == "") {
-						if ((req.body.newPwd == "") && (req.body.conPwd !== "")) {
-						var message = "New Passwords is empty.";
-						res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
-						}else if ((req.body.newPwd !== "") && (req.body.conPwd == "")){
-							var message = "Confirm Passwords is empty.";
-							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
-						}else{
-							var message = "";
-							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
-						}
-					}
-				}
-			} 
-			});
-		});
-		
-	}
-};
 
 //==========================| Upload profile picture|=============================
 
