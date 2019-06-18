@@ -165,19 +165,56 @@
                         </table>
                       </div>
                   <% } else { %>
-                    <b>Round <%= data4[0].Rounds %></b><br>
+                    <b>Round <%= page %></b><br>
                     <form action="/viewtregister" method="POST">
+                      <% var temp = 0; %>
                       <% for(var index = 0; index < data4.length; index++){ %>
                         <i class="fas fa-fw fa-caret-right"></i><%= data4[index].Team1Name %> <i>VS</i> <%= data4[index].Team2Name %><br>
-                        <select name="roundWinner" class="form-control" required>
-                          <option value="" selected disabled> -- Winner -- </option>
-                          <option value="<%= data4[index].GameID %>,<%= data4[index].Team1ID %>"><%= data4[index].Team1Name %></option>
-                          <option value="<%= data4[index].GameID %>,<%= data4[index].Team2ID %>"><%= data4[index].Team2Name %></option>
-                        </select>
-                        <p></p>
+                        <% if(index % 2 == 0) { %>
+                          <select name="roundWinner" class="form-control">
+                            <option value="" selected> -- Winner -- </option>
+                            <option value="<%= data4[index].GameID %>,<%= data4[index].Team1ID %>,<%= index - temp %>"><%= data4[index].Team1Name %></option>
+                            <option value="<%= data4[index].GameID %>,<%= data4[index].Team2ID %>,<%= index - temp %>"><%= data4[index].Team2Name %></option>
+                          </select>
+                          <p></p>
+                          <% temp += 1; %>
+                        <% } else { %>
+                          <select name="roundWinner" class="form-control">
+                            <option value="" selected> -- Winner -- </option>
+                            <option value="<%= data4[index].GameID %>,<%= data4[index].Team1ID %>,<%= index - temp %>"><%= data4[index].Team1Name %></option>
+                            <option value="<%= data4[index].GameID %>,<%= data4[index].Team2ID %>,<%= index - temp %>"><%= data4[index].Team2Name %></option>
+                          </select>
+                          <p></p>
+                        <% } %>
                       <% } %>
                       <input type="hidden" name="TournamentID" value="<%= data[0].TournamentID %>">
-                      <input type="submit" class="btn btn-success" value="Next" style="float:right">
+                      <input type="hidden" name="page" value="<%= page %>">
+                      <input type="submit" class="btn btn-success" value="Save" style="float:right">
+                    </form>
+                    
+                    <form action="/viewtregister" method="POST">
+                      <input type="hidden" name="TournamentID" value="<%= data[0].TournamentID %>">
+                      <% if(page == 1) { %>
+                        <button type="submit" class="btn btn-primary" name="page" value="1" class="btn-link">1</button>
+                        <button type="submit" class="btn btn-default" name="page" value="2" class="btn-link">2</button>
+                        <button type="submit" class="btn btn-default" name="page" value="3" class="btn-link">3</button>
+                        <button type="submit" class="btn btn-default" name="page" value="4" class="btn-link">4</button>
+                      <% } else if(page == 2) { %>
+                        <button type="submit" class="btn btn-default" name="page" value="1" class="btn-link">1</button>
+                        <button type="submit" class="btn btn-primary" name="page" value="2" class="btn-link">2</button>
+                        <button type="submit" class="btn btn-default" name="page" value="3" class="btn-link">3</button>
+                        <button type="submit" class="btn btn-default" name="page" value="4" class="btn-link">4</button>
+                      <% } else if(page == 3) { %>
+                        <button type="submit" class="btn btn-default" name="page" value="1" class="btn-link">1</button>
+                        <button type="submit" class="btn btn-default" name="page" value="2" class="btn-link">2</button>
+                        <button type="submit" class="btn btn-primary" name="page" value="3" class="btn-link">3</button>
+                        <button type="submit" class="btn btn-default" name="page" value="4" class="btn-link">4</button>
+                      <% } else if(page == 4) { %>
+                        <button type="submit" class="btn btn-default" name="page" value="1" class="btn-link">1</button>
+                        <button type="submit" class="btn btn-default" name="page" value="2" class="btn-link">2</button>
+                        <button type="submit" class="btn btn-default" name="page" value="3" class="btn-link">3</button>
+                        <button type="submit" class="btn btn-primary" name="page" value="4" class="btn-link">4</button>
+                      <% } %>
                     </form>
                   <% } %>
                 </div>

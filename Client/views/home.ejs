@@ -124,7 +124,7 @@
           <h3 class="heading-success"><span class="btn btn-large btn-success"><i class="m-icon-big-swapright m-icon-white"></i></span>&nbsp;&nbsp;Announcements</h3>
           <p>Announcements for the tournament details in each game and the winner's in each tournament.</p>
         </div>
-        <div class="span3">
+        <div class="span3" style="overflow: scroll; width: 800px; height: 500px;>
    
 
          <div class="span8">
@@ -171,7 +171,7 @@
 
       <div class="row">
         <div class="span12">
-          <h3><a class="btn btn-large btn-success" href="Tournaments.html"><i class="m-icon-big-swapdown m-icon-white"></i></a> Upcoming Tournaments</h3>
+          <h3><a class="btn btn-large btn-success" href="\tournaments"><i class="m-icon-big-swapdown m-icon-white"></i></a> Upcoming Tournaments</h3>
 
           <div id="latest-work" class="carousel btleft">
             <div class="row-fluid">
@@ -196,7 +196,7 @@
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
           </p><br> 
-                    <p><a data-toggle="modal" href="#myModal<%= jkl %>" class="btn btn-success">More Info</a>
+                    <!-- <p><a href="\tournaments" class="btn btn-success">More Info</a> -->
           </div>
                 </div><% jkl++ %>
         </div>
@@ -212,40 +212,6 @@
   </section>
   
   
-<!-- modal content -->
-          <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h3 id="myModalLabel">Tournament Title</h3>
-            </div>
-            <div class="modal-body">
-              <h4>Game: League of Legends</h4>
-              <p>No. of participants :  
-              <br> Slots Left:
-              <br> Registration price:  
-              <br> Venue: 
-              <br> Date: 
-              <br> Time: 
-            </p>
-        <hr>
-              <h4>Bracketing</h4>
-          <!-- <p>This <a href="#" role="button" class="btn popover-test" title="A Title" 
-          data-content="And here's some amazing content. It's very engaging. right?">button</a> 
-          should trigger a popover on click.</p>
-            <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> 
-            and <a href="#" class="tooltip-test" title="Tooltip">that link</a> should have tooltips on hover.</p>-->
-        <hr>
-              <h4>Registration</h4>
-        
-              
-
-              <hr>
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal">Close</button>
-              <button class="btn btn-success">Register</button>
-            </div>
-          </div>
  
   <!-- Footer
  ================================================== -->

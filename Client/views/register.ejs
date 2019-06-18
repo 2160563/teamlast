@@ -57,23 +57,17 @@
                 <li class="dropdown success">
                   <a href="/home"><i class="icon-home icon-white"></i> Home</a>
                 </li>
-        
-        <li class="dropdown warning">
+                <li class="dropdown warning">
                   <a href="/tournaments"><i class="icon-bullhorn icon-white"></i> Tournaments</a>
-               
                 </li>
                 <li class="dropdown primary">
                   <a href="/history2"><i class="icon-bullhorn icon-white"></i> History</a>
                 </li>
-         
-        <li class="dropdown success active">
+                <li class="dropdown success active">
                   <a href="/register"><i class="icon-star icon-white"></i>Register</a>
-              </li>
-               
+                </li>
                 <li class="dropdown primary">
                   <a href="/login"><i class="icon-star icon-white"></i>Log in</a>
-              </li>
-                </ul>
                 </li>
 
               </ul>
@@ -94,12 +88,18 @@
 
         <div class="containerr">
           <h1 id="reg">Registration</h1>
+          <label style="text-align:left"><h4>First Name</h4></label>
           <input type="text" autocomplete="off" placeholder="First Name" name="firstName" maxlength="45" required>
+          <label style="text-align:left"><h4>Last Name</h4></label>
           <input type="text" autocomplete="off" placeholder="Last Name" name="lastName" maxlength="45" required>
+          <label style="text-align:left"><h4>Username</h4></label>
           <input type="text" autocomplete="off" placeholder="User Name" name="user" maxlength="15" required>
+          <label style="text-align:left"><h4>Password</h4></label>
           <input type="password" placeholder="Password" name="password" maxlength="128" required>
+          <label style="text-align:left"><h4>Confirm Password</h4></label>
           <input type="password" placeholder="Confirm Password" name="repassword" maxlength="128" required>
-          <input type="email" autocomplete="off" placeholder="E-mail Address" name="email" maxlength="100" required>
+          <label style="text-align:left"><h4>E-mail Address</h4></label>
+          <input type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" autocomplete="off" placeholder="E-mail Address" name="email" maxlength="100" required>
         </div>
 
         <div class="games">

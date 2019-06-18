@@ -77,6 +77,11 @@
           <i class="fas fa-fw fa-bullhorn"></i>
           <span>Announcements</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#changeApiKeyModal" data-toggle="modal">
+          <i class="fas fa-fw fa-key"></i>
+          <span>API Key</span></a>
+      </li>
     </ul>
 
     <div id="content-wrapper">
@@ -96,12 +101,16 @@
               <h6>Game</h6>
               <% if(data[0].TournamentGame == "LoL") { %>
                 <select name="TournamentGame" class="form-control" readonly>
-                  <option value="LoL" selected>League of Legends (LoL)</option>
+                  <option value="LoL" disabled selected>League of Legends (LoL)</option>
+                  <!--
                   <option value="DotA 2">Defense of the Ancients 2 (DotA 2)</option>
+                  -->
                 </select>
               <% } else if(data[0].TournamentGame == "DotA 2") { %>
                 <select name="TournamentGame" class="form-control" readonly>
+                  <!--
                   <option value="LoL">League of Legends (LoL)</option>
+                  -->
                   <option value="DotA 2" selected>Defense of the Ancients 2 (DotA 2)</option>
                 </select>
               <% } %>
@@ -118,6 +127,7 @@
                     <% if(data[0].TournamentGame == "LoL") { %>
                       <select id="LowerRank" name="LowerRank" class="form-control" readonly>
                         <option value="" disabled selected><%= data[0].LowerRank %></option>
+                        <!--
                         <option value="1">Iron 4</option>
                         <option value="2">Iron 3</option>
                         <option value="3">Iron 2</option>
@@ -144,10 +154,12 @@
                         <option value="24">Diamond 1</option>
                         <option value="25">Master</option>
                         <option value="26">Grandmaster</option>
+                        -->
                       </select>
                     <% } else { %>
                       <select id="LowerRank" name="LowerRank" class="form-control" readonly>
                         <option value="" disabled selected><%= data[0].LowerRank %></option>
+                        <!--
                         <option value="1">Herald 1</option>
                         <option value="2">Herald 2</option>
                         <option value="3">Herald 3</option>
@@ -201,6 +213,7 @@
                         <option value="51">Immortal Top 1000</option>
                         <option value="52">Immortal Top 100</option>
                         <option value="53">Immortal Top 10</option>
+                        -->
                       </select>
                     <% } %>
                   </div>
@@ -211,6 +224,7 @@
                     <% if(data[0].TournamentGame == "LoL") { %>
                       <select id="UpperRank" name="UpperRank" class="form-control" readonly>
                         <option value="" disabled selected><%= data[0].UpperRank %></option>
+                        <!--
                         <option value="2">Iron 3</option>
                         <option value="3">Iron 2</option>
                         <option value="4">Iron 1</option>
@@ -237,10 +251,12 @@
                         <option value="25">Master</option>
                         <option value="26">Grandmaster</option>
                         <option value="27">Challenger</option>
+                        -->
                       </select>
                     <% } else { %>
                       <select id="UpperRank" name="UpperRank" class="form-control" readonly>
                         <option value="" disabled selected><%= data[0].UpperRank %></option>
+                        <!--
                         <option value="2">Herald 2</option>
                         <option value="3">Herald 3</option>
                         <option value="4">Herald 4</option>
@@ -294,6 +310,7 @@
                         <option value="52">Immortal Top 100</option>
                         <option value="53">Immortal Top 10</option>
                         <option value="54">Immortal Top 1</option>
+                        -->
                       </select>
                     <% } %>
                   </div>
@@ -319,7 +336,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <h6>Registration Fee (&#8369;)</h6>
-                  <% if(data[0].registeredteamID){ %>
+                  <% if(data2[0].registeredteamID){ %>
                     <input type="number" oninput="setTwoNumberDecimal(this)" name="Price" min="100" step="0.25" value="<%= data[0].registration_fee %>" class="form-control form-rounded" readonly>
                   <% } else { %>
                     <input type="number" oninput="setTwoNumberDecimal(this)" name="Price" min="100" step="0.25" value="<%= data[0].registration_fee %>" class="form-control form-rounded" required>
@@ -394,6 +411,30 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+  <!-- Change API Key Modal HTML -->
+  <div id="changeApiKeyModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="/changeapikey" autocomplete="off" method="POST">
+          <div class="modal-header">            
+            <h5 class="modal-title">Change API Key</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">          
+            <div class="form-group">
+              <h6>API Key</h6>
+              <input type="text" name="ApiKey" maxlength="50" class="form-control" required>
+            </div>  
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Save">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -437,6 +478,7 @@
       el.value = parseFloat(el.value).toFixed(2);
     };
 
+    /**
     $(document).ready(function () {
       $("#TournamentGame").change(function () {
         var val = $(this).val();
@@ -468,6 +510,7 @@
         }
       });
     });
+    */
   </script>
 
 </body>

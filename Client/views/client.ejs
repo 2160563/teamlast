@@ -67,11 +67,7 @@
                 <li class="dropdown success active">
                   <a href="/client"><i class="icon-home icon-white"></i> Home</a>
                 </li>
-                <li class="dropdown primary">
-                
-                    <a href="/registered_tournaments"><i class="icon-bullhorn icon-white"></i> Registered Tournaments</a>
   
-                  </li>
 				
 				<li class="dropdown warning">
                   <a href="/login_tournaments"><i class="icon-bullhorn icon-white"></i> Tournaments</a>
@@ -85,12 +81,15 @@
                   <a href="/history"><i class="icon-bullhorn icon-white"></i> History</a>
                 </li>
                 <li class="dropdown primary">
+                  <script type="text/javascript">
+                    
+                  </script>
                 
-                  <a href="#" id="notificationLink" "><i class="icon-star icon-white"></i> Notifications</a>
+                  <a href="/client?notif=1" id="notificationLink" onclick="setTimeout('location.href = \'/client?notif=1\';', 4000);"><i class="icon-star icon-white"></i> Notifications</a>
                   <% if(num.length > 0) { %> 
                     <span id="notification_count"><%= num.length %></span>	
                   <%}%>
-                  <div id="notificationContainer"  style="overflow: scroll; width: 400px;
+                  <div id="notificationContainer" style="overflow: scroll; width: 400px;
                   height: 500px;">
                     <br>
                     <br>
@@ -102,11 +101,11 @@
                       <% if(notif.length > 0) { %> 
                         <% for(var i = 0; i < notif.length; i++){%>
                           <% if(notif[i].status == "Checked"){%>
-                          <div class="alert">
+                            <div class="alert alert-info">
                                <%= notif[i].message%>
                           </div>
-                          <%}else{%>
-                            <div class="alert">
+                          <% }else if(notif[i].status == "Unchecked"){%>
+                            <div class="alert alert-warning">
                                 <%= notif[i].message%>
                            </div>
                           <%}%>
@@ -218,7 +217,7 @@
 
       <div class="row">
         <div class="span12">
-          <h3><a class="btn btn-large btn-success" href="Tournaments.html"><i class="m-icon-big-swapdown m-icon-white"></i></a> Upcoming Tournaments</h3>
+          <h3><a class="btn btn-large btn-success" href="\login_tournaments"><i class="m-icon-big-swapdown m-icon-white"></i></a> Upcoming Tournaments</h3>
 
           <div id="latest-work" class="carousel btleft">
             <div class="row-fluid">
@@ -242,7 +241,6 @@
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
 					</p><br> 
-                    <p><a data-toggle="modal" href="#myModal<%= jkl %>" class="btn btn-success">More Info</a>
 				  </div>
                 </div><% jkl++ %>
 			  </div>
@@ -257,37 +255,7 @@
  
   </section>
 
-  
-<!-- modal content -->
-          <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h3 id="myModalLabel">Tournament Title</h3>
-            </div>
-            <div class="modal-body">
-              <h4>Game: League of Legends</h4>
-              <p>No. of participants :  
-							<br> Slots Left:
-							<br> Registration price:  
-							<br> Venue: 
-							<br> Date: 
-							<br> Time: 
-						</p>
-			  <hr>
-              <h4>Bracketing</h4>
-				  <a href="bracket/bracket" class="btn btn-success" role="button">Show bracketing </a>
-			  <hr>
-              <h4>Registration</h4>
-				
-              
 
-              <hr>
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal">Close</button>
-              <button class="btn btn-success">Register</button>
-            </div>
-          </div>
  
   <!-- Footer
  ================================================== -->

@@ -77,6 +77,11 @@
           <i class="fas fa-fw fa-bullhorn"></i>
           <span>Announcements</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#changeApiKeyModal" data-toggle="modal">
+          <i class="fas fa-fw fa-key"></i>
+          <span>API Key</span></a>
+      </li>
     </ul>
 
     <div id="content-wrapper">
@@ -371,6 +376,30 @@
           <div class="modal-footer">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
             <input type="submit" class="btn btn-success" value="Add">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change API Key Modal HTML -->
+  <div id="changeApiKeyModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="/changeapikey" autocomplete="off" method="POST">
+          <div class="modal-header">            
+            <h5 class="modal-title">Change API Key</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">          
+            <div class="form-group">
+              <h6>API Key</h6>
+              <input type="text" name="ApiKey" maxlength="50" class="form-control" required>
+            </div>  
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Save">
           </div>
         </form>
       </div>

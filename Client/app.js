@@ -21,8 +21,8 @@ var FileReader = require('filereader');
 var app = express();
 var connection = mysql.createConnection ({
   host     : 'localhost',
-  user     : 'root',
-  password : '',
+  user     : 'teampalak',
+  password : 'teampalak',
   database : 'teampalak'
 });
 connection.connect();
@@ -80,7 +80,6 @@ app.post('/subscribe', (req, res) => {
 app.get('/registrations', user.registrations);
 app.get('/tournaments', user.tournaments);
 app.get('/history', user.history);
-app.get('/registered_tournaments', user.registered_tournaments);
 app.get('/history2', user.history2);
 app.get('/login_tournaments', user.login_tournaments);
 app.get('/logout', user.logout); //call for logout
