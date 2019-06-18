@@ -115,7 +115,7 @@
   </section>
 
   <div class="container">
-  <% if(data[0].length > 0 && data1.length > 0){ %>
+  <% if(data[0][0].length > 0  && data1.length > 0){ %>
     <%console.log("data is = "+data.length)%>
     <% for(var gamectr = 0; gamectr < 10; gamectr++){ %>
       <% 
@@ -123,6 +123,7 @@
       var sumctr = data[gamectr].findIndex(obj => obj.pName==pIGN);
     %>
       <div id="Sample">
+
         <%if (data[gamectr][sumctr].win=="true"){ %>
           <table style="background-color: #A3CFEC" class="table table-hover">
               <thead class="black white-text">
@@ -525,9 +526,7 @@
         </div>
       </div>
       <%}%>
-    <%}else if(data[0][0].length > 0){%>
-      <h3>You haven't played</h3>
-    <%}else{%>
+    <%}else if(){%>
       <h3>You haven't played</h3>
     <%}%>
   </div>
