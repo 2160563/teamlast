@@ -85,11 +85,11 @@
                         <% for(var i = 0; i < notif.length; i++){%>
                           <% if(notif[i].status == "Checked"){%>
                             <div class="alert alert-info">
-                               <%= notif[0].message%>
+                               <%= notif[i].message%>
                           </div>
                           <% }else if(notif[i].status == "Unchecked"){%>
                             <div class="alert alert-warning">
-                                <%= notif[0].message%>
+                                <%= notif[i].message%>
                            </div>
                           <%}%>
                         <%}%>
@@ -180,7 +180,7 @@
                           <h5><b>Current In Game Name For Dota 2: </b><%= data2[0].InGameName%></h5>
                         <%}%>
                     <%}%>
-                    <!-- Code snippet -->
+              <!-- Code snippet -->
           <h3>Registered Tournaments:</h3>
 
             <div class="row-fluid">
@@ -198,12 +198,14 @@
                         <%}%>
                         <div class="caption">
                           <h3>
-                            <%= ctr1[index].TournamentName.substring(0,11) %>
+                            <%= ctr1[index].TournamentName%>
                           </h3>
-                          <%if(ctr3[index].TournamentID == ctr1[index].TournamentID){%>
-                            <p>Slots Left :  <%= ctr3[index].registeredteamID%>/<%= ctr3[index].Max_participants%></p>
-                          <%}else{%>
-                            <p>Slots Left :  0/<%= ctr3[index].Max_participants%></p>
+                          <%if(ctr1.length > 0){%>
+                            <%if(ctr1[index].tournamentID == ctr3[index].tournamentID){%>
+                              <br>Slots Left :  <%= ctr3[index].registeredteamID%>/<%= ctr3[index].Max_participants%>
+                            <%}else{%>
+                              <br>Slots Left :  0/<%= ctr1[index].Max_participants%>
+                            <%}%>
                           <%}%>
                           <br> Tournament Range: <%=ctr1[index].TournaRange%>
                           <br> Game: <%= ctr1[index].TournamentGame%>
@@ -293,35 +295,35 @@
 <% } %>
 
 <!-- model snip -->
-<% for(var index = 0; index < ctr2.length; index++){ %>
+<% for(var index = 0; index < ctr1.length; index++){ %>
   <div id="myModal1<%=index%>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h3 id="myModalLabel"><center><%= ctr2[index].TournamentName %></center></h3>
+              <h3 id="myModalLabel"><center><%= data2[index].TournamentName %></center></h3>
             </div>
       <div class="modal-body">
-        <h4>Game: <%= ctr2[index].TournamentGame%></h4>
+        <h4>Game: <%= ctr1[index].TournamentGame%></h4>
         <%if(ctr1.length > 0){%>
-          <%if(ctr3[index].tournamentID == ctr1[index].tournamentID){%>
+          <%if(ctr1[index].tournamentID == ctr3[index].tournamentID){%>
             <br>Slots Left :  <%= ctr3[index].registeredteamID%>/<%= ctr3[index].Max_participants%>
           <%}else{%>
-            <br>Slots Left :  0/<%= ctr3[index].Max_participants%>
+            <br>Slots Left :  0/<%= ctr1[index].Max_participants%>
           <%}%>
         <%}%>
-          <br> Registration price: PHP <%= ctr2[index].registration_fee.toFixed(2)%>
-          <br> Venue: <%= ctr2[index].TVenue%>
-          <br> Date: <%= ctr2[index].TSched.toDateString()%>
+          <br> Registration price: PHP <%= ctr1[index].registration_fee.toFixed(2)%>
+          <br> Venue: <%= ctr1[index].TVenue%>
+          <br> Date: <%= ctr1[index].TSched.toDateString()%>
           
-          <br> Time: <%= ctr2[index].TSched.toLocaleTimeString('en-US', 
+          <br> Time: <%= ctr1[index].TSched.toLocaleTimeString('en-US', 
                   { hour12: true, 
                     hour: "numeric", 
                     minute: "numeric"});%>
-          <br> 1st Prize:  PHP <%= ctr2[index].first.toFixed(2)%>
-          <br> 2nd Prize:  PHP <%= ctr2[index].second.toFixed(2)%>
+          <br> 1st Prize:  PHP <%= ctr1[index].first.toFixed(2)%>
+          <br> 2nd Prize:  PHP <%= ctr1[index].second.toFixed(2)%>
         </p>
         <hr>
         <h4>Bracketing</h4>
-        <a href="bracket?tid=<%= ctr2[index].TournamentID %>" class="btn btn-success" role="button">Show bracketing </a>
+        <a href="bracket?tid=<%= ctr1[index].TournamentID %>" class="btn btn-success" role="button">Show bracketing </a>
       </div>
     <div class="modal-footer">
       <button class="btn" data-dismiss="modal">Close</button>

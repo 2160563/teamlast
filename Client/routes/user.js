@@ -881,28 +881,18 @@ exports.userProfile = function(req, res, next) {
 					db.query(sql, data, function(err, rows, fields){
 						var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
       					db.query(sql1, user, function(err, row2, fields){ 
-      						var regTour = `SELECT * FROM teampalak.registered_teams r
-						INNER JOIN teampalak.tournaments t ON r.TournamentID = t.TournamentID 
-						INNER JOIN teampalak.tournament_details tou ON  tou.TournamentID = t.TournamentID 
-						INNER JOIN teampalak.accounts a INNER JOIN teampalak.members me ON me.MemID = a.AccID where a.username = ? AND t.Status = "Open" limit 1 `;
+      						var regTour = `select DISTINCT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, 
+      						td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, 
+      						rt.registeredteams, t.Status from teampalak.registered_teams r inner join teampalak.members m on r.registeredteamid = m.teamid 
+      						inner join teampalak.teams te on r.registeredteamid = te.teamid inner join teampalak.accounts acc on m.memid = acc.accid 
+      						left join teampalak.gameaccounts gacc on gacc.username = acc.username  left join teampalak.tournaments t on r.tournamentID = t.tournamentID 
+      						inner join teampalak.tournament_details td on r.tournamentID = td.tournamentID left join (SELECT COUNT(registeredteamID) AS registeredteams, 
+      						SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details left JOIN registered_teams 
+      						ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = 'Approved' GROUP BY TournamentID) rt 
+      						ON td.TournamentID = rt.TournamentID  where td.TournamentID  in (SELECT rts.tournamentID FROM teampalak.registered_teams 
+      						rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID =`+userId+`) And t.Status = 'Open' order by TSched desc `;
 						db.query(regTour,user, function(err, rows2, fields){
-							var sql2=`select DISTINCT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, 
-							td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, 
-							td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, 
-							t.tournaUB, rt.registeredteams, t.Status from teampalak.registered_teams r 
-							inner join teampalak.members m on r.registeredteamid = m.teamid 
-							inner join teampalak.teams te on r.registeredteamid = te.teamid 
-							inner join teampalak.accounts acc on m.memid = acc.accid 
-							left join teampalak.gameaccounts gacc on gacc.username = acc.username  
-							left join teampalak.tournaments t on r.tournamentID = t.tournamentID 
-							inner join teampalak.tournament_details td on r.tournamentID = td.tournamentID 
-							left join (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, 
-							tournament_details.TournamentID FROM tournament_details 
-							left JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID 
-							WHERE Status = 'Approved' GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID  
-							where td.TournamentID  in (SELECT rts.tournamentID FROM teampalak.registered_teams rts 
-							inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="102") 
-							And t.Status = 'Open' order by TSched desc`;
+							var sql2=`SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID`;
 							db.query(sql2,user, function(err, rows3, fields){
 								var sql3 = `SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, 
 								t.TournamentGame AS TournamentGame, td.TournaRange AS TournaRange, t.Status AS Status, 
@@ -1111,7 +1101,7 @@ exports.changeInGameNameLol = function(req, res) {
 					var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ? AND Game = 'LoL'";
 					db.query(sql1, user, function(err, result1, fields){
 						if (result1 == 0) {
-							var query = "SELECT * FROM teampalak.gameAccounts WHERE inGameName = ?";
+							var query = "SELECT * FROM teampalak.gameaccounts WHERE inGameName = ?";
 						db.query(query, [req.body.lol], function(err, rows, fields) {
 							//console.log(rows[0]);
 							if (rows.length > 0) {
@@ -1151,7 +1141,7 @@ exports.changeInGameNameLol = function(req, res) {
 													var rankLP = data[0].leaguePoints;
 													var mmr = convertRank(rankTier,rankDiv,rankLP);
 													
-														var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
+														var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
 														db.query(sql, function (err, result) {
 														if (err) throw err;
 															//console.log(sName+","+sID+","+aID+","+rank+","+mmr+" has been logged");
@@ -1302,7 +1292,7 @@ exports.changeInGameNameDota2 = function(req, res) {
 						if (result1 == 0) {
 							//console.log(result1);
 							//console.log("result1");
-							var query = "SELECT * FROM teampalak.gameAccounts WHERE summonerOrDotaID = ?";
+							var query = "SELECT * FROM teampalak.gameaccounts WHERE summonerOrDotaID = ?";
 							db.query(query, [req.body.dota2], function(err, rowse, fields) {
 								if (rowse.length > 0) {
 									var message2 = "Dota 2 account is already taken.";
@@ -1346,7 +1336,7 @@ exports.changeInGameNameDota2 = function(req, res) {
 											var ranks = convertRank();
 											db.connect(function(err) {
 											if (err) throw err;
-												var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
+												var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
 												db.query(sql, function (err, result) {
 												if (err) throw err;
 													//console.log(ign+","+dotaID+","+steamID+","+ranks+","+mmr_estimate+" has been logged");
@@ -1470,6 +1460,7 @@ exports.registrations = async function(req, res) {
 			where (ga.ingamename ="`+memb1+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 			db.query(sql1, function(err, result){
 				if(result.length==0){
+					console.log("puta");
 					message = "Member 1 is either unregistered or doesn't have a registered account for the game of the tournament.";
 					messaageArray.push(message);
 				}else if (result[0].mmr < result[0].tournalb){
@@ -1486,6 +1477,7 @@ exports.registrations = async function(req, res) {
 				where (ga.ingamename ="`+memb2+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 				db.query(sql111, function(err, result1){
 					if(result1.length==0){
+						console.log("puta");
 						message = "Member 2 is either unregistered or doesn't have a registered account for the game of the tournament.";
 						messaageArray.push(message);
 					}else if (result1[0].mmr < result1[0].tournalb){
@@ -1502,6 +1494,7 @@ exports.registrations = async function(req, res) {
 					where (ga.ingamename ="`+memb3+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 					db.query(sql2, function(err, result2){
 						if(result2.length==0){
+							console.log("puta");
 							message = "Member 3 is either unregistered or doesn't have a registered account for the game of the tournament.";
 							messaageArray.push(message);
 						}else if (result2[0].mmr < result2[0].tournalb){
@@ -1518,6 +1511,7 @@ exports.registrations = async function(req, res) {
 						where (ga.ingamename ="`+memb4+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 						db.query(sql3, function(err, result3){
 							if(result3.length==0){
+								console.log("puta");
 								message = "Member 4 is either unregistered or doesn't have a registered account for the game of the tournament.";
 								messaageArray.push(message);
 							}else if (result3[0].mmr < result3[0].tournalb){
@@ -1531,6 +1525,7 @@ exports.registrations = async function(req, res) {
 								|| memb1 == memb2 || memb1 == memb2 || memb1 == memb3 || memb1 == memb4
 								|| memb2 == memb3 || memb2 == memb4
 								|| memb3 == memb4 ){
+								console.log("puta");
 								message = "Member In Game Name/Dota 2 ID should be unique";
 								messaageArray.push(message);
 							}
@@ -1550,17 +1545,22 @@ exports.registrations = async function(req, res) {
 							and r.tournamentid = `+tID+`
 							`;
 							db.query(sqlchecker, function(err, result20){
+								console.log("putapete");
 								var teamname = `select t.teamid from teampalak.teams t inner join teampalak.registered_teams rt on rt.registeredteamid where t.teamname = "`+tname+`" and rt.tournamentid = `+tID;
 								db.query(teamname,function(err,namecheck){
 									if(namecheck.length>0){
+										console.log("putangina");
 										message = "The team name is already taken in this tournament. please choose another.";
 									messaageArray.push(message);
 									}
 								if(result20.length>0){
+									console.log("putangina talaga");
 									message = "A member of this team is already registered in another team for this tournament.";
 									messaageArray.push(message);
-								}else if (messaageArray.length>0){
+								}
+								if (messaageArray.length>0){
 									var messages = "";
+									console.log("putangina ulet");
 									for(var me = 0; me<messaageArray.length;me++){
 										messages += messaageArray[me] + "\n";
 									}
@@ -1608,12 +1608,9 @@ exports.registrations = async function(req, res) {
 			});
 	})
 };
-//==========================| LOGOUT |=============================
-exports.logout = function(req, res) {
-	req.session.destroy(function(err) {
-		res.redirect("/home");
-	})
-};
+
+
+
 
 //==========================| REGISTER Teampalak Account |=============================
 exports.register = function(req, res) {
@@ -1628,15 +1625,9 @@ exports.register = function(req, res) {
 					res.send("<script type='text/javascript'>alert('Passwords do not match.'); window.location.replace(\"/register\");</script>");
 				} else {
 					var mysql = require('mysql');
-								
-					var con = mysql.createConnection({
-					  host: "localhost",
-					  user: "root",
-					  password: "",
-					  database: "teampalak"
-					});
+
 					if(req.body.lol){
-						var query = "SELECT * FROM teampalak.gameAccounts acc WHERE acc.inGameName = ?";
+						var query = "SELECT * FROM teampalak.gameaccounts acc WHERE acc.inGameName = ?";
 						db.query(query, [req.body.lol], function(err, rows, fields) {
 							console.log(rows[0]);
 							if (rows.length > 0) {
@@ -1674,7 +1665,7 @@ exports.register = function(req, res) {
 													db.query(insert, [values], function(err, rows, fields) {
 														res.send("<script type='text/javascript'>alert('Account successfully registered.'); window.location.replace(\"/register\");</script>");
 													});
-														var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
+														var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
 														db.query(sql, function (err, result) {
 														if (err) throw err;
 															console.log(sName+","+sID+","+aID+","+rank+","+mmr+" has been logged");
@@ -1759,7 +1750,7 @@ exports.register = function(req, res) {
 						if(isNaN(req.body.dota2)){
 							res.send("<script type='text/javascript'>alert('Please input your Dota 2 ID.'); window.location.replace(\"/register\");</script>");
 						}else{
-							var query = "SELECT * FROM teampalak.gameAccounts WHERE summonerOrDotaID = ?";
+							var query = "SELECT * FROM teampalak.gameaccounts WHERE summonerOrDotaID = ?";
 							db.query(query, [req.body.dota2], function(err, rowse, fields) {
 								if (rowse.length > 0) {
 									res.send("<script type='text/javascript'>alert('Dota 2 account is already taken.'); window.location.replace(\"/register\");</script>");
@@ -1792,7 +1783,7 @@ exports.register = function(req, res) {
 												res.send("<script type='text/javascript'>alert('Account successfully registered.'); window.location.replace(\"/register\");</script>");
 											})
 
-												var sql = "INSERT INTO teampalak.gameAccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
+												var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
 												db.query(sql, function (err, result) {
 												if (err) throw err;
 													console.log(ign+","+dotaID+","+steamID+","+ranks+","+mmr_estimate+" has been logged");
@@ -1848,6 +1839,14 @@ exports.register = function(req, res) {
 	}
 
 };
+
+//==========================| LOGOUT |=============================
+exports.logout = function(req, res) {
+	req.session.destroy(function(err) {
+		res.redirect("/home");
+	})
+};
+
 
 //==========================| Results Page |=============================
 exports.resultsPage = function(req, res) {
