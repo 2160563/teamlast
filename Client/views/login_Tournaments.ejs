@@ -85,11 +85,11 @@
                         <% for(var i = 0; i < notif.length; i++){%>
                           <% if(notif[i].status == "Checked"){%>
                             <div class="alert alert-info">
-                               <%= notif[0].message%>
+                               <%= notif[i].message%>
                           </div>
                           <% }else if(notif[i].status == "Unchecked"){%>
                             <div class="alert alert-warning">
-                                <%= notif[0].message%>
+                                <%= notif[i].message%>
                            </div>
                           <%}%>
                         <%}%>

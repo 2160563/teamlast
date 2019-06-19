@@ -20,7 +20,7 @@ var fs = require('fs');
 var FileReader = require('filereader');
 var app = express();
 var connection = mysql.createConnection ({
-  host     : '192.168.1.13',
+  host     : 'localhost',
   user     : 'teampalak',
   password : 'teampalak',
   database : 'teampalak'
