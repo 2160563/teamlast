@@ -233,7 +233,7 @@
                   <div class="caption">
 
                     <h3><%= element.TournamentName.substring(0,11) %></h3>
-                        <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+                                                    <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
