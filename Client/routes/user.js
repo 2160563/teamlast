@@ -147,9 +147,9 @@ exports.client = function(req, res, next) {
 											//console.log("Clinet home result 6");
 											var sql8 = "SELECT * FROM teampalak.announcements order by announcementDate desc";
 											db.query(sql8, function(err, result8){
-												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -366,9 +366,9 @@ exports.history = function(req, res, next) {
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                	var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+                                                	var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -413,9 +413,9 @@ exports.history = function(req, res, next) {
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
                                                     //console.log("Login Tournaments Team result 7");
-                                                        var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+                                                        var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -458,9 +458,9 @@ exports.history = function(req, res, next) {
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+                                                    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -503,9 +503,9 @@ exports.history = function(req, res, next) {
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+                                                    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -717,9 +717,9 @@ exports.login_tournaments = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -759,9 +759,9 @@ exports.login_tournaments = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -800,9 +800,9 @@ exports.login_tournaments = function(req, res, next) {
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -834,9 +834,9 @@ exports.login_tournaments = function(req, res, next) {
 									db.query(sql5, function(err, result5){
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-													var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+													var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
-													var sql10 = "select message, status from teampalak.notifications where accID = ?";
+													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
@@ -905,9 +905,9 @@ exports.userProfile = function(req, res, next) {
 								tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) 
 								rt ON td.TournamentID = rt.TournamentID`;
 								db.query(sql3,user, function(err, rows4, fields){
-									var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+									var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 									db.query(sql9,userId, function(err, result9){
-										var sql10 = "select message, status from teampalak.notifications where accID = ?";
+										var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 										db.query(sql10,userId, function(err, result10){
 											var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 											db.query(sql11,userId, function(err, result11){
@@ -955,9 +955,9 @@ exports.editProfile = function(req, res) {
 		db.query(query, user, function(err, rows, fields) {
 			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
       		db.query(sql, user, function(err, row, fields){ 
-      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 				db.query(sql9,userId, function(err, result9){
-					var sql10 = "select message, status from teampalak.notifications where accID = ?";
+					var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 					db.query(sql10,userId, function(err, result10){
 						var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 						db.query(sql11,userId, function(err, result11){
@@ -1025,9 +1025,9 @@ exports.uploadProfile = function(req, res) {
 		db.query(query, user, function(err, rows, fields) {
 			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
       		db.query(sql, user, function(err, row, fields){
-      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 				db.query(sql9,userId, function(err, result9){
-					var sql10 = "select message, status from teampalak.notifications where accID = ?";
+					var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 					db.query(sql10,userId, function(err, result10){
 						var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 						db.query(sql11,userId, function(err, result11){
@@ -1089,9 +1089,9 @@ exports.changeInGameNameLol = function(req, res) {
 		db.query(query, user, function(err, rows, fields) {
 			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
       		db.query(sql, user, function(err, row, fields){ 
-      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 				db.query(sql9,userId, function(err, result9){
-					var sql10 = "select message, status from teampalak.notifications where accID = ?";
+					var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 					db.query(sql10,userId, function(err, result10){
 						var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 						db.query(sql11,userId, function(err, result11){
@@ -1277,9 +1277,9 @@ exports.changeInGameNameDota2 = function(req, res) {
 		db.query(query, user, function(err, rows, fields) {
 			var sql = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
       		db.query(sql, user, function(err, row, fields){ 
-      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+      			var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 				db.query(sql9,userId, function(err, result9){
-					var sql10 = "select message, status from teampalak.notifications where accID = ?";
+					var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 					db.query(sql10,userId, function(err, result10){
 						var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 						db.query(sql11,userId, function(err, result11){
@@ -1951,9 +1951,9 @@ exports.resultsPage = function(req, res) {
 
 				var sql111 = 'SELECT gameacc.InGameName from teampalak.gameaccounts gameacc inner join teampalak.accounts acc on gameacc.username = acc.username where acc.username ="'+req.session.user+'"';
 				db.query(sql111, function(err, result111){
-					var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+					var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 					db.query(sql9,userId, function(err, result9){
-						var sql10 = "select message, status from teampalak.notifications where accID = ?";
+						var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 						db.query(sql10,userId, function(err, result10){
 							var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 							db.query(sql11,userId, function(err, result11){

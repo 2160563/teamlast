@@ -37,9 +37,9 @@ exports.editProfile = function(req, res){
     res.redirect("/login");
     return;
   } else {
-    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ?";
+    var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
     db.query(sql9,userId, function(err, result9){
-      var sql10 = "select message, status from teampalak.notifications where accID = ?";
+      var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
       db.query(sql10,userId, function(err, result10){
         var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
         db.query(sql11,userId, function(err, result11){
