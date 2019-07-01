@@ -148,7 +148,7 @@
                   <div class="caption">
                     <h3 name = <%= element.TournamentID %></h3><%= element.TournamentName.substring(0,11) %></h3>
                     Range:<%= element.TournaRange%>
-              <p> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+                                          <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -200,7 +200,7 @@
                   <div class="caption">
                     <h3><%= element.TournamentName%></h3>
                     Range:<%= element.TournaRange%>
-              <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+                            <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -250,7 +250,7 @@
                   <div class="caption">
                     <h3><%= element.TournamentName%></h3>
                     Range:<%= element.TournaRange%>
-              <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+                            <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
             <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
   
@@ -292,7 +292,7 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+              <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
@@ -321,7 +321,7 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+              <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
@@ -350,7 +350,7 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
-              <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
+              <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
               <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
