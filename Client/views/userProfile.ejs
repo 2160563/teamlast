@@ -209,7 +209,7 @@
                           <%}%>
                           <br> Tournament Range: <%=ctr1[index].TournaRange%>
                           <br> Game: <%= ctr1[index].TournamentGame%>
-                          <br> Registration price:  PHP <%= ctr1[index].registration_fee.toFixed(2)%>
+                          <br> Registration price:  &#8369; <%= ctr1[index].registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
                           </p><br> 
                           <p><a data-toggle="modal" href="#myModal1<%=index%>" class="btn btn-success">More Info</a></p>
                         </div>
@@ -310,7 +310,7 @@
             <br>Slots Left :  0/<%= ctr1[index].Max_participants%>
           <%}%>
         <%}%>
-          <br> Registration price: PHP <%= ctr1[index].registration_fee.toFixed(2)%>
+          <br> Registration price: &#8369; <%= ctr1[index].registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
           <br> Venue: <%= ctr1[index].TVenue%>
           <br> Date: <%= ctr1[index].TSched.toDateString()%>
           
@@ -318,8 +318,8 @@
                   { hour12: true, 
                     hour: "numeric", 
                     minute: "numeric"});%>
-          <br> 1st Prize:  PHP <%= ctr1[index].first.toFixed(2)%>
-          <br> 2nd Prize:  PHP <%= ctr1[index].second.toFixed(2)%>
+          <br> 1st Prize:  &#8369; <%= ctr1[index].first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+          <br> 2nd Prize:  &#8369; <%= ctr1[index].second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
         </p>
         <hr>
         <h4>Bracketing</h4>

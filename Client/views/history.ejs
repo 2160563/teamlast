@@ -184,7 +184,7 @@
                     <h3 name = <%= element.TournamentID %></h3><%= element.TournamentName.substring(0,11) %></h3>
               <p> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModal<%= jkl %>" class="btn btn-success">More Info</a>
@@ -235,7 +235,7 @@
                     <h3><%= element.TournamentName%></h3>
               <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModallol<%= jk %>" class="btn btn-success">More Info</a>
@@ -284,7 +284,7 @@
                     <h3><%= element.TournamentName%></h3>
               <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModaldota<%= jk %>" class="btn btn-success">More Info</a>
@@ -324,12 +324,12 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                                 <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                                 <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>           
               
@@ -352,12 +352,12 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                              <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                              <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>
                             <%var array = []%>
@@ -391,7 +391,7 @@
                <hr> 
                <%}%>
           <h4>Bracketing</h4>
-          <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show bracketing </a>
+          <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show matches</a>
             </div>
             <div class="modal-footer">
               <button class="btn" data-dismiss="modal">Close</button>
@@ -412,16 +412,16 @@
             <div class="modal-body">
               <h4>Game: <%= element.TournamentGame%></h4>
               <br> Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<% if(element.registeredteams){ %><%= element.Max_participants-element.registeredteams %><%}else{%><%= element.Max_participants%><%}%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                              <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                              <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>
             <h4>Bracketing</h4>
-          <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show bracketing </a>
+          <a href="bracket?tid=<%= element.TournamentID %>&message=history" class="btn btn-success" role="button">Show matches</a>
             </div>
             <div class="modal-footer">
               <button class="btn" data-dismiss="modal">Close</button>

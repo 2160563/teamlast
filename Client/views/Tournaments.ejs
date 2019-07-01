@@ -150,7 +150,7 @@
                     Range:<%= element.TournaRange%>
                                           <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModal<%= jkl %>" class="btn btn-success">More Info</a>
@@ -202,7 +202,7 @@
                     Range:<%= element.TournaRange%>
                             <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModallol<%= jk %>" class="btn btn-success">More Info</a>
@@ -252,7 +252,7 @@
                     Range:<%= element.TournaRange%>
                             <p>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
             <br> Game:<%= element.TournamentGame %>
-            <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+            <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
   
           </p><br> 
                     <p><a data-toggle="modal" href="#myModaldota<%= jk %>" class="btn btn-success">More Info</a>
@@ -293,12 +293,12 @@
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
               <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                                 <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                                 <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>           
               
@@ -322,12 +322,12 @@
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
               <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                              <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                              <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>
             </div>
@@ -351,12 +351,12 @@
               <h4>Game: <%= element.TournamentGame%></h4>
               Range:<%= element.TournaRange%>
               <br>Slots Left:<% if(element.registeredteams){ %><%= element.registeredteams %><%}else{%>0<%}%>/<%= element.Max_participants%>
-              <br> Registration price:  PHP <%= element.registration_fee.toFixed(2)%>
+              <br> Registration price:  &#8369; <%= element.registration_fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
               <br> Venue: <%= element.TVenue%>
               <br> Start Date: <%= new Date(element.TSched).toDateString() %>
               <br> Start Time: <%= new Date(element.TSched).toLocaleTimeString('en-US') %>
-                              <br> 1st Prize:  PHP <%= element.first.toFixed(2)%>
-              <br> 2nd Prize:  PHP <%= element.second.toFixed(2)%>
+                              <br> 1st Prize:  &#8369; <%= element.first.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
+              <br> 2nd Prize:  &#8369; <%= element.second.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2 })%>
             </p>
         <hr>
               
@@ -421,12 +421,6 @@
           <div class="span6">
             <div class="pull-right">
               <div class="credits">
-                <!--
-                  All the links in the footer should remain intact.
-                  You can delete the links only if you purchased the pro version.
-                  Licensing information: https://bootstrapmade.com/license/
-                  Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Scaffold
-                -->
               </div>
             </div>
           </div>
