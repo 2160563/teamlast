@@ -59,6 +59,10 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
+.example-print {
+  display: none;
+}
+
 @media print {
   * {
     font-size: 18px;

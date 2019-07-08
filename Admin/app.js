@@ -149,7 +149,7 @@ app.get('/tournaments', (request, response) => {
   if(user && accountType == 'Admin') {
     //ORIGINAL QUERY
     //con.query('SELECT tournaments.TournamentID, TournamentName, TournamentGame, TournaRange, Status, DATE_FORMAT(tournament_details.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(tournament_details.TSched,"%l:%i %p") AS tTime, tournament_details.Max_participants, tournament_details.TVenue, FORMAT(tournament_details.registration_fee, 2) AS registration_fee, LENGTH(tournament_details.Tpic) AS Tpiclength FROM tournaments INNER JOIN tournament_details ON tournaments.TournamentID = tournament_details.TournamentID', function(err, rows, fields) {
-    con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, LENGTH(td.Tpic) AS Tpiclength, rt.registeredteams AS registeredteamID FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID', function(err, rows, fields) {
+    con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, LENGTH(td.Tpic) AS Tpiclength, rt.registeredteams AS registeredteamID FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID', function(err, rows, fields) {
       //con.query('SELECT COUNT(tourna.ID) AS teams FROM (SELECT Team1ID AS ID FROM game WHERE TournaID = ? UNION SELECT Team2ID AS ID FROM game WHERE TournaID = ?) AS tourna', [index, index], function(err, rows2, fields) {
         response.render('tournaments', {
           user: request.session.user,
@@ -190,7 +190,7 @@ app.post('/addtournament', (request, response) => {
           con.query('SELECT LAST_INSERT_ID() AS lastID', function(err, rows, fields) {
             
             if(request.body.TournamentPicture) {
-              var image = fs.readFileSync(path.resolve(__dirname, "../Admin/upload/" + request.body.TournamentPicture));
+              var image = fs.readFileSync(path.resolve(__dirname, "../TEAMPALAK/upload/" + request.body.TournamentPicture));
               var filetype = path.extname(request.body.TournamentPicture);
 
               if(filetype == '.jpg' || filetype == '.png' || filetype == '.jpeg') {
@@ -232,7 +232,7 @@ app.post('/addtournament', (request, response) => {
           con.query('SELECT LAST_INSERT_ID() AS lastID', function(err, rows, fields) {
             
             if(request.body.TournamentPicture) {
-              var image = fs.readFileSync(path.resolve(__dirname, "../Admin/upload/" + request.body.TournamentPicture));
+              var image = fs.readFileSync(path.resolve(__dirname, "../TEAMPALAK/upload/" + request.body.TournamentPicture));
               var filetype = path.extname(request.body.TournamentPicture);
 
               if(filetype == '.jpg' || filetype == '.png' || filetype == '.jpeg') {
@@ -544,6 +544,7 @@ app.post('/viewtregister', (request, response) => {
   let index = parseInt(request.body.TournamentID);
   let GameID = parseInt(request.body.GameID);
   let winnerArray = request.body.roundWinner;
+  let now = moment(new Date()).format('YYYY-MM-DD HH:mm:00');
 
   con.query('SELECT MAX(Rounds) AS round FROM game WHERE tournamentID = ?', index, function(err, latestround, fields){
     if(latestround[0].round != null){
@@ -560,12 +561,12 @@ app.post('/viewtregister', (request, response) => {
               [index, round+1, array[1], array2[1]]
             ];
 
-            con.query('UPDATE game SET Winner = ? WHERE GameID = ?', [array[1], array[0]]);
-            con.query('UPDATE game SET Winner = ? WHERE GameID = ?', [array2[1], array2[0]]);
+            con.query('UPDATE game SET Winner = ?, date = ? WHERE GameID = ?', [array[1], now, array[0]]);
+            con.query('UPDATE game SET Winner = ?, date = ? WHERE GameID = ?', [array2[1], now, array2[0]]);
             con.query('INSERT INTO game (tournamentID, Rounds, Team1ID, Team2ID) VALUES ?', [values]);
           }
           round = round + 1;
-          con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
+          con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, FORMAT(td.1stPrize, 2) AS fp, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, FORMAT(td.2ndPrize, 2) AS sp, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
             con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Approved" AND TournamentID = ?', index, function(err, rows2, fields) {
               con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Pending" AND TournamentID = ?', index, function(err, rows3, fields) {
                 con.query('SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID WHERE tournamentID = ? AND Rounds = ?', [index, round], function(err, rows4, fields){
@@ -588,21 +589,24 @@ app.post('/viewtregister', (request, response) => {
           var str = request.body.roundWinner;
           var array = str.split(",");
 
-          con.query('UPDATE game SET Winner = ? WHERE GameID = ?', [array[1], array[0]]);
-          con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
+          con.query('UPDATE game SET Winner = ?, date = ? WHERE GameID = ?', [array[1], now, array[0]]);
+          con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, FORMAT(td.1stPrize, 2) AS fp, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, FORMAT(td.2ndPrize, 2) AS sp, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
             con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Approved" AND TournamentID = ?', index, function(err, rows2, fields) {
               con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Pending" AND TournamentID = ?', index, function(err, rows3, fields) {
                 con.query('SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, teamb.TeamName AS Team2Name, game.Winner AS WinnerID, teamc.TeamName AS WinnerName FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID INNER JOIN teams as teamc ON teamc.TeamID = game.Winner WHERE tournamentID = ?', index, function(err, rows4, fields){
-                  response.render('tregister', {
-                    results: true,
-                    user: request.session.user,
-                    accountType: request.session.accountType,
-                    data: rows,
-                    data2: rows2,
-                    data3: rows3,
-                    data4: rows4,
-                    TournamentID: index,
-                    edit: parseInt(0)
+                  con.query('SELECT DATE_FORMAT(MAX(date),"%l:%i %p") AS endtime FROM game WHERE tournamentID = ?', index, function(err, rows5, fields){
+                    response.render('tregister', {
+                      results: true,
+                      user: request.session.user,
+                      accountType: request.session.accountType,
+                      data: rows,
+                      data2: rows2,
+                      data3: rows3,
+                      data4: rows4,
+                      data5: rows5,
+                      TournamentID: index,
+                      edit: parseInt(0)
+                    });
                   });
                 });
               });
@@ -612,27 +616,30 @@ app.post('/viewtregister', (request, response) => {
       } else {
         con.query('SELECT Winner FROM game WHERE tournamentID = ? AND Rounds = ?', [index, 4], function(err, checkwinner, fields){
           if(checkwinner.length && checkwinner[0].Winner != null){
-            con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
+            con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, FORMAT(td.1stPrize, 2) AS fp, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, FORMAT(td.2ndPrize, 2) AS sp, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
               con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Approved" AND TournamentID = ?', index, function(err, rows2, fields) {
                 con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Pending" AND TournamentID = ?', index, function(err, rows3, fields) {
                   con.query('SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, teamb.TeamName AS Team2Name, game.Winner AS WinnerID, teamc.TeamName AS WinnerName FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID INNER JOIN teams as teamc ON teamc.TeamID = game.Winner WHERE tournamentID = ?', index, function(err, rows4, fields){
-                    response.render('tregister', {
-                      results: true,
-                      user: request.session.user,
-                      accountType: request.session.accountType,
-                      data: rows,
-                      data2: rows2,
-                      data3: rows3,
-                      data4: rows4,
-                      TournamentID: index,
-                      edit: parseInt(0)
+                    con.query('SELECT DATE_FORMAT(MAX(date),"%l:%i %p") AS endtime FROM game WHERE tournamentID = ?', index, function(err, rows5, fields){
+                      response.render('tregister', {
+                        results: true,
+                        user: request.session.user,
+                        accountType: request.session.accountType,
+                        data: rows,
+                        data2: rows2,
+                        data3: rows3,
+                        data4: rows4,
+                        data5: rows5,
+                        TournamentID: index,
+                        edit: parseInt(0)
+                      });
                     });
                   });
                 });
               });
             });
           } else {
-            con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
+            con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, FORMAT(td.1stPrize, 2) AS fp, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, FORMAT(td.2ndPrize, 2) AS sp, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
               con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Approved" AND TournamentID = ?', index, function(err, rows2, fields) {
                 con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Pending" AND TournamentID = ?', index, function(err, rows3, fields) {
                   con.query('SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID WHERE tournamentID = ? AND Rounds = ?', [index, round], function(err, rows4, fields){
@@ -655,7 +662,7 @@ app.post('/viewtregister', (request, response) => {
         });
       }
     } else {
-      con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
+      con.query('SELECT t.TournamentID AS TournamentID, t.TournamentName AS TournamentName, t.TournamentGame AS TournamentGame, FORMAT(td.1stPrize, 2) AS fp, REPLACE(FORMAT(td.1stPrize, 2), ",", "") AS FirstPrize, FORMAT(td.2ndPrize, 2) AS sp, REPLACE(FORMAT(td.2ndPrize, 2), ",", "") AS SecondPrize, td.TournaRange AS TournaRange, t.Status AS Status, DATE_FORMAT(td.TSched,"%M %d, %Y") AS tDate, DATE_FORMAT(td.TSched,"%l:%i %p") AS tTime, td.Max_participants AS Max_participants, td.TVenue AS TVenue, FORMAT(td.registration_fee, 2) AS rf, REPLACE(FORMAT(td.registration_fee, 2), ",", "") AS registration_fee, TO_BASE64(CAST(td.Tpic AS CHAR)) AS Tpic, rt.registeredteams AS registeredteamID, rt.seed FROM tournament_details td INNER JOIN (SELECT TournamentID, TournamentName, TournamentGame, Status FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = "Approved" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE td.TournamentID = ?', index, function(err, rows, fields){
         con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Approved" AND TournamentID = ?', index, function(err, rows2, fields) {
           con.query('SELECT registeredteamID, TeamName, Status, TournamentID FROM registered_teams INNER JOIN teams ON registered_teams.registeredteamID = teams.TeamID WHERE Status = "Pending" AND TournamentID = ?', index, function(err, rows3, fields) {
             con.query('SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID WHERE tournamentID = ?', index, function(err, rows4, fields){
@@ -846,7 +853,7 @@ app.post('/updatetournament', (request, response) => {
       //TournaRange = lowerrankname + " - " + upperrankname;
 
       if(request.body.TournamentPicture) {
-        var image = fs.readFileSync(path.resolve(__dirname, "../Admin/upload/" + request.body.TournamentPicture));
+        var image = fs.readFileSync(path.resolve(__dirname, "../TEAMPALAK/upload/" + request.body.TournamentPicture));
         var filetype = path.extname(request.body.TournamentPicture);
 
         if(filetype == '.jpg' || filetype == '.png' || filetype == '.jpeg') {
@@ -998,7 +1005,7 @@ app.post('/addannouncement', (request, response) => {
 
   if(user && accountType == 'Admin') {
     if(request.body.announcementPic) {
-      var image = fs.readFileSync(path.resolve(__dirname, "../Admin/upload/" + request.body.announcementPic));
+      var image = fs.readFileSync(path.resolve(__dirname, "../TEAMPALAK/upload/" + request.body.announcementPic));
       var filetype = path.extname(request.body.announcementPic);
       
       if(filetype == '.jpg' || filetype == '.png' || filetype == '.jpeg') {
@@ -1053,7 +1060,7 @@ app.post('/updateannouncement', (request, response) => {
   var announcementMessage = request.body.announcementMessage;
 
   if(request.body.announcementPic) {
-    var image = fs.readFileSync(path.resolve(__dirname, "../Admin/upload/" + request.body.announcementPic));
+    var image = fs.readFileSync(path.resolve(__dirname, "../TEAMPALAK/upload/" + request.body.announcementPic));
     var filetype = path.extname(request.body.announcementPic);
 
     if(filetype == '.jpg' || filetype == '.png' || filetype == '.jpeg') {

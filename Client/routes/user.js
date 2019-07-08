@@ -6,17 +6,17 @@ exports.login = function(req, res) {
     if(req.method == "POST"){
         if (req.body.user) {
             db.query('SELECT * FROM teampalak.accounts a WHERE a.username = ?', [req.body.user], function(err, rows, fields) {
-				//console.log(rows);
+				//
                 if (rows.length > 0) {
                     db.query('SELECT * FROM teampalak.accounts a WHERE a.username = ?', [req.body.user], function(err, rows, fields) {
                         if (bcrypt.compareSync(req.body.password, rows[0].Password)) {
                             req.session.user = req.body.user;
                             req.session.userID = rows[0].AccID;
-                            //console.log(req.session.userID);
+                            //
                             res.redirect('/client');
                         } else {
                             var message = 'Incorrect username/password.';
-                            //console.log(message);
+                            //
                             res.render('login.ejs', {message: message});
                         }
                     });
@@ -46,39 +46,39 @@ exports.home = function(req, res, next) {
 	};
 	sms.sendsms(payload, function(error, result) {
 	if (!error) {
-		//console.log("result"+result);
+		//
 	} else{
-				//console.log("error"+error);
+				//
 	}
 	}); 
 			var sql = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by TSched desc";
 			db.query(sql, function(err, result){
-				//console.log(result);
-				//console.log("Register Team result 0");
+				//
+				//
 				var sql1 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' order by TSched desc";
 				db.query(sql1, function(err, result1){
-					//console.log("Register Team result 1");
+					//
 					var sql2 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' order by TSched desc";
 					db.query(sql2, function(err, result2){
-						//console.log("Register Team result result 2");
+						//
 						var sql3 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' order by TSched desc";
 				    db.query(sql3, function(err, result3){
-				        //console.log("HOME result2");
+				        //
 						var sql4 = "SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID WHERE TournamentGame like \'lol%\' AND t.Status = 'Open'";
 					    db.query(sql4, function(err, result4){
-					        //console.log("HOME result3");
+					        //
 							var sql5 = "SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID WHERE TournamentGame like \'dota%\' AND t.Status = 'Open'";
 						    db.query(sql5, function(err, result5){
-						        //console.log("HOME result4");
+						        //
 								var sql6 = "SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID WHERE TournamentGame like \'cs%\' AND t.Status = 'Open'";
 							    db.query(sql6, function(err, result6){
-							        //console.log("HOME result5");
+							        //
 									var sql7 = "SELECT tournaments.TournamentID as tournaID, teampalak.TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 								    db.query(sql7, function(err, result7){
-								        //console.log("HOME result6");
+								        //
 								        var sql8 = "SELECT * FROM teampalak.announcements order by announcementDate desc";
 									    db.query(sql8, function(err, result8){
-									        //console.log("HOME result7");
+									        //
 									            res.render('home.ejs', {data:result,data1:result1,data2:result2,data3:result3, user: userId, message:req.session.message, lol:result4, dota:result5, cs:result5, all:result7, announcements:result8});
 									            req.session.message = "";
 									    })
@@ -114,37 +114,37 @@ exports.client = function(req, res, next) {
 	}else{
 		sms.sendsms(payload, function(error, result) {
 		if (!error) {
-			//console.log("result"+result);
+			//
 		} else{
-			//console.log("error"+error);
+			//
 		}
 
 		}); 
 			var sql = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by TSched desc";
 			db.query(sql, function(err, result){
-				//console.log(result);
-				//console.log("Register Team result 0");
+				//
+				//
 				var sql1 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' order by TSched desc";
 				db.query(sql1, function(err, result1){
-					//console.log("Register Team result 1");
+					//
 					var sql2 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' order by TSched desc";
 					db.query(sql2, function(err, result2){
-						//console.log("Register Team result result 2");
+						//
 						var sql3 = "SELECT * FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t  ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' order by TSched desc";
 						db.query(sql3, function(err, result3){
-							//console.log("Clinet home result 2");
+							//
 							var sql4 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like \'lol%\'";
 							db.query(sql4, function(err, result4){
-								//console.log("Clinet home result 3");
+								//
 								var sql5 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like \'dota%\'";
 								db.query(sql5, function(err, result5){
-									//console.log("Clinet home result 4");
+									//
 									var sql6 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID having TournamentGame like \'cs%\'";
 									db.query(sql6, function(err, result6){
-										//console.log("Clinet home result 5");
+										//
 										var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 										db.query(sql7, function(err, result7){
-											//console.log("Clinet home result 6");
+											//
 											var sql8 = "SELECT * FROM teampalak.announcements order by announcementDate desc";
 											db.query(sql8, function(err, result8){
 												var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
@@ -184,10 +184,10 @@ exports.client = function(req, res, next) {
 };
 //==========================| Tournaments |=============================
 exports.tournaments = function(req, res, next) {
-		//console.log("a");
+		//
 			var user = req.session.user,
 				userId = req.session.userId;
-			//console.log("b");
+			//
 			var dasa = req.body.dasa;
 			var message = "";
 			req.session.message = "";
@@ -197,24 +197,24 @@ exports.tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by registration_fee";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by registration_fee";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' order by registration_fee";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' order by registration_fee";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' order by registration_fee";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
+												//
 													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
@@ -231,24 +231,24 @@ exports.tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic,td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by registration_fee desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by registration_fee desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' order by registration_fee desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' order by registration_fee desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' order by registration_fee desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
+												//
 													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
@@ -264,24 +264,24 @@ exports.tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
+												//
 													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
@@ -297,24 +297,24 @@ exports.tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Open' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
-												//console.log("Login Tournaments Team result 7");
+												//
 													res.render('tournaments.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7});
 													req.session.message = "";
 											})
@@ -329,10 +329,10 @@ exports.tournaments = function(req, res, next) {
 		};
 //==========================| History login|=============================
 exports.history = function(req, res, next) {
-	//console.log("a");
+	//
 		var user = req.session.user,
 			userId = req.session.userID;
-		//console.log("b");
+		//
 					if(req.session.message === undefined)
 				req.session.message = "";
 					var message = req.session.message;
@@ -347,20 +347,20 @@ exports.history = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by td.TSched";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by td.TSched";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by td.TSched";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -372,7 +372,7 @@ exports.history = function(req, res, next) {
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8,num:result9,
 																notif:result10});
                                                 		})
@@ -393,33 +393,33 @@ exports.history = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by td.TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by td.TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by td.TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         var sql9 = "select message from teampalak.notifications where status = 'unchecked' AND accID = ? ORDER BY notifID DESC";
 												db.query(sql9,userId, function(err, result9){
 													var sql10 = "select message, status from teampalak.notifications where accID = ? ORDER BY notifID DESC";
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8,num:result9,
 																notif:result10});
                                                 		})
@@ -439,20 +439,20 @@ exports.history = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic,td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -464,7 +464,7 @@ exports.history = function(req, res, next) {
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8,num:result9,
 																notif:result10});
                                                 		})
@@ -484,20 +484,20 @@ exports.history = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -509,7 +509,7 @@ exports.history = function(req, res, next) {
 													db.query(sql10,userId, function(err, result10){
 														var sql11 = "UPDATE notifications SET status='Checked' WHERE accID = ?";
 														db.query(sql11,userId, function(err, result11){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8,num:result9,
 																notif:result10});
                                                 		})
@@ -529,10 +529,10 @@ exports.history = function(req, res, next) {
 
 //==========================| History not login|=============================
 exports.history2 = function(req, res, next) {
-	//console.log("a");
+	//
 		var user = req.session.user,
 			userId = req.session.userId;
-		//console.log("b");
+		//
 					if(req.session.message === undefined)
 				req.session.message = "";
 					var message = req.session.message;
@@ -544,26 +544,26 @@ exports.history2 = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by td.TSched";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by td.TSched";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by td.TSched";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history2.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
                                                 })
 											})
@@ -580,26 +580,26 @@ exports.history2 = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by td.TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by td.TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by td.TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by td.TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history2.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
                                                 })
 											})
@@ -615,26 +615,26 @@ exports.history2 = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic,td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' and t.TournamentName like '%"+req.query.search+"%' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Team2ID, game.Winner, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history2.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7, data4:result8});
                                                 })
 											})
@@ -650,26 +650,26 @@ exports.history2 = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Closed' order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'dota%\' AND t.Status = 'Closed' order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Closed' order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Closed' order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
                                                 var sql8 = "SELECT game.GameID, game.tournamentID, game.Rounds, game.Team1ID, teama.TeamName AS Team1Name, game.Winner, game.Team2ID, teamb.TeamName AS Team2Name FROM game as game INNER JOIN teams as teama on teama.TeamID = game.Team1ID INNER JOIN teams as teamb on teamb.TeamID = game.Team2ID";
                                                 db.query(sql8, function(err, result8){
-                                                    //console.log("Login Tournaments Team result 7");
+                                                    //
                                                         res.render('history2.ejs',{data:result,data1:result1,data2:result2, user: userId, message:message, lol:result4, dota:result5,  all:result7 ,data4:result8});
                                                 })
 											})
@@ -684,10 +684,10 @@ exports.history2 = function(req, res, next) {
 	};
 //==========================| Login Tournaments Team |=============================
 exports.login_tournaments = function(req, res, next) {
-		//console.log("a");
+		//
 			var user = req.session.user,
 				userId = req.session.userID;
-			//console.log("b");
+			//
 			var dasa = req.body.dasa;
 			var message = req.session.message;
 			req.session.message = "";
@@ -700,20 +700,20 @@ exports.login_tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like 'dota%' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -742,20 +742,20 @@ exports.login_tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic,td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like 'dota%' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by registration_fee desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -783,20 +783,20 @@ exports.login_tournaments = function(req, res, next) {
 				req.session.message = "";
 				var sql = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by TSched desc";
 				db.query(sql, function(err, result){
-					//console.log("Login Tournaments Team result 0");
-					//console.log(result);
+					//
+					//
 					var sql1 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID WHERE t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by TSched desc";
 					db.query(sql1, function(err, result1){
-						//console.log("Login Tournaments Team result 1");
+						//
 						var sql2 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like 'dota%' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by TSched desc";
 						db.query(sql2, function(err, result2){
-							//console.log("Login Tournaments Team result 2");
+							//
 								var sql4 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'lol%\' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by TSched desc";
 								db.query(sql4, function(err, result4){
-									//console.log("Login Tournaments Team result 4");
+									//
 									var sql5 = "SELECT td.tdetID, td.TournamentID, td.TournaRange, td.TSched, td.Max_participants, td.registration_fee, td.Tpic, td.1stPrize as first, td.2ndPrize as second, td.TVenue, t.TournamentName, t.TournamentGame, t.tournaLB, t.tournaUB, rt.registeredteams, t.Status FROM tournament_details td INNER JOIN (SELECT * FROM tournaments) t ON t.TournamentID = td.TournamentID LEFT JOIN (SELECT COUNT(registeredteamID) AS registeredteams, SUM(Seed) AS seed, tournament_details.TournamentID FROM tournament_details LEFT JOIN registered_teams ON tournament_details.TournamentID = registered_teams.TournamentID WHERE Status = \"Approved\" GROUP BY TournamentID) rt ON td.TournamentID = rt.TournamentID where TournamentGame like \'cs%\' AND t.Status = 'Open' and t.TournamentName like '%"+req.query.search+"%' AND td.TournamentID not in (SELECT rts.tournamentID FROM teampalak.registered_teams rts inner join teampalak.members mem on rts.registeredteamID = mem.teamID where MemID ="+userId+") order by TSched desc";
 									db.query(sql5, function(err, result5){
-										//console.log("Login Tournaments Team result 5");
+										//
 										
 											var sql7 = "SELECT tournaments.TournamentID as tournaID, TournamentGame, count(*) as Numbers FROM teampalak.registered_teams inner join teampalak.tournaments on teampalak.registered_teams.TournamentID = tournaments.TournamentID GROUP BY tournaments.TournamentID";
 											db.query(sql7, function(err, result7){
@@ -963,7 +963,7 @@ exports.editProfile = function(req, res) {
 						db.query(sql11,userId, function(err, result11){
 			if (rows.length > 0) {
 				if ((req.body.newPwd && req.body.conPwd) !== "") {
-					//console.log("pasok");
+					//
 					
 					if (req.body.newPwd != req.body.conPwd) {
 						var message = "Passwords do not match.";
@@ -973,13 +973,13 @@ exports.editProfile = function(req, res) {
 						let hash = bcrypt.hashSync(req.body.conPwd, 10);
 						let data = [hash, user];
 						db.query(sql, data, function(err, result){
-							//console.log(result);
+							//
 							var message = "Successfully Changed"
 							res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row,num:result9,notif:result10});
 						});
 					}
 				}else{
-					//console.log("NUll siya");
+					//
 					if ((req.body.newPwd && req.body.conPwd) == "") {
 						if ((req.body.newPwd == "") && (req.body.conPwd !== "")) {
 						var message = "New Passwords is empty.";
@@ -1097,13 +1097,13 @@ exports.changeInGameNameLol = function(req, res) {
 						db.query(sql11,userId, function(err, result11){
 			if (rows.length > 0) {
 				if (req.body.lol !== "") {
-					//console.log("pasok");
+					//
 					var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ? AND Game = 'LoL'";
 					db.query(sql1, user, function(err, result1, fields){
 						if (result1 == 0) {
 							var query = "SELECT * FROM teampalak.gameaccounts WHERE inGameName = ?";
 						db.query(query, [req.body.lol], function(err, rows, fields) {
-							//console.log(rows[0]);
+							//
 							if (rows.length > 0) {
 								var message1 = "League of Legends game account is already taken.";
 									res.render('editProfile',
@@ -1118,11 +1118,11 @@ exports.changeInGameNameLol = function(req, res) {
 							} else {
 								var apikey = "select mapi.api_key from teampalak.api_key mapi where apiId = (SELECT max(m.apiId) FROM teampalak.api_key m)";
 								db.query(apikey, function(err, maxapi){
-									//console.log(err);
-									//console.log(maxapi);
-									//console.log("max api = "+maxapi[0].api_key);
+									//
+									//
+									//
 									var key = maxapi[0].api_key;
-									//console.log("api key = "+key);
+									//
 									var RiotRequest = require('riot-lol-api');
 									var riotRequest = new RiotRequest(key);
 									var sName = req.body.lol; //ingame name of summoner
@@ -1144,7 +1144,7 @@ exports.changeInGameNameLol = function(req, res) {
 														var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
 														db.query(sql, function (err, result) {
 														if (err) throw err;
-															//console.log(sName+","+sID+","+aID+","+rank+","+mmr+" has been logged");
+															//
 															var sql2 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
 															db.query(sql2, user, function(err, row, fields){ 
 							      								var message1 = "Successfully added account";
@@ -1154,7 +1154,7 @@ exports.changeInGameNameLol = function(req, res) {
 												});
 							
 											}else if (err){
-												//console.log(err.status);
+												//
 												var message1 = "Please contact the admin.";
 												res.render('editProfile',{user: user, message: message,message1: message1,message2: message2,message3: message3, data: row});
 											}
@@ -1240,7 +1240,7 @@ exports.changeInGameNameLol = function(req, res) {
 						}
 					});
 				}else{
-					//console.log("NUll siya");
+					//
 					if (req.body.lol == "") {
 						if (req.body.lol == "") {
 						var message1 = "League of Legend In Game Name is empty.";
@@ -1285,13 +1285,13 @@ exports.changeInGameNameDota2 = function(req, res) {
 						db.query(sql11,userId, function(err, result11){
 			if (rows.length > 0) {
 				if (req.body.dota2 !== "") {
-					//console.log("pasok");
+					//
 					var message2 = "pasok";
 					var sql1 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ? AND Game = 'Dota 2'";
 					db.query(sql1, user, function(err, result1, fields){
 						if (result1 == 0) {
-							//console.log(result1);
-							//console.log("result1");
+							//
+							//
 							var query = "SELECT * FROM teampalak.gameaccounts WHERE summonerOrDotaID = ?";
 							db.query(query, [req.body.dota2], function(err, rowse, fields) {
 								if (rowse.length > 0) {
@@ -1314,7 +1314,7 @@ exports.changeInGameNameDota2 = function(req, res) {
 									var rank;					
 									
 									request('https://api.opendota.com/api/players/'+dotaID+'?api_key='+api_key, { json: true }, (err, ress, body) => {
-										if (err) { return console.log(err); }
+										if (err) { return  }
 										var mmr_estimate = body.mmr_estimate.estimate;
 										if(mmr_estimate===undefined){
 											var message2 = "Please enter a different account as the mmr of this account is undefined";
@@ -1339,7 +1339,7 @@ exports.changeInGameNameDota2 = function(req, res) {
 												var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
 												db.query(sql, function (err, result) {
 												if (err) throw err;
-													//console.log(ign+","+dotaID+","+steamID+","+ranks+","+mmr_estimate+" has been logged");
+													//
 												var message2 = "Successfully added account"
 												var sql2 = "SELECT InGameName, Game FROM `gameaccounts` WHERE Username = ?";
 													db.query(sql2, user, function(err, row, fields){ 
@@ -1404,7 +1404,7 @@ exports.changeInGameNameDota2 = function(req, res) {
 					});
 		
 				}else{
-					//console.log("NUll siya");
+					//
 					if (req.body.dota2 == "") {
 						if (req.body.dota2 == "") {
 						var message2 = "Dota 2 In Game Name is empty.";
@@ -1460,7 +1460,7 @@ exports.registrations = async function(req, res) {
 			where (ga.ingamename ="`+memb1+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 			db.query(sql1, function(err, result){
 				if(result.length==0){
-					console.log("puta");
+					
 					message = "Member 1 is either unregistered or doesn't have a registered account for the game of the tournament.";
 					messaageArray.push(message);
 				}else if (result[0].mmr < result[0].tournalb){
@@ -1477,7 +1477,7 @@ exports.registrations = async function(req, res) {
 				where (ga.ingamename ="`+memb2+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 				db.query(sql111, function(err, result1){
 					if(result1.length==0){
-						console.log("puta");
+						
 						message = "Member 2 is either unregistered or doesn't have a registered account for the game of the tournament.";
 						messaageArray.push(message);
 					}else if (result1[0].mmr < result1[0].tournalb){
@@ -1494,7 +1494,7 @@ exports.registrations = async function(req, res) {
 					where (ga.ingamename ="`+memb3+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 					db.query(sql2, function(err, result2){
 						if(result2.length==0){
-							console.log("puta");
+							
 							message = "Member 3 is either unregistered or doesn't have a registered account for the game of the tournament.";
 							messaageArray.push(message);
 						}else if (result2[0].mmr < result2[0].tournalb){
@@ -1511,7 +1511,7 @@ exports.registrations = async function(req, res) {
 						where (ga.ingamename ="`+memb4+`" and ga.game = (SELECT t.tournamentgame FROM teampalak.tournaments t where t.tournamentid = `+tID+`)) and t.tournamentid = `+tID;
 						db.query(sql3, function(err, result3){
 							if(result3.length==0){
-								console.log("puta");
+								
 								message = "Member 4 is either unregistered or doesn't have a registered account for the game of the tournament.";
 								messaageArray.push(message);
 							}else if (result3[0].mmr < result3[0].tournalb){
@@ -1525,7 +1525,7 @@ exports.registrations = async function(req, res) {
 								|| memb1 == memb2 || memb1 == memb2 || memb1 == memb3 || memb1 == memb4
 								|| memb2 == memb3 || memb2 == memb4
 								|| memb3 == memb4 ){
-								console.log("puta");
+								
 								message = "Member In Game Name/Dota 2 ID should be unique";
 								messaageArray.push(message);
 							}
@@ -1545,22 +1545,22 @@ exports.registrations = async function(req, res) {
 							and r.tournamentid = `+tID+`
 							`;
 							db.query(sqlchecker, function(err, result20){
-								console.log("putapete");
+								
 								var teamname = `select t.teamid from teampalak.teams t inner join teampalak.registered_teams rt on rt.registeredteamid where t.teamname = "`+tname+`" and rt.tournamentid = `+tID;
 								db.query(teamname,function(err,namecheck){
 									if(namecheck.length>0){
-										console.log("putangina");
+										
 										message = "The team name is already taken in this tournament. please choose another.";
 									messaageArray.push(message);
 									}
 								if(result20.length>0){
-									console.log("putangina talaga");
+									
 									message = "A member of this team is already registered in another team for this tournament.";
 									messaageArray.push(message);
 								}
 								if (messaageArray.length>0){
 									var messages = "";
-									console.log("putangina ulet");
+									
 									for(var me = 0; me<messaageArray.length;me++){
 										messages += messaageArray[me] + "\n";
 									}
@@ -1580,17 +1580,18 @@ exports.registrations = async function(req, res) {
 									db.query(sql6, function(err, result6){
 										var sql7 = "INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES (\'"+result4[0].teamID+"\', \'"+result2[0].AccID+"\')";
 										db.query(sql7, function(err, result7){
-											console.log("result7");
+											
 											var sql8 = "INSERT INTO `teampalak`.`members` (`TeamID`, `MemID`) VALUES (\'"+result4[0].teamID+"\', \'"+result3[0].AccID+"\')";
 											db.query(sql8, function(err, result8){
-												console.log("result8");
+												
 												var sql9 = "INSERT INTO `teampalak`.`registered_teams` (`registeredteamID`, `TournamentID`) VALUES (\'"+result4[0].teamID+"\', \'"+tID+"\')";
 												db.query(sql9, function(err, result9){
-													console.log(err);
+													
 													message = "";
 													message = `Team successfully registered! Please contact the admin via Phone: (074) 620-3935 or email us at TeamPalak.ph@gmail.com. For more information please see the bottom of the page.`;
 													req.session.message = message;
 													res.redirect("/login_tournaments");
+													//res.send("<script type='text/javascript'>document.getElementById(\"alertmessage\").className = \"alert alert-danger text-center\";</script>");
 													})	
 												})								    	
 											})
@@ -1618,7 +1619,7 @@ exports.register = function(req, res) {
 		var query = "SELECT * FROM teampalak.accounts acc WHERE acc.username = ?";
 		db.query(query, [req.body.user], function(err, rows, fields) {
 			if (rows.length > 0) {
-				console.log("reg 1 "+rows.length);
+				
 				res.send("<script type='text/javascript'>alert('Username is already taken.'); window.location.replace(\"/register\");</script>");
 			} else {
 				if (req.body.password != req.body.repassword) {
@@ -1629,17 +1630,17 @@ exports.register = function(req, res) {
 					if(req.body.lol){
 						var query = "SELECT * FROM teampalak.gameaccounts acc WHERE acc.inGameName = ?";
 						db.query(query, [req.body.lol], function(err, rows, fields) {
-							console.log(rows[0]);
+							
 							if (rows.length > 0) {
 								res.send("<script type='text/javascript'>alert('League of Legends game account is already taken.'); window.location.replace(\"/register\");</script>");
 							} else {
 								var apikey = "select mapi.api_key from teampalak.api_key mapi where mapi.apiId = (SELECT max(m.apiId) FROM teampalak.api_key m)";
 								db.query(apikey, function(err, maxapi){
-									console.log(err);
-									console.log(maxapi);
-									console.log("max api = "+maxapi[0].api_key);
+									
+									
+									
 									var key = maxapi[0].api_key;
-									console.log("api key = "+key);
+									
 									var RiotRequest = require('riot-lol-api');
 									var riotRequest = new RiotRequest(key);
 									var sName = req.body.lol; //ingame name of summoner
@@ -1668,12 +1669,12 @@ exports.register = function(req, res) {
 														var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','lol','"+sName+"','"+sID+"','"+aID+"','"+rank+"','"+mmr+"')";
 														db.query(sql, function (err, result) {
 														if (err) throw err;
-															console.log(sName+","+sID+","+aID+","+rank+","+mmr+" has been logged");
+															
 														});
 												});
 							
 											}else if (err){
-												console.log(err.status);
+												
 												res.send("<script type='text/javascript'>alert('"+err+" Please contact the admin.'); window.location.replace(\"/register\");</script>");
 											}
 									})
@@ -1763,7 +1764,7 @@ exports.register = function(req, res) {
 									var rank;
 
 									request('https://api.opendota.com/api/players/'+dotaID+'?api_key='+api_key, { json: true }, (err, ress, body) => {
-										if (err) { return console.log(err); }
+										if (err) { return  }
 										var mmr_estimate = body.mmr_estimate.estimate;
 										if(mmr_estimate===undefined){
 											res.send("<script type='text/javascript'>alert('Please enter a different account as the mmr of this account is undefined'); window.location.replace(\"/register\");</script>");
@@ -1786,7 +1787,7 @@ exports.register = function(req, res) {
 												var sql = "INSERT INTO teampalak.gameaccounts (username,game,inGameName,summonerOrDotaID,steamOrAccountID,rank,mmr) VALUES ('"+req.body.user+"','dota 2','"+ign+"','"+dotaID+"','"+steamID+"','"+ranks+"','"+mmr_estimate+"')";
 												db.query(sql, function (err, result) {
 												if (err) throw err;
-													console.log(ign+","+dotaID+","+steamID+","+ranks+","+mmr_estimate+" has been logged");
+													
 												});
 										}
 									});
@@ -1852,8 +1853,8 @@ exports.logout = function(req, res) {
 exports.resultsPage = function(req, res) {
 	var user = req.session.user,
 		userId = req.session.userID;
-	// console.log("results page a");
-	// 	console.log("results page b");
+	// 
+	// 	
 	
 	if (user == null) {
 		res.redirect("/login");
@@ -1926,7 +1927,7 @@ exports.resultsPage = function(req, res) {
 				for(var c = 0; c<result.length; c++){
 					if(c<10){
 						game1.push(result[c]);
-						// console.log(result[c]);
+						// 
 					}else if (c<20){
 						game2.push(result[c]);
 					}else if (c<30){
@@ -2034,7 +2035,7 @@ exports.bracket = async function (req, res, next) {
 				//Push all rounds into 1 array
 				bracketArray.push(first, second, third, fourth);
 
-				//console.log("TEST DATA: " + JSON.stringify(bracketArray));
+				//
 				
 				//Render Result to Bracket.ejs
 				res.render('bracket.ejs', {message:message,
@@ -2057,7 +2058,7 @@ exports.bracket = async function (req, res, next) {
 	}
 
 	function getBrackets(rounds, games, bracket1){
-		console.log(req.query.tid);
+		
 		var sql3 =
 					`(SELECT te1.teamName as name, g1.team1id as id, r.seed, g1.gameID as gameID FROM tournaments t1
 					INNER JOIN game g1 ON  t1.TournamentID =  g1.TournamentID

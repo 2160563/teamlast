@@ -86,6 +86,8 @@
 
     <div id="content-wrapper">
       <div class="example-print">
+        <img src="images/logo2.png">  <h1 class="navbar-brand mr-1">TEAMPALAK</h1>
+        <br>
         <br>
       </div>
       <div class="container-fluid">
@@ -102,10 +104,15 @@
                 <b>Tournament Range: </b><%= data[0].TournaRange %><br>
                 <b>Venue: </b><%= data[0].TVenue %><br>
                 <b>Date: </b><%= data[0].tDate %><br>
-                <b>Time: </b><%= data[0].tTime %><br>
-                <b>Registration Fee: </b>&#8369;<%= data[0].registration_fee %><br>
-                <b>1st Place Prize: </b>&#8369;<%= data[0].FirstPrize %><br>
-                <b>2nd Place Prize: </b>&#8369;<%= data[0].SecondPrize %><br>
+                <% if(results){ %>
+                  <b>Time Started: </b><%= data[0].tTime %><br>
+                  <b>Time Ended: </b><%= data5[0].endtime %><br>
+                <% } else { %>
+                  <b>Time: </b><%= data[0].tTime %><br>
+                <% } %>
+                <b>Registration Fee: </b>&#8369;<%= data[0].rf %><br>
+                <b>1st Place Prize: </b>&#8369;<%= data[0].fp %><br>
+                <b>2nd Place Prize: </b>&#8369;<%= data[0].sp %><br>
                 <% if(data[0].registeredteamID){ %>
                   <b>Slots: </b><%= data[0].registeredteamID %>/<%= data[0].Max_participants %><br>
                 <% } else { %>
