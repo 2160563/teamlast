@@ -21,8 +21,8 @@ var FileReader = require('filereader');
 var app = express();
 var connection = mysql.createConnection ({
   host     : 'localhost',
-  user     : 'root',
-  password : '',
+  user     : 'teampalak',
+  password : 'teampalak',
   database : 'teampalak'
 });
 connection.connect();
